@@ -1,0 +1,42 @@
+[
+	{
+		"id": "1",
+		"title": "React에서 markdown 랜더링하기",
+		"content": "# 안녕하세요! \n 저는 현재 리액트에서 `react-markdown`를 이용하여 **마크다운**을 랜더링하고 있습니다.",
+		"createdAt": "2024-07-15T10:00:00Z",
+		"tags": ["Markdown", "React", "Next.js"],
+		"imgSrc": "https://picsum.photos/id/1/320/180"
+	},
+	{
+		"id": "2",
+		"title": "Second Post",
+		"content": "This is the second post. Let's keep this board active!",
+		"createdAt": "2024-07-16T09:30:00Z",
+		"tags": ["Markdown", "React"],
+		"imgSrc": "https://picsum.photos/id/2/320/180"
+	},
+	{
+		"id": "3",
+		"title": "Third Post",
+		"content": "This is the third post. Let's keep this board active!",
+		"createdAt": "2024-07-17T09:30:00Z",
+		"tags": ["Markdown", "React"],
+		"imgSrc": "https://picsum.photos/id/3/320/180"
+	},
+	{
+		"id": "4",
+		"title": "Fourth Post",
+		"content": "This is the fourth post. Let's keep this board active!",
+		"createdAt": "2024-07-18T09:30:00Z",
+		"tags": ["Markdown"],
+		"imgSrc": "https://picsum.photos/id/4/320/180"
+	},
+	{
+		"id": "5",
+		"title": "Fifth Post",
+		"content": "This is the fifth post. Let's keep this board active!",
+		"createdAt": "2024-07-19T09:30:00Z",
+		"tags": ["Markdown", "React"],
+		"imgSrc": ""
+	}
+]

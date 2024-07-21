@@ -1,0 +1,59 @@
+'use client';
+
+import React from 'react';
+import { useTheme } from 'next-themes';
+import { RxSun, RxMoon } from 'react-icons/rx';
+
+import * as Type from './type';
+import { Button } from '@components';
+
+const DarkModeToggle = React.forwardRef<
+	HTMLButtonElement,
+	Type.DarkModeToggleProps
+>((props, forwardRef) => {
+	const { onClick, ...rest } = props;
+
+	const [mounted, setMounted] = React.useState<Boolean>(false);
+	const { theme, setTheme } = useTheme();
+
+	React.useEffect(() => {
+		setMounted(true);
+	}, []);
+
+	const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+		e.preventDefault();
+		setTheme(theme === 'dark' ? 'light' : 'dark');
+		onClick?.(e);
+	};
+
+	if (!mounted) {
+		return null;
+	}
+
+	return (
+		<>
+			<Button
+				ref={forwardRef}
+				variant='ghost'
+				size='icon'
+				onClick={handleClick}
+				{...rest}
+			>
+				{theme === 'dark' ? (
+					<>
+						<RxMoon size='1.25em' />
+						<span className='sr-only'>밝게 보기</span>
+					</>
+				) : (
+					<>
+						<RxSun size='1.25em' />
+						<span className='sr-only'>어둡게 보기</span>
+					</>
+				)}
+			</Button>
+		</>
+	);
+});
+DarkModeToggle.displayName = 'DarkModeToggle';
+
+export default DarkModeToggle;
