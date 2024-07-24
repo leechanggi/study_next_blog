@@ -1,24 +1,27 @@
-import path from 'path';
-import { promises as fs } from 'fs';
+import prisma from '@/prisma/client';
 
 type TPosts = {
-	id: string;
+	post_id: number;
 	title: string;
 	content: string;
-	createdAt: string;
-	tags: string[];
-	imgSrc?: string;
+	createdAt: Date;
+	updatedAt: Date | null;
+	tags: string | null;
+	imgSrc: string | null;
 };
 
 const getPosts = async (): Promise<TPosts[]> => {
-	const filePath = path.join(process.cwd(), 'data', 'posts.json');
-	const jsonData = await fs.readFile(filePath, 'utf-8');
-	return JSON.parse(jsonData);
+	const posts = await prisma.post.findMany();
+	return posts;
 };
 
-const getPostById = async (id: string) => {
-	const posts = await getPosts();
-	return posts.find(post => post.id === id);
+const getPostById = async (
+	postId: TPosts['post_id']
+): Promise<TPosts | null> => {
+	const post = await prisma.post.findUnique({
+		where: { post_id: postId },
+	});
+	return post;
 };
 
 export type { TPosts };

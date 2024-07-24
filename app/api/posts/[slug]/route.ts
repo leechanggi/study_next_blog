@@ -1,12 +1,12 @@
 import { notFound } from 'next/navigation';
-import { getPostById, type TPosts } from '@service/posts';
+import { getPostById } from '@service/posts';
 
 const GET = async (
 	_request: Request,
-	{ params }: { params: { slug: TPosts['id'] } }
+	{ params }: { params: { slug: string } }
 ) => {
 	const slug = params.slug;
-	const data = await getPostById(slug);
+	const data = await getPostById(Number(slug));
 
 	if (!data) {
 		notFound();

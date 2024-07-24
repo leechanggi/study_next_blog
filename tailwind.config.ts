@@ -14,7 +14,14 @@ const config: Config = {
 			laptop: '1025px',
 			desktop: '1281px',
 		},
+		extend: {
+			backgroundColor: {
+				oneLight: '#FAFAFA',
+				oneDark: '#282C34',
+			},
+		},
 	},
+
 	plugins: [],
 };
 export default config;

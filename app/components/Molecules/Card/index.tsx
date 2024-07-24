@@ -87,7 +87,7 @@ const Card = React.forwardRef<HTMLAnchorElement, Type.CardProps>(
 								{tags.map((tag, index) => (
 									<li
 										key={index}
-										className='text-sm font-medium text-amber-500 dark:text-pink-600'
+										className='text-sm font-medium text-purple-600 dark:text-pink-600'
 									>
 										#{tag}
 									</li>

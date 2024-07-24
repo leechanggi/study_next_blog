@@ -2,4 +2,5 @@
 export { default as ThemeProvider } from './components/ThemeProvider';
 export { default as cn } from './utils/cn';
 export { default as formatDate } from './utils/formatDate';
+export { default as splitTags } from './utils/splitTags';
 // @endindex

@@ -1,38 +1,32 @@
 import React from 'react';
+import Link from 'next/link';
 
 import { Board, BoardItem, Button, Card } from '@components';
 import { type TPosts } from '@service/posts';
-import Link from 'next/link';
+import { splitTags } from '@lib';
 
 const revalidate = 60;
 
-const extractTags = (posts: TPosts[]): string[] => {
-	const allTags: string[] = [];
-
+const getUniqueTags = (posts: TPosts[]): string[] => {
+	const tagSet = new Set<string>();
 	posts.forEach(post => {
-		post.tags.forEach(tag => {
-			if (!allTags.includes(tag)) {
-				allTags.push(tag);
-			}
-		});
+		splitTags(post.tags).forEach(tag => tagSet.add(tag));
 	});
-
-	return allTags;
+	return Array.from(tagSet);
 };
 
 const fetchPosts = async (tag?: string) => {
 	const apiUrl = process.env.NEXT_PUBLIC_API_HOST;
 	const res = await fetch(`${apiUrl}/api/posts`);
-	const { data: post } = await res.json();
+	const { data: posts } = await res.json();
 	const data = tag
-		? post.filter((post: TPosts) => post.tags.includes(tag))
-		: post;
-	return { data, extractTags: extractTags(data) };
+		? posts.filter((post: TPosts) => splitTags(post.tags).includes(tag))
+		: posts;
+	return { data, uniqueTags: getUniqueTags(posts) };
 };
 
 const Page = async ({ searchParams }: { searchParams: { tag?: string } }) => {
-	const filteredPosts = await fetchPosts(searchParams.tag);
-	const { data, extractTags } = filteredPosts;
+	const { data: postsData, uniqueTags } = await fetchPosts(searchParams.tag);
 
 	return (
 		<>
@@ -40,7 +34,7 @@ const Page = async ({ searchParams }: { searchParams: { tag?: string } }) => {
 				<Button variant='secondary' className='rounded-full' asChild>
 					<Link href={{ pathname: '/' }}>All</Link>
 				</Button>
-				{extractTags.map(tag => (
+				{uniqueTags.map(tag => (
 					<Button
 						key={tag}
 						variant='secondary'
@@ -53,14 +47,14 @@ const Page = async ({ searchParams }: { searchParams: { tag?: string } }) => {
 			</div>
 
 			<Board className='mt-8'>
-				{data.map((post: TPosts) => (
-					<BoardItem key={post.id}>
+				{postsData.map((post: TPosts) => (
+					<BoardItem key={post.post_id}>
 						<Card
-							href={`/${post.id}`}
+							href={`/${post.post_id}`}
 							title={post.title}
 							content={post.content}
 							createdAt={post.createdAt}
-							tags={post.tags}
+							tags={splitTags(post.tags)}
 							imgSrc={post.imgSrc}
 						/>
 					</BoardItem>

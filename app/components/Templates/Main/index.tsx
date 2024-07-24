@@ -13,6 +13,7 @@ const Main = React.forwardRef<HTMLElement, Type.MainProps>(
 					'my-0',
 					'mx-auto',
 					'pt-20',
+					'pb-24',
 					'px-4',
 					'w-full',
 					'mobile:px-10',
