@@ -16,12 +16,9 @@ const Header = React.forwardRef<HTMLElement, Type.HeaderProps>(
 					'sticky',
 					'top-0',
 					'bg-white/80',
-					'shadow',
-					'shadow-neutral-200',
 					'backdrop-blur-sm',
 					'z-10',
 					'dark:bg-neutral-900/80',
-					'dark:shadow-neutral-800',
 					className
 				)}
 				{...rest}
@@ -60,15 +57,11 @@ const Header = React.forwardRef<HTMLElement, Type.HeaderProps>(
 						<div
 							className={cn('flex', 'items-center', 'justify-start', 'gap-x-2')}
 						>
-							<Button size='sm' asChild>
-								<Link href='/contact'>Contact ME</Link>
-							</Button>
+							<Button size='sm'>Contact ME</Button>
 							<div className={cn('flex', 'items-center', 'justify-start')}>
-								<Button variant='ghost' size='icon' asChild>
-									<Link href='/search'>
-										<RxMagnifyingGlass size='1.25em' />
-										<span className='sr-only'>검색</span>
-									</Link>
+								<Button variant='ghost' size='icon'>
+									<RxMagnifyingGlass size='1.25em' />
+									<span className='sr-only'>검색</span>
 								</Button>
 								<DarkModeToggle />
 							</div>

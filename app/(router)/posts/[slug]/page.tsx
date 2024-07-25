@@ -5,28 +5,37 @@ import { notFound } from 'next/navigation';
 import { RxCalendar } from 'react-icons/rx';
 
 import { formatDate, splitTags } from '@lib';
-import { type TPosts, getPosts } from '@service/posts';
-import { Board, BoardItem, Button, Markdown } from '@components';
+import { type TPosts } from '@service/posts';
+import { Button, Markdown } from '@components';
+
+// Route Segment Config
+const dynamic = 'error';
+const dynamicParams = true;
+const revalidate = 0;
+
+const apiUrl = process.env.NEXT_PUBLIC_API_HOST;
 
 const generateStaticParams = async () => {
-	const posts = await getPosts();
+	const res = await fetch(`${apiUrl}/api/posts`);
+	const { data: posts }: { data: TPosts[] } = await res.json();
+
 	const slugs = posts.map(post => post.post_id.toString());
+
 	return slugs.map(slug => ({ slug }));
 };
 
 const SlugPage = async ({ params }: { params: { slug: string } }) => {
 	const { slug: id } = params;
 
-	const apiUrl = process.env.NEXT_PUBLIC_API_HOST;
 	const res = await fetch(`${apiUrl}/api/posts/${id}`, {
-		next: { revalidate: 60 },
+		next: { revalidate },
 	});
-	const { data: post }: { data: TPosts } = await res.json();
 
 	if (!res) {
 		return notFound();
 	}
 
+	const { data: post }: { data: TPosts } = await res.json();
 	const { year, month, day } = formatDate(post.createdAt);
 
 	return (
@@ -55,5 +64,5 @@ const SlugPage = async ({ params }: { params: { slug: string } }) => {
 	);
 };
 
-export { generateStaticParams };
+export { dynamic, dynamicParams, generateStaticParams };
 export default SlugPage;

@@ -13,13 +13,7 @@ const DarkModeToggle = React.forwardRef<
 	Type.DarkModeToggleProps
 >((props, forwardRef) => {
 	const { onClick, ...rest } = props;
-
-	const [mounted, setMounted] = React.useState<Boolean>(false);
 	const { theme, setTheme } = useTheme();
-
-	React.useEffect(() => {
-		setMounted(true);
-	}, []);
 
 	const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault();
@@ -27,32 +21,26 @@ const DarkModeToggle = React.forwardRef<
 		onClick?.(e);
 	};
 
-	if (!mounted) {
-		return null;
-	}
-
 	return (
-		<>
-			<Button
-				ref={forwardRef}
-				variant='ghost'
-				size='icon'
-				onClick={handleClick}
-				{...rest}
-			>
-				{theme === 'dark' ? (
-					<>
-						<RxMoon size='1.25em' />
-						<span className='sr-only'>밝게 보기</span>
-					</>
-				) : (
-					<>
-						<RxSun size='1.25em' />
-						<span className='sr-only'>어둡게 보기</span>
-					</>
-				)}
-			</Button>
-		</>
+		<Button
+			ref={forwardRef}
+			variant='ghost'
+			size='icon'
+			onClick={handleClick}
+			{...rest}
+		>
+			{theme === 'dark' ? (
+				<>
+					<RxMoon size='1.25em' />
+					<span className='sr-only'>밝게 보기</span>
+				</>
+			) : (
+				<>
+					<RxSun size='1.25em' />
+					<span className='sr-only'>어둡게 보기</span>
+				</>
+			)}
+		</Button>
 	);
 });
 DarkModeToggle.displayName = 'DarkModeToggle';

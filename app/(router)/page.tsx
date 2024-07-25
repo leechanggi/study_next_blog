@@ -1,11 +1,13 @@
 import React from 'react';
-import Link from 'next/link';
 
-import { Board, BoardItem, Button, Card } from '@components';
-import { type TPosts } from '@service/posts';
 import { splitTags } from '@lib';
+import { type TPosts } from '@service/posts';
+import { Board, BoardItem, Card, InfiniteTags } from '@components';
 
-const revalidate = 60;
+// Route Segment Config
+const revalidate = 0;
+
+const apiUrl = process.env.NEXT_PUBLIC_API_HOST;
 
 const getUniqueTags = (posts: TPosts[]): string[] => {
 	const tagSet = new Set<string>();
@@ -16,8 +18,9 @@ const getUniqueTags = (posts: TPosts[]): string[] => {
 };
 
 const fetchPosts = async (tag?: string) => {
-	const apiUrl = process.env.NEXT_PUBLIC_API_HOST;
-	const res = await fetch(`${apiUrl}/api/posts`);
+	const res = await fetch(`${apiUrl}/api/posts`, {
+		next: { revalidate },
+	});
 	const { data: posts } = await res.json();
 	const data = tag
 		? posts.filter((post: TPosts) => splitTags(post.tags).includes(tag))
@@ -30,39 +33,27 @@ const Page = async ({ searchParams }: { searchParams: { tag?: string } }) => {
 
 	return (
 		<>
-			<div className='flex flex-wrap gap-4'>
-				<Button variant='secondary' className='rounded-full' asChild>
-					<Link href={{ pathname: '/' }}>All</Link>
-				</Button>
-				{uniqueTags.map(tag => (
-					<Button
-						key={tag}
-						variant='secondary'
-						className='rounded-full'
-						asChild
-					>
-						<Link href={{ query: { tag } }}>#{tag}</Link>
-					</Button>
-				))}
-			</div>
-
-			<Board className='mt-8'>
-				{postsData.map((post: TPosts) => (
-					<BoardItem key={post.post_id}>
-						<Card
-							href={`/${post.post_id}`}
-							title={post.title}
-							content={post.content}
-							createdAt={post.createdAt}
-							tags={splitTags(post.tags)}
-							imgSrc={post.imgSrc}
-						/>
-					</BoardItem>
-				))}
-			</Board>
+			<section>
+				<InfiniteTags tags={uniqueTags} currentTag={searchParams.tag} />
+			</section>
+			<section className='mt-8'>
+				<Board>
+					{postsData.map((post: TPosts) => (
+						<BoardItem key={post.post_id}>
+							<Card
+								href={`/posts/${post.post_id}`}
+								title={post.title}
+								content={post.content}
+								createdAt={post.createdAt}
+								tags={splitTags(post.tags)}
+								imgSrc={post.imgSrc}
+							/>
+						</BoardItem>
+					))}
+				</Board>
+			</section>
 		</>
 	);
 };
 
-export { revalidate };
 export default Page;

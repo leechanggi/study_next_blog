@@ -8,6 +8,23 @@ const nextConfig = {
 			},
 		],
 	},
+	async redirects() {
+		return [
+			{
+				source: '/posts',
+				destination: '/',
+				permanent: false,
+			},
+		];
+	},
+	// async rewrites() {
+	// 	return [
+	// 		{
+	// 			source: '/posts/:slug',
+	// 			destination: '/posts/:slug',
+	// 		},
+	// 	];
+	// },
 };
 
 export default nextConfig;

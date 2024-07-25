@@ -1,13 +1,14 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
+
 import { Header, Main } from '@components';
 import { cn, ThemeProvider } from '@lib';
 
 import './globals.css';
 
 const metadata: Metadata = {
-	title: "Lee's Convenience",
-	description: '잡다한 블로그입니다.',
+	title: 'LXYEX1379',
+	description: '개인 블로그입니다.',
 };
 
 const fonts = localFont({
@@ -28,8 +29,10 @@ const RootLayout = ({
 					'relative',
 					'bg-white',
 					'text-neutral-900',
+					'border-neutral-200',
 					'dark:bg-neutral-900',
 					'dark:text-white',
+					'dark:border-neutral-700',
 					fonts.className
 				)}
 			>

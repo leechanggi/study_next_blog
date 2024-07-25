@@ -55,7 +55,7 @@ const Markdown = React.forwardRef<HTMLDivElement, Type.MarkdownProps>(
 									'list-decimal',
 									'list-inside',
 									'my-4',
-									depth && `pl-${depth * 4}`
+									depth > 0 ? `pl-${depth * 4}` : ''
 								)}
 								{...props}
 							/>
@@ -66,7 +66,7 @@ const Markdown = React.forwardRef<HTMLDivElement, Type.MarkdownProps>(
 									'list-disc',
 									'list-inside',
 									'my-4',
-									depth && `pl-${depth * 4}`
+									depth > 0 ? `pl-${depth * 4}` : ''
 								)}
 								{...props}
 							/>

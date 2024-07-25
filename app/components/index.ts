@@ -4,6 +4,7 @@ export { default as Card } from './Molecules/Card';
 export { default as DarkModeToggle } from './Molecules/DarkModeToggle';
 export { default as Board } from './Organisms/Board';
 export { default as BoardItem } from './Organisms/BoardItem';
+export { default as InfiniteTags } from './Organisms/InfiniteTags';
 export { default as Markdown } from './Organisms/Markdown';
 export { default as Header } from './Templates/Header';
 export { default as Main } from './Templates/Main';

@@ -63,6 +63,7 @@ const Card = React.forwardRef<HTMLAnchorElement, Type.CardProps>(
 							width={360}
 							height={360}
 							className={cn('w-full')}
+							priority
 						/>
 					</AspectRatio.Root>
 				)}
