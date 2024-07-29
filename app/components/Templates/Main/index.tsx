@@ -10,15 +10,15 @@ const Main = React.forwardRef<HTMLElement, Type.MainProps>(
 			<main
 				ref={forwardRef}
 				className={cn(
+					'relative',
 					'my-0',
 					'mx-auto',
 					'pt-20',
 					'pb-24',
 					'px-4',
 					'w-full',
-					'mobile:px-10',
+					'mobile:px-4',
 					'tablet:w-[768px]',
-					'laptop:w-[1024px]',
 					className
 				)}
 				{...rest}

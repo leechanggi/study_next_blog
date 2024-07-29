@@ -13,16 +13,16 @@ const styles = cva(
 		variants: {
 			variant: {
 				default:
-					'bg-neutral-800 text-neutral-100 hover:bg-neutral-700 dark:bg-neutral-100 dark:text-neutral-800 dark:hover:bg-neutral-200',
+					'bg-zinc-800 text-zinc-100 hover:bg-zinc-700 dark:bg-zinc-100 dark:text-zinc-800 dark:hover:bg-zinc-200',
 				secondary:
-					'bg-neutral-100 text-neutral-800 hover:bg-neutral-50 dark:bg-neutral-700 dark:text-neutral-100 dark:hover:bg-neutral-800',
+					'bg-zinc-100 text-zinc-800 hover:bg-zinc-50 dark:bg-zinc-700 dark:text-zinc-100 dark:hover:bg-zinc-800',
 				destructive:
-					'bg-red-600 text-neutral-100 hover:bg-red-500 dark:bg-red-800 dark:hover:bg-red-900',
+					'bg-red-600 text-zinc-100 hover:bg-red-500 dark:bg-red-800 dark:hover:bg-red-900',
 				outline:
-					'border border-neutral-200 bg-transparent text-neutral-800 hover:bg-neutral-100 dark:border-neutral-700 dark:text-neutral-100 dark:hover:bg-neutral-700',
+					'border border-zinc-200 bg-transparent text-zinc-800 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-100 dark:hover:bg-zinc-700',
 				ghost:
-					'bg-transparent text-neutral-800 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-700',
-				link: 'text-neutral-800 underline-offset-4 decoration-neutral-800 hover:underline dark:text-neutral-100 dark:decoration-neutral-100',
+					'bg-transparent text-zinc-800 hover:bg-zinc-100 dark:text-zinc-100 dark:hover:bg-zinc-700',
+				link: 'text-zinc-800 underline-offset-4 decoration-zinc-800 hover:underline dark:text-zinc-100 dark:decoration-zinc-100',
 			},
 			size: {
 				default: 'h-10 px-4 text-sm',

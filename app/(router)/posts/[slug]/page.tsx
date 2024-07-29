@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 
 import { RxCalendar } from 'react-icons/rx';
 
-import { formatDate, splitTags } from '@lib';
+import { formatDate, splitComma } from '@lib';
 import { type TPosts } from '@service/posts';
 import { Button, Markdown } from '@components';
 
@@ -41,13 +41,13 @@ const SlugPage = async ({ params }: { params: { slug: string } }) => {
 	return (
 		<>
 			<h2 className='text-5xl font-bold ellipsis-2'>{post.title}</h2>
-			<span className='flex items-center justify-end mt-8 text-base text-neutral-600 dark:text-neutral-200'>
+			<span className='flex items-center justify-end mt-8 text-base text-zinc-600 dark:text-zinc-200'>
 				<RxCalendar size='1.25em' />
 				<span className='pl-1'>{`${year}년 ${month}월 ${day}일`}</span>
 			</span>
-			{splitTags(post.tags) && (
+			{splitComma(post.tags) && (
 				<div className='flex flex-wrap gap-4 mt-8'>
-					{splitTags(post.tags).map(tag => (
+					{splitComma(post.tags).map(tag => (
 						<Button
 							key={tag}
 							variant='secondary'

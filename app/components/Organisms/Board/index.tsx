@@ -12,7 +12,7 @@ const Board = React.forwardRef<HTMLUListElement, Type.BoardProps>(
 				className={cn(
 					'grid',
 					'grid-cols-1',
-					'gap-10',
+					'gap-4',
 					'auto-rows-fr',
 					'tablet:grid-cols-2',
 					className

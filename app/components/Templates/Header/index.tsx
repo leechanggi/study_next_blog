@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { RxMagnifyingGlass } from 'react-icons/rx';
 
 import * as Type from './type';
-import { Button, DarkModeToggle } from '@components';
+import { Button, DarkModeToggle, DialogContact } from '@components';
 import { cn } from '@lib';
 
 const Header = React.forwardRef<HTMLElement, Type.HeaderProps>(
@@ -18,7 +18,7 @@ const Header = React.forwardRef<HTMLElement, Type.HeaderProps>(
 					'bg-white/80',
 					'backdrop-blur-sm',
 					'z-10',
-					'dark:bg-neutral-900/80',
+					'dark:bg-zinc-900/80',
 					className
 				)}
 				{...rest}
@@ -40,24 +40,20 @@ const Header = React.forwardRef<HTMLElement, Type.HeaderProps>(
 					<div
 						className={cn('flex', 'items-center', 'justify-between', 'w-full')}
 					>
-						<div>
-							<Link href='/'>
-								<h1
-									className={cn(
-										'text-lg',
-										'font-medium',
-										'text-neutral-900',
-										'dark:text-neutral-100'
-									)}
-								>
-									LXYEX1379
-								</h1>
-							</Link>
-						</div>
+						<h1
+							className={cn(
+								'text-lg',
+								'font-medium',
+								'text-zinc-900',
+								'dark:text-zinc-100'
+							)}
+						>
+							<Link href='/'>LXYEX1379</Link>
+						</h1>
 						<div
 							className={cn('flex', 'items-center', 'justify-start', 'gap-x-2')}
 						>
-							<Button size='sm'>Contact ME</Button>
+							<DialogContact />
 							<div className={cn('flex', 'items-center', 'justify-start')}>
 								<Button variant='ghost' size='icon'>
 									<RxMagnifyingGlass size='1.25em' />

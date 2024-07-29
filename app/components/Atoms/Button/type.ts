@@ -8,6 +8,6 @@ type ButtonProps = {
 		| 'ghost'
 		| 'link';
 	size?: 'default' | 'sm' | 'lg' | 'icon';
-} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+} & React.HTMLAttributes<HTMLButtonElement>;
 
 export type { ButtonProps };

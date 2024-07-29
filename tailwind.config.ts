@@ -9,15 +9,29 @@ const config: Config = {
 	darkMode: 'class',
 	theme: {
 		screens: {
-			mobile: '426px',
-			tablet: '769px',
-			laptop: '1025px',
-			desktop: '1281px',
+			mobile: '425px',
+			tablet: '768px',
+			laptop: '1024px',
+			desktop: '1280px',
 		},
 		extend: {
 			backgroundColor: {
 				oneLight: '#FAFAFA',
 				oneDark: '#282C34',
+			},
+			keyframes: {
+				slideIn: {
+					'0%': { transform: 'translate(-50%, -60%)', opacity: '0' },
+					'100%': { transform: 'translate(-50%, -50%)', opacity: '1' },
+				},
+				slideOut: {
+					'0%': { transform: 'translate(-50%, -50%)', opacity: '1' },
+					'100%': { transform: 'translate(-50%, -60%)', opacity: '0' },
+				},
+			},
+			animation: {
+				slideIn: 'slideIn 0.3s ease-out',
+				slideOut: 'slideOut 0.3s ease-in',
 			},
 		},
 	},

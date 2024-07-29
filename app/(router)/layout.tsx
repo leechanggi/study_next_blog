@@ -28,11 +28,16 @@ const RootLayout = ({
 				className={cn(
 					'relative',
 					'bg-white',
-					'text-neutral-900',
-					'border-neutral-200',
-					'dark:bg-neutral-900',
+					'text-zinc-900',
+					'border-zinc-200',
+					'focus-visible:outline-none',
+					'focus-visible:ring-2',
+					'focus-visible:ring-zinc-200',
+					'focus-visible:ring-offset-4',
+					'dark:bg-zinc-900',
 					'dark:text-white',
-					'dark:border-neutral-700',
+					'dark:border-zinc-700',
+					'dark:focus-visible:ring-zinc-700',
 					fonts.className
 				)}
 			>

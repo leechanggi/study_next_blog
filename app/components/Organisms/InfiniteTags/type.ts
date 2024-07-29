@@ -1,8 +1,9 @@
-import { MarqueeProps } from 'react-fast-marquee';
-
 type InfiniteTagsProps = {
 	tags: string[];
+	tagsCount: {
+		[tag: string]: number;
+	};
 	currentTag?: string;
-} & MarqueeProps;
+} & React.HTMLAttributes<HTMLDivElement>;
 
 export type { InfiniteTagsProps };

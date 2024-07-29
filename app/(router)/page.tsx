@@ -1,20 +1,39 @@
 import React from 'react';
 
-import { splitTags } from '@lib';
+import { splitComma } from '@lib';
 import { type TPosts } from '@service/posts';
-import { Board, BoardItem, Card, InfiniteTags } from '@components';
+import {
+	Board,
+	BoardItem,
+	Card,
+	InfiniteTags,
+	InfiniteAside,
+} from '@components';
 
 // Route Segment Config
 const revalidate = 0;
 
 const apiUrl = process.env.NEXT_PUBLIC_API_HOST;
 
-const getUniqueTags = (posts: TPosts[]): string[] => {
+const getUniqueTags = (posts: TPosts[]) => {
+	const tagCount: { [tag: string]: number } = {};
 	const tagSet = new Set<string>();
+
 	posts.forEach(post => {
-		splitTags(post.tags).forEach(tag => tagSet.add(tag));
+		splitComma(post.tags).forEach(tag => {
+			tagSet.add(tag);
+			if (tagCount[tag]) {
+				tagCount[tag]++;
+			} else {
+				tagCount[tag] = 1;
+			}
+		});
 	});
-	return Array.from(tagSet);
+
+	return {
+		uniqueTags: Array.from(tagSet),
+		uniqueTagsCount: tagCount,
+	};
 };
 
 const fetchPosts = async (tag?: string) => {
@@ -23,29 +42,41 @@ const fetchPosts = async (tag?: string) => {
 	});
 	const { data: posts } = await res.json();
 	const data = tag
-		? posts.filter((post: TPosts) => splitTags(post.tags).includes(tag))
+		? posts.filter((post: TPosts) => splitComma(post.tags).includes(tag))
 		: posts;
-	return { data, uniqueTags: getUniqueTags(posts) };
+	return { data, ...getUniqueTags(posts) };
 };
 
 const Page = async ({ searchParams }: { searchParams: { tag?: string } }) => {
-	const { data: postsData, uniqueTags } = await fetchPosts(searchParams.tag);
+	const { data, uniqueTags, uniqueTagsCount } = await fetchPosts(
+		searchParams.tag
+	);
 
 	return (
 		<>
-			<section>
-				<InfiniteTags tags={uniqueTags} currentTag={searchParams.tag} />
+			<section className='desktop:hidden'>
+				<InfiniteTags
+					tags={uniqueTags}
+					tagsCount={uniqueTagsCount}
+					currentTag={searchParams.tag}
+				/>
 			</section>
-			<section className='mt-8'>
+			<InfiniteAside
+				className='hidden desktop:block'
+				tags={uniqueTags}
+				tagsCount={uniqueTagsCount}
+				currentTag={searchParams.tag}
+			/>
+			<section className='desktop:mt-0 mt-8'>
 				<Board>
-					{postsData.map((post: TPosts) => (
+					{data.map((post: TPosts) => (
 						<BoardItem key={post.post_id}>
 							<Card
 								href={`/posts/${post.post_id}`}
 								title={post.title}
 								content={post.content}
 								createdAt={post.createdAt}
-								tags={splitTags(post.tags)}
+								tags={splitComma(post.tags)}
 								imgSrc={post.imgSrc}
 							/>
 						</BoardItem>
