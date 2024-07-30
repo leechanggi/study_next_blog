@@ -30,6 +30,7 @@ const RootLayout = ({
 					'bg-white',
 					'text-zinc-900',
 					'border-zinc-200',
+					'overflow-x-hidden',
 					'focus-visible:outline-none',
 					'focus-visible:ring-2',
 					'focus-visible:ring-zinc-200',

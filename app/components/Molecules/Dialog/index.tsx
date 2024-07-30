@@ -70,7 +70,7 @@ const DialogContent = React.forwardRef<
 					</DialogPrimitive.Close>
 				</div>
 				<DialogDescription asChild>
-					<div className='mt-4'>{children}</div>
+					<div>{children}</div>
 				</DialogDescription>
 			</DialogPrimitive.Content>
 		</DialogPortal>

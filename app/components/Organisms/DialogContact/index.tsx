@@ -7,8 +7,9 @@ import * as z from 'zod';
 import emailjs from '@emailjs/browser';
 
 import { Button, Dialog, Form, Input, Textarea } from '@components';
+import * as Type from './type';
 
-const DialogContact: React.FC = () => {
+const DialogContact = () => {
 	const [open, setOpen] = React.useState<boolean>(false);
 
 	const blockedWordsString =
@@ -19,7 +20,7 @@ const DialogContact: React.FC = () => {
 		.split(',')
 		.map(word => word.trim());
 
-	const formSchema = z.object({
+	const schema = z.object({
 		user_name: z
 			.string()
 			.min(2, { message: '최소 2글자 이상 입력하세요.' })
@@ -37,21 +38,25 @@ const DialogContact: React.FC = () => {
 			),
 		message: z
 			.string()
-			.refine(
-				val => {
-					return !blockedWords.some(word => val.includes(word));
-				},
-				{
-					message: '부적절한 단어가 포함되어 있습니다.',
-				}
-			)
-			.transform(val => val.trim()) // 입력값의 양쪽 공백 제거
+			.refine(val => !blockedWords.some(word => val.includes(word)), {
+				message: '부적절한 단어가 포함되어 있습니다.',
+			})
+			.transform(val => val.trim())
 			.refine(val => val.length >= 30 && val.length <= 300, {
 				message: '최소 30자 이상, 최대 300자 이하로 입력해주세요.',
 			}),
 	});
 
-	const sendEmail = (data: any) => {
+	const form = useForm<z.infer<typeof schema>>({
+		resolver: zodResolver(schema),
+		defaultValues: {
+			user_name: '',
+			user_email: '',
+			message: '',
+		},
+	});
+
+	const sendEmail = (data: Type.TEmail) => {
 		if (data) {
 			emailjs
 				.send(
@@ -62,25 +67,16 @@ const DialogContact: React.FC = () => {
 						publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
 					}
 				)
-				.then(
-					() => {
-						console.log('성공!');
-					},
-					error => {
-						console.log(error);
-					}
-				);
+				.then(() => {
+					console.log('성공!');
+					form.reset();
+					setOpen(false);
+				})
+				.catch(error => {
+					console.log('이메일 전송 실패:', error);
+				});
 		}
 	};
-
-	const form = useForm<z.infer<typeof formSchema>>({
-		resolver: zodResolver(formSchema),
-		defaultValues: {
-			user_name: '',
-			user_email: '',
-			message: '',
-		},
-	});
 
 	return (
 		<Dialog
@@ -92,7 +88,7 @@ const DialogContact: React.FC = () => {
 						<Form.Field
 							name='user_name'
 							render={({ field }) => (
-								<Form.Item>
+								<Form.Item className='mt-4'>
 									<Form.Label>보내는 분의 이름</Form.Label>
 									<Form.Control>
 										<Input
@@ -153,7 +149,10 @@ const DialogContact: React.FC = () => {
 				</Form.Root>
 			}
 			open={open}
-			onOpenChange={setOpen}
+			onOpenChange={val => {
+				setOpen(val);
+				form.reset();
+			}}
 		/>
 	);
 };

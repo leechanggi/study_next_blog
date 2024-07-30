@@ -10,9 +10,7 @@ import {
 	InfiniteAside,
 } from '@components';
 
-// Route Segment Config
-const revalidate = 0;
-
+const revalidate = 60;
 const apiUrl = process.env.NEXT_PUBLIC_API_HOST;
 
 const getUniqueTags = (posts: TPosts[]) => {
@@ -36,20 +34,40 @@ const getUniqueTags = (posts: TPosts[]) => {
 	};
 };
 
-const fetchPosts = async (tag?: string) => {
+const fetchPosts = async (tag?: string, q?: string) => {
 	const res = await fetch(`${apiUrl}/api/posts`, {
 		next: { revalidate },
 	});
 	const { data: posts } = await res.json();
-	const data = tag
-		? posts.filter((post: TPosts) => splitComma(post.tags).includes(tag))
-		: posts;
-	return { data, ...getUniqueTags(posts) };
+
+	let filteredPosts: TPosts[] = posts;
+
+	if (tag) {
+		filteredPosts = filteredPosts.filter((post: TPosts) =>
+			splitComma(post.tags).includes(tag)
+		);
+	}
+
+	if (q) {
+		const searchQuery = q.toLowerCase();
+		filteredPosts = filteredPosts.filter(
+			(post: TPosts) =>
+				post.title.toLowerCase().includes(searchQuery) ||
+				splitComma(post.tags).some(t => t.toLowerCase().includes(searchQuery))
+		);
+	}
+
+	return { data: filteredPosts, ...getUniqueTags(posts) };
 };
 
-const Page = async ({ searchParams }: { searchParams: { tag?: string } }) => {
+const Page = async ({
+	searchParams,
+}: {
+	searchParams: { tag?: string; q?: string };
+}) => {
 	const { data, uniqueTags, uniqueTagsCount } = await fetchPosts(
-		searchParams.tag
+		searchParams.tag,
+		searchParams.q
 	);
 
 	return (
@@ -61,27 +79,33 @@ const Page = async ({ searchParams }: { searchParams: { tag?: string } }) => {
 					currentTag={searchParams.tag}
 				/>
 			</section>
+
 			<InfiniteAside
 				className='hidden desktop:block'
 				tags={uniqueTags}
 				tagsCount={uniqueTagsCount}
 				currentTag={searchParams.tag}
 			/>
+
 			<section className='desktop:mt-0 mt-8'>
-				<Board>
-					{data.map((post: TPosts) => (
-						<BoardItem key={post.post_id}>
-							<Card
-								href={`/posts/${post.post_id}`}
-								title={post.title}
-								content={post.content}
-								createdAt={post.createdAt}
-								tags={splitComma(post.tags)}
-								imgSrc={post.imgSrc}
-							/>
-						</BoardItem>
-					))}
-				</Board>
+				{data.length < 1 ? (
+					<>검색된 게시물이 없습니다.</>
+				) : (
+					<Board>
+						{data.map((post: TPosts) => (
+							<BoardItem key={post.post_id}>
+								<Card
+									href={`/posts/${post.post_id}`}
+									title={post.title}
+									content={post.content}
+									createdAt={post.createdAt}
+									tags={splitComma(post.tags)}
+									imgSrc={post.imgSrc}
+								/>
+							</BoardItem>
+						))}
+					</Board>
+				)}
 			</section>
 		</>
 	);

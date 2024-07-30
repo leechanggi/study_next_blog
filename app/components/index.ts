@@ -10,6 +10,7 @@ export { default as Form } from './Molecules/Form';
 export { default as Board } from './Organisms/Board';
 export { default as BoardItem } from './Organisms/BoardItem';
 export { default as DialogContact } from './Organisms/DialogContact';
+export { default as DialogSearch } from './Organisms/DialogSearch';
 export { default as InfiniteAside } from './Organisms/InfiniteAside';
 export { default as InfiniteTags } from './Organisms/InfiniteTags';
 export { default as Markdown } from './Organisms/Markdown';

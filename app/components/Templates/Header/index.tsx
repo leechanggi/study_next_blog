@@ -1,14 +1,14 @@
 import React from 'react';
 import Link from 'next/link';
-import { RxMagnifyingGlass } from 'react-icons/rx';
 
 import * as Type from './type';
-import { Button, DarkModeToggle, DialogContact } from '@components';
 import { cn } from '@lib';
+import { DarkModeToggle, DialogContact, DialogSearch } from '@components';
 
 const Header = React.forwardRef<HTMLElement, Type.HeaderProps>(
 	(props, forwardRef) => {
 		const { className, ...rest } = props;
+
 		return (
 			<header
 				ref={forwardRef}
@@ -23,44 +23,15 @@ const Header = React.forwardRef<HTMLElement, Type.HeaderProps>(
 				)}
 				{...rest}
 			>
-				<div
-					className={cn(
-						'flex',
-						'items-center',
-						'justify-center',
-						'h-20',
-						'my-0',
-						'mx-auto',
-						'px-4',
-						'w-full',
-						'mobile:px-10',
-						'desktop:w-[1280px]'
-					)}
-				>
-					<div
-						className={cn('flex', 'items-center', 'justify-between', 'w-full')}
-					>
-						<h1
-							className={cn(
-								'text-lg',
-								'font-medium',
-								'text-zinc-900',
-								'dark:text-zinc-100'
-							)}
-						>
+				<div className='flex items-center justify-center h-20 my-0 mx-auto px-4 w-full mobile:px-10 desktop:w-[1280px]'>
+					<div className='flex items-center justify-between w-full'>
+						<h1 className='text-lg font-medium text-zinc-900 dark:text-zinc-100'>
 							<Link href='/'>이창기의 개인 블로그</Link>
 						</h1>
-						<div
-							className={cn('flex', 'items-center', 'justify-start', 'gap-x-2')}
-						>
+						<div className='flex items-center justify-start gap-x-4'>
+							<DialogSearch />
 							<DialogContact />
-							<div className={cn('flex', 'items-center', 'justify-start')}>
-								<Button variant='ghost' size='icon'>
-									<RxMagnifyingGlass size='1.25em' />
-									<span className='sr-only'>검색</span>
-								</Button>
-								<DarkModeToggle />
-							</div>
+							<DarkModeToggle />
 						</div>
 					</div>
 				</div>

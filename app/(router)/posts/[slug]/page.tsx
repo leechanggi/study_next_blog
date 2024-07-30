@@ -1,32 +1,26 @@
 import React from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-
 import { RxCalendar } from 'react-icons/rx';
 
 import { formatDate, splitComma } from '@lib';
 import { type TPosts } from '@service/posts';
 import { Button, Markdown } from '@components';
 
-// Route Segment Config
 const dynamic = 'error';
 const dynamicParams = true;
-const revalidate = 0;
-
+const revalidate = 60;
 const apiUrl = process.env.NEXT_PUBLIC_API_HOST;
 
 const generateStaticParams = async () => {
 	const res = await fetch(`${apiUrl}/api/posts`);
 	const { data: posts }: { data: TPosts[] } = await res.json();
-
 	const slugs = posts.map(post => post.post_id.toString());
-
 	return slugs.map(slug => ({ slug }));
 };
 
 const SlugPage = async ({ params }: { params: { slug: string } }) => {
 	const { slug: id } = params;
-
 	const res = await fetch(`${apiUrl}/api/posts/${id}`, {
 		next: { revalidate },
 	});
