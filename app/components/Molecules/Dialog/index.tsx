@@ -51,12 +51,12 @@ const DialogContent = React.forwardRef<
 			<DialogPrimitive.Content
 				ref={ref}
 				className={cn(
-					'fixed left-[50%] top-[50%] z-30 w-full max-w-lg translate-x-[-50%] translate-y-[-50%] bg-white p-4 shadow-lg rounded-md duration-200 data-[state=open]:animate-slideIn data-[state=closed]:animate-slideOut dark:bg-zinc-900',
+					'fixed left-[50%] top-[50%] z-30 w-full max-w-lg translate-x-[-50%] translate-y-[-50%] bg-white py-4 px-6 shadow-lg rounded-md duration-200 overflow-hidden data-[state=open]:animate-slideIn data-[state=closed]:animate-slideOut dark:bg-zinc-800',
 					className
 				)}
 				{...rest}
 			>
-				<div className='flex items-start justify-end pb-[0.375rem]'>
+				<div className='flex items-start justify-end pb-[0.375rem] -mr-2'>
 					{title && (
 						<DialogTitle className='flex-grow pt-[0.375rem] text-lg font-bold ellipsis-2'>
 							{title}
@@ -70,13 +70,13 @@ const DialogContent = React.forwardRef<
 					</DialogPrimitive.Close>
 				</div>
 				<DialogDescription asChild>
-					<div className='mt-2'>{children}</div>
+					<div className='mt-4'>{children}</div>
 				</DialogDescription>
 			</DialogPrimitive.Content>
 		</DialogPortal>
 	);
 });
-DialogContent.displayName = 'Dialog.Content';
+DialogContent.displayName = DialogPrimitive.Content.displayName;
 
 const Dialog = (props: Type.DialogProps) => {
 	const { trigger, content, title, ...rest } = props;

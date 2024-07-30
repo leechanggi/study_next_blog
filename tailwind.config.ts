@@ -15,6 +15,10 @@ const config: Config = {
 			desktop: '1280px',
 		},
 		extend: {
+			spacing: {
+				layoutHeight: 'calc(100vh - 10rem)',
+				dialogFooterWidth: 'calc(100% + 3rem)',
+			},
 			backgroundColor: {
 				oneLight: '#FAFAFA',
 				oneDark: '#282C34',

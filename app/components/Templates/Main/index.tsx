@@ -17,6 +17,7 @@ const Main = React.forwardRef<HTMLElement, Type.MainProps>(
 					'pb-24',
 					'px-4',
 					'w-full',
+					'min-h-layoutHeight',
 					'mobile:px-4',
 					'tablet:w-[768px]',
 					className

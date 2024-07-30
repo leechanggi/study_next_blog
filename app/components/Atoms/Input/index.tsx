@@ -15,12 +15,14 @@ const Input = React.forwardRef<HTMLInputElement, Type.InputProps>(
 					'w-full',
 					'rounded-md',
 					'border',
+					'border-zinc-200',
 					'px-3',
 					'py-2',
 					'text-sm',
 					'placeholder:text-zinc-400',
 					'disabled:cursor-not-allowed',
 					'disabled:opacity-60',
+					'dark:border-zinc-700',
 					className
 				)}
 				ref={forwardRef}

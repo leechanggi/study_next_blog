@@ -13,7 +13,7 @@ const styles = cva(
 		variants: {
 			variant: {
 				default:
-					'bg-zinc-800 text-zinc-100 hover:bg-zinc-700 dark:bg-zinc-100 dark:text-zinc-800 dark:hover:bg-zinc-200',
+					'bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-800 dark:text-blue-200 dark:hover:bg-blue-700',
 				secondary:
 					'bg-zinc-100 text-zinc-800 hover:bg-zinc-50 dark:bg-zinc-700 dark:text-zinc-100 dark:hover:bg-zinc-800',
 				destructive:

@@ -27,7 +27,7 @@ const InfiniteAside = React.forwardRef<HTMLDivElement, Type.InfiniteAsideProps>(
 				{...rest}
 			>
 				<div className={cn('text-lg', 'font-medium', 'border-b', 'pb-2')}>
-					태그 목록
+					태그
 				</div>
 				{isLoaded && (
 					<ul className='mt-4'>

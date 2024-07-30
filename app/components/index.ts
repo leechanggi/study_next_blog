@@ -13,6 +13,7 @@ export { default as DialogContact } from './Organisms/DialogContact';
 export { default as InfiniteAside } from './Organisms/InfiniteAside';
 export { default as InfiniteTags } from './Organisms/InfiniteTags';
 export { default as Markdown } from './Organisms/Markdown';
+export { default as Footer } from './Templates/Footer';
 export { default as Header } from './Templates/Header';
 export { default as Main } from './Templates/Main';
 // @endindex

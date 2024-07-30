@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
-import { Header, Main } from '@components';
+import { Footer, Header, Main } from '@components';
 import { cn, ThemeProvider } from '@lib';
 
 import './globals.css';
@@ -49,6 +49,7 @@ const RootLayout = ({
 				>
 					<Header />
 					<Main>{children}</Main>
+					<Footer />
 				</ThemeProvider>
 			</body>
 		</html>

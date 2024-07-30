@@ -41,14 +41,14 @@ const Card = React.forwardRef<HTMLAnchorElement, Type.CardProps>(
 					'h-full',
 					'rounded',
 					'bg-white',
-					'shadow-lg',
+					'shadow-md',
 					'overflow-hidden',
 					'transition',
 					'ease-in-out',
-					'translate-y-0',
-					'hover:shadow-xl',
-					'hover:-translate-y-1',
-					'dark:bg-zinc-800'
+					'hover:shadow-lg',
+					'hover:text-blue-600',
+					'dark:bg-zinc-800',
+					'dark:hover:text-blue-400'
 				)}
 				{...rest}
 			>
@@ -65,14 +65,14 @@ const Card = React.forwardRef<HTMLAnchorElement, Type.CardProps>(
 					</AspectRatio.Root>
 				)}
 				<div className='flex flex-col justify-between p-4 w-full flex-1'>
-					<h2 className='text-lg font-bold ellipsis-1'>{title}</h2>
+					<h2 className='text-lg font-medium ellipsis-2'>{title}</h2>
 					<div className='mt-2'>
 						{tags && (
 							<ul className='flex gap-2'>
 								{tags.map((tag, index) => (
 									<li
 										key={index}
-										className='text-sm font-medium text-purple-600 dark:text-pink-600'
+										className='text-sm text-zinc-600 dark:text-zinc-200'
 									>
 										#{tag}
 									</li>

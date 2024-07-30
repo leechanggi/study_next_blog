@@ -76,7 +76,7 @@ const Markdown = React.forwardRef<HTMLDivElement, Type.MarkdownProps>(
 						),
 						blockquote: ({ node, ...props }) => (
 							<blockquote
-								className='border-l-4 rounded-[0.3em] border-purple-600 text-zinc-800 my-4 py-4 pl-4 bg-oneLight dark:border-pink-600 dark:text-zinc-100 dark:bg-oneDark'
+								className='border-l-4 rounded-[0.3em] border-blue-600 text-zinc-800 my-4 py-4 pl-4 bg-oneLight dark:text-zinc-100 dark:bg-oneDark'
 								{...props}
 							/>
 						),

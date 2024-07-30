@@ -48,7 +48,7 @@ const Header = React.forwardRef<HTMLElement, Type.HeaderProps>(
 								'dark:text-zinc-100'
 							)}
 						>
-							<Link href='/'>LXYEX1379</Link>
+							<Link href='/'>이창기의 개인 블로그</Link>
 						</h1>
 						<div
 							className={cn('flex', 'items-center', 'justify-start', 'gap-x-2')}

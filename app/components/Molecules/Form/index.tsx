@@ -55,7 +55,7 @@ const FormLabel = React.forwardRef<
 	React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
 >((props, forwardRef) => {
 	const { className, ...rest } = props;
-	const { error, formItemId } = useFormField();
+	const { formItemId } = useFormField();
 
 	return (
 		<Label
@@ -124,7 +124,12 @@ const FormMessage = React.forwardRef<
 	}
 
 	return (
-		<p ref={forwardRef} id={formMessageId} className={cn(className)} {...rest}>
+		<p
+			ref={forwardRef}
+			id={formMessageId}
+			className={cn('text-red-600', 'text-sm', 'mt-1', 'pl-1', className)}
+			{...rest}
+		>
 			{body}
 		</p>
 	);
