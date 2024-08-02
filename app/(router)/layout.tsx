@@ -7,8 +7,8 @@ import { cn, ThemeProvider } from '@lib';
 import './globals.css';
 
 const metadata: Metadata = {
-	title: 'LXYEX1379',
-	description: '개인 블로그입니다.',
+	title: '이창기 개발 블로그',
+	description: '이창기 개발 블로그 입니다.',
 };
 
 const fonts = localFont({

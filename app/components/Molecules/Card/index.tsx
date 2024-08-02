@@ -1,7 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { RxCalendar } from 'react-icons/rx';
 import * as AspectRatio from '@radix-ui/react-aspect-ratio';
 
 import { cn, formatDate } from '@lib';
@@ -39,13 +38,13 @@ const Card = React.forwardRef<HTMLAnchorElement, Type.CardProps>(
 					'flex-col',
 					'w-full',
 					'h-full',
-					'rounded',
+					'rounded-lg',
 					'bg-white',
-					'shadow-md',
+					'shadow',
 					'overflow-hidden',
 					'transition',
 					'ease-in-out',
-					'hover:shadow-lg',
+					'hover:shadow-md',
 					'hover:text-blue-600',
 					'dark:bg-zinc-800',
 					'dark:hover:text-blue-400'
@@ -58,7 +57,7 @@ const Card = React.forwardRef<HTMLAnchorElement, Type.CardProps>(
 							src={imgSrc}
 							alt={title}
 							width={360}
-							height={360}
+							height={202.5}
 							className={cn('w-full')}
 							priority
 						/>
@@ -70,17 +69,13 @@ const Card = React.forwardRef<HTMLAnchorElement, Type.CardProps>(
 						{tags && (
 							<ul className='flex gap-2'>
 								{tags.map((tag, index) => (
-									<li
-										key={index}
-										className='text-sm text-zinc-600 dark:text-zinc-200'
-									>
+									<li key={index} className='text-sm font-normal text-zinc-400'>
 										#{tag}
 									</li>
 								))}
 							</ul>
 						)}
-						<span className='flex items-center justify-end mt-4 text-sm text-zinc-600 dark:text-zinc-200'>
-							<RxCalendar size='1.25em' />
+						<span className='flex items-center justify-end mt-4 text-sm font-normal text-zinc-400'>
 							<span className='pl-1'>{`${year}년 ${month}월 ${day}일`}</span>
 						</span>
 					</div>

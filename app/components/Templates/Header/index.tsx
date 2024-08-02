@@ -26,13 +26,13 @@ const Header = React.forwardRef<HTMLElement, Type.HeaderProps>(
 				<div className='flex items-center justify-center h-20 my-0 mx-auto px-4 w-full mobile:px-10 desktop:w-[1280px]'>
 					<div className='flex items-center justify-between w-full'>
 						<h1 className='text-lg font-medium text-zinc-900 dark:text-zinc-100'>
-							<Link href='/'>이창기의 개인 블로그</Link>
+							<Link href='/'>이창기 개발 블로그</Link>
 						</h1>
-						<div className='flex items-center justify-start gap-x-4'>
+						<nav className='flex items-center justify-start gap-x-4'>
 							<DialogSearch />
 							<DialogContact />
 							<DarkModeToggle />
-						</div>
+						</nav>
 					</div>
 				</div>
 			</header>

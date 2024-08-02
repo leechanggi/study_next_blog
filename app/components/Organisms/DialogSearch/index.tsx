@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { RxMagnifyingGlass } from 'react-icons/rx';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -12,6 +12,7 @@ import * as Type from './type';
 
 const DialogSearch = () => {
 	const router = useRouter();
+	const pathname = usePathname();
 
 	const schema = z.object({
 		search: z.string(),
@@ -29,7 +30,7 @@ const DialogSearch = () => {
 			? data.search.startsWith('#')
 				? router.push(`/?tag=${data.search.slice(1)}`)
 				: router.push(`/?q=${data.search}`)
-			: router.push('/');
+			: router.push(pathname);
 	};
 
 	return (
@@ -49,8 +50,6 @@ const DialogSearch = () => {
 											className='flex-grow w-40'
 											type='text'
 											placeholder='검색어를 입력하세요.'
-											required
-											onBlur={form.handleSubmit(handleSearchSubmit)}
 											{...rest}
 										/>
 									</Form.Control>

@@ -6,23 +6,26 @@ import * as DialogPrimitive from '@radix-ui/react-dialog';
 
 import { cn } from '@lib';
 import { Button } from '@components';
-import * as Type from './type';
+import * as Types from './type';
 
 const DialogTrigger = DialogPrimitive.Trigger;
-const DialogPortal = DialogPrimitive.Portal;
-const DialogClose = DialogPrimitive.Close;
-const DialogTitle = DialogPrimitive.Title;
-const DialogDescription = DialogPrimitive.Description;
-
 DialogTrigger.displayName = DialogPrimitive.Trigger.displayName;
+
+const DialogPortal = DialogPrimitive.Portal;
 DialogPortal.displayName = DialogPrimitive.Portal.displayName;
+
+const DialogClose = DialogPrimitive.Close;
 DialogClose.displayName = DialogPrimitive.Close.displayName;
+
+const DialogTitle = DialogPrimitive.Title;
 DialogTitle.displayName = DialogPrimitive.Title.displayName;
+
+const DialogDescription = DialogPrimitive.Description;
 DialogDescription.displayName = DialogPrimitive.Description.displayName;
 
 const DialogOverlay = React.forwardRef<
-	Type.DialogOverlayElement,
-	Type.DialogOverlayProps
+	Types.DialogOverlayElement,
+	Types.DialogOverlayProps
 >((props, forwardRef) => {
 	const { className, ...rest } = props;
 
@@ -30,7 +33,13 @@ const DialogOverlay = React.forwardRef<
 		<DialogPrimitive.Overlay
 			ref={forwardRef}
 			className={cn(
-				'fixed top-0 right-0 bottom-0 left-0 z-20 bg-black/20',
+				'fixed',
+				'top-0',
+				'right-0',
+				'bottom-0',
+				'left-0',
+				'z-20',
+				'bg-black/20',
 				className
 			)}
 			{...rest}
@@ -40,18 +49,35 @@ const DialogOverlay = React.forwardRef<
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
 
 const DialogContent = React.forwardRef<
-	Type.DialogContentElement,
-	Type.DialogContentProps
+	Types.DialogContentElement,
+	Types.DialogContentProps
 >((props, ref) => {
-	const { title, className, children, ...rest } = props;
+	const { title, className, children, viewOverlay, ...rest } = props;
 
 	return (
 		<DialogPortal>
-			<DialogOverlay />
+			{viewOverlay && <DialogOverlay />}
 			<DialogPrimitive.Content
 				ref={ref}
 				className={cn(
-					'fixed left-[50%] top-[50%] z-30 w-full max-w-lg translate-x-[-50%] translate-y-[-50%] bg-white py-4 px-6 shadow-lg rounded-md duration-200 overflow-hidden data-[state=open]:animate-slideIn data-[state=closed]:animate-slideOut dark:bg-zinc-800',
+					'fixed',
+					'left-[50%]',
+					'top-[50%]',
+					'z-30',
+					'w-full',
+					'max-w-lg',
+					'translate-x-[-50%]',
+					'translate-y-[-50%]',
+					'bg-white',
+					'py-4',
+					'px-6',
+					'shadow-xl',
+					'rounded-lg',
+					'duration-200',
+					'overflow-hidden',
+					'data-[state=open]:animate-slideIn',
+					'data-[state=closed]:animate-slideOut',
+					'dark:bg-zinc-800',
 					className
 				)}
 				{...rest}
@@ -78,14 +104,15 @@ const DialogContent = React.forwardRef<
 });
 DialogContent.displayName = DialogPrimitive.Content.displayName;
 
-const Dialog = (props: Type.DialogProps) => {
-	const { trigger, content, title, ...rest } = props;
+const Dialog = (props: Types.DialogProps) => {
+	const { trigger, content, title, viewOverlay = true, ...rest } = props;
 	return (
 		<DialogPrimitive.Root {...rest}>
 			<DialogTrigger asChild>{trigger}</DialogTrigger>
 			<DialogPortal>
-				<DialogOverlay />
-				<DialogContent title={title}>{content}</DialogContent>
+				<DialogContent title={title} viewOverlay={viewOverlay}>
+					{content}
+				</DialogContent>
 			</DialogPortal>
 		</DialogPrimitive.Root>
 	);

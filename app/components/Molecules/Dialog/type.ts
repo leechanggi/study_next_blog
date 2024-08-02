@@ -4,6 +4,7 @@ type DialogProps = {
 	trigger: React.ReactNode;
 	content: React.ReactNode;
 	title?: React.ReactNode;
+	viewOverlay?: Boolean;
 } & Omit<DialogPrimitive.DialogProps, 'children'>;
 
 type DialogOverlayElement = React.ElementRef<typeof DialogPrimitive.Overlay>;
@@ -14,6 +15,7 @@ type DialogOverlayProps = React.ComponentPropsWithoutRef<
 type DialogContentElement = React.ElementRef<typeof DialogPrimitive.Content>;
 type DialogContentProps = {
 	title?: React.ReactNode;
+	viewOverlay?: Boolean;
 } & Omit<
 	React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>,
 	'title'

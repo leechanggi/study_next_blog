@@ -1,8 +1,9 @@
+import { NextRequest, NextResponse } from 'next/server';
 import { notFound } from 'next/navigation';
 import { getPostById } from '@service/posts';
 
 const GET = async (
-	_request: Request,
+	_request: NextRequest,
 	{ params }: { params: { slug: string } }
 ) => {
 	const slug = params.slug;
@@ -12,7 +13,7 @@ const GET = async (
 		notFound();
 	}
 
-	return Response.json({ data });
+	return NextResponse.json({ data });
 };
 
 export { GET };

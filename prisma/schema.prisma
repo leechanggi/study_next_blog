@@ -15,4 +15,5 @@ model Post {
   updatedAt DateTime? @updatedAt
   tags      String?
   imgSrc    String?
+  skip      Boolean   @default(false)
 }

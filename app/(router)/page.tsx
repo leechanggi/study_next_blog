@@ -10,12 +10,12 @@ import {
 	InfiniteAside,
 } from '@components';
 
-const revalidate = 60;
+const revalidate = 0;
 const apiUrl = process.env.NEXT_PUBLIC_API_HOST;
 
 const getUniqueTags = (posts: TPosts[]) => {
-	const tagCount: { [tag: string]: number } = {};
 	const tagSet = new Set<string>();
+	const tagCount: { [tag: string]: number } = {};
 
 	posts.forEach(post => {
 		splitComma(post.tags).forEach(tag => {
@@ -50,6 +50,7 @@ const fetchPosts = async (tag?: string, q?: string) => {
 
 	if (q) {
 		const searchQuery = q.toLowerCase();
+
 		filteredPosts = filteredPosts.filter(
 			(post: TPosts) =>
 				post.title.toLowerCase().includes(searchQuery) ||
@@ -89,7 +90,7 @@ const Page = async ({
 
 			<section className='desktop:mt-0 mt-8'>
 				{data.length < 1 ? (
-					<>검색된 게시물이 없습니다.</>
+					<p>검색된 게시물이 없습니다.</p>
 				) : (
 					<Board>
 						{data.map((post: TPosts) => (
