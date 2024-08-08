@@ -1,9 +1,12 @@
 'use client';
 
 import React from 'react';
+import { useSession } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import axios from 'axios';
+
 import {
 	AlertDialog,
 	Button,
@@ -15,11 +18,12 @@ import {
 import { TEmail } from '@service/sendEmail';
 
 const DialogContact = () => {
+	const { data: session } = useSession();
 	const [open, setOpen] = React.useState<boolean>(false);
 	const [alertOpen, setAlertOpen] = React.useState<boolean>(false);
+	const [_toastMessage, setToastMessage] = React.useState<string | null>(null);
 
-	const blockedWordsString =
-		process.env.NEXT_PUBLIC_EMAILJS_BLOCKED_WORDS || '';
+	const blockedWordsString = process.env.NEXT_PUBLIC_BLOCKED_WORDS || '';
 	const blockedWords = blockedWordsString
 		.replace(/'/g, '')
 		.split(',')
@@ -49,51 +53,59 @@ const DialogContact = () => {
 			.refine(val => !blockedWords.some(word => val.includes(word)), {
 				message: '부적절한 단어가 포함되어 있습니다.',
 			})
+			.refine(val => !/[;&|<>(){}[\]$!\\"]/g.test(val), {
+				message: '특수문자는 사용할 수 없습니다.',
+			})
 			.transform(val => val.trim())
 			.refine(val => val.length >= 30 && val.length <= 300, {
 				message: '최소 30자 이상, 최대 300자 이하로 입력해주세요.',
 			}),
+		session_name: z.string(),
+		session_email: z.string(),
 	});
 
 	const form = useForm<z.infer<typeof schema>>({
 		resolver: zodResolver(schema),
 		defaultValues: {
-			user_name: '',
-			user_email: '',
+			user_name: session ? session.user.name : '',
+			user_email: session ? session.user.email : '',
 			message: '',
+			session_name: session ? session.user.name : '',
+			session_email: session ? session.user.email : '',
 		},
 	});
 
-	const sendEmail = async (data: TEmail) => {
-		try {
-			const response = await fetch('/api/send-email', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(data),
-			});
+	const handleConfirmSubmit = async (
+		event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+	) => {
+		event.preventDefault();
 
-			if (response.ok) {
-				console.log('성공!');
-				form.reset();
-				setOpen(false);
-			} else {
-				console.log('이메일 전송 실패:', await response.json());
-			}
-		} catch (error) {
-			console.log('이메일 전송 실패:', error);
-		}
-	};
-
-	const handleSubmit = () => {
-		setAlertOpen(true);
-	};
-
-	const handleConfirmSubmit = async () => {
-		setAlertOpen(false);
 		const formData = form.getValues();
 		await sendEmail(formData);
+	};
+
+	const sendEmail = (formData: TEmail) => {
+		const url = '/api/send-email';
+		const headers = {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+		};
+
+		axios
+			.post(url, formData, { headers })
+			.then(_response => {
+				setToastMessage('이메일이 성공적으로 전송되었습니다.');
+
+				form.reset();
+				setOpen(false);
+			})
+			.catch(error => {
+				setToastMessage('이메일 전송에 실패했습니다.');
+				console.error('Error:', error);
+			})
+			.finally(() => {
+				setAlertOpen(false);
+			});
 	};
 
 	return (
@@ -108,7 +120,11 @@ const DialogContact = () => {
 				title='이메일 보내기'
 				content={
 					<Form.Root {...form}>
-						<form onSubmit={form.handleSubmit(handleSubmit)}>
+						<form
+							onSubmit={form.handleSubmit(() => {
+								setAlertOpen(true);
+							})}
+						>
 							<Form.Field
 								name='user_name'
 								render={({ field }) => (
@@ -171,6 +187,7 @@ const DialogContact = () => {
 			<AlertDialog
 				open={alertOpen}
 				onOpenChange={setAlertOpen}
+				viewOverlay={false}
 				title='이메일 보내기 확인'
 				content={
 					<p className='mt-4 break-keep'>

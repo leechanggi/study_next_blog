@@ -10,7 +10,7 @@ import * as z from 'zod';
 import { Button, Form, Input } from '@components';
 import * as Type from './type';
 
-const DialogSearch = () => {
+const FormSearch = () => {
 	const router = useRouter();
 	const pathname = usePathname();
 
@@ -73,4 +73,4 @@ const DialogSearch = () => {
 	);
 };
 
-export default DialogSearch;
+export default FormSearch;

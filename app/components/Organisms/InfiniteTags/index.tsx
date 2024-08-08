@@ -10,7 +10,8 @@ import * as Type from './type';
 const InfiniteTags = React.forwardRef<HTMLDivElement, Type.InfiniteTagsProps>(
 	(props, forwardRef) => {
 		const isLoaded = useLoaded();
-		const { tags, tagsCount, currentTag, className, ...rest } = props;
+		const { tags, tagsCount, postsCount, currentTag, className, ...rest } =
+			props;
 
 		return (
 			<div
@@ -34,7 +35,7 @@ const InfiniteTags = React.forwardRef<HTMLDivElement, Type.InfiniteTagsProps>(
 							className='rounded-full mr-4'
 							asChild
 						>
-							<Link href={{ pathname: '/' }}>All</Link>
+							<Link href={{ pathname: '/' }}>{`All (${postsCount})`}</Link>
 						</Button>
 						{tags.map(tag => (
 							<Button

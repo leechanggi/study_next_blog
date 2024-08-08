@@ -3,6 +3,7 @@ type InfiniteTagsProps = {
 	tagsCount: {
 		[tag: string]: number;
 	};
+	postsCount: number;
 	currentTag?: string;
 } & React.HTMLAttributes<HTMLDivElement>;
 

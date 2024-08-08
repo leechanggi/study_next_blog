@@ -1,20 +1,27 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
-import { Footer, Header, Main } from '@components';
-import { cn, ThemeProvider } from '@lib';
+import { ProviderWrapper } from '@components';
+import { cn } from '@lib';
 
 import './globals.css';
 
 const metadata: Metadata = {
-	title: '이창기 개발 블로그',
+	title: {
+		default: '이창기 개발 블로그',
+		template: '이창기 개발 블로그 | %s',
+	},
 	description: '이창기 개발 블로그 입니다.',
+	icons: {
+		icon: '/favicon.ico',
+	},
 };
 
-const fonts = localFont({
+const pretendard = localFont({
 	src: '../../public/fonts/PretendardVariable.woff2',
 	display: 'swap',
 	weight: '45 920',
+	variable: '--font-pretendard',
 });
 
 const RootLayout = ({
@@ -23,10 +30,15 @@ const RootLayout = ({
 	children: React.ReactNode;
 }>) => {
 	return (
-		<html lang='ko' suppressHydrationWarning>
+		<html
+			lang='ko'
+			className='w-full overflow-x-hidden'
+			suppressHydrationWarning
+		>
 			<body
 				className={cn(
 					'relative',
+					'w-full',
 					'bg-white',
 					'text-zinc-900',
 					'border-zinc-200',
@@ -39,19 +51,11 @@ const RootLayout = ({
 					'dark:text-white',
 					'dark:border-zinc-700',
 					'dark:focus-visible:ring-zinc-700',
-					fonts.className
+					'font-pretendard',
+					pretendard.variable
 				)}
 			>
-				<ThemeProvider
-					attribute='class'
-					defaultTheme='system'
-					enableSystem
-					disableTransitionOnChange
-				>
-					<Header />
-					<Main>{children}</Main>
-					<Footer />
-				</ThemeProvider>
+				<ProviderWrapper>{children}</ProviderWrapper>
 			</body>
 		</html>
 	);

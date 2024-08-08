@@ -3,6 +3,7 @@ type InfiniteAsideProps = {
 	tagsCount: {
 		[tag: string]: number;
 	};
+	postsCount: number;
 	currentTag?: string;
 } & React.HTMLAttributes<HTMLElement>;
 

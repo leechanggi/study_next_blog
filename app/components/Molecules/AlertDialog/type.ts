@@ -21,9 +21,9 @@ type AlertDialogOverlayProps = React.ComponentPropsWithoutRef<
 type AlertDialogContentElement = React.ElementRef<
 	typeof AlertDialogPrimitive.Content
 >;
-type AlertDialogContentProps = React.ComponentPropsWithoutRef<
-	typeof AlertDialogPrimitive.Content
->;
+type AlertDialogContentProps = {
+	viewOverlay?: Boolean;
+} & React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Content>;
 
 export type {
 	AlertDialogProps,

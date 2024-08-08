@@ -7,10 +7,11 @@ import { Button } from '@components';
 import { cn, useLoaded } from '@lib';
 import * as Type from './type';
 
-const InfiniteAside = React.forwardRef<HTMLDivElement, Type.InfiniteAsideProps>(
+const InfiniteAside = React.forwardRef<HTMLElement, Type.InfiniteAsideProps>(
 	(props, forwardRef) => {
 		const isLoaded = useLoaded();
-		const { tags, tagsCount, currentTag, className, ...rest } = props;
+		const { tags, tagsCount, postsCount, currentTag, className, ...rest } =
+			props;
 
 		return (
 			<aside
@@ -29,6 +30,7 @@ const InfiniteAside = React.forwardRef<HTMLDivElement, Type.InfiniteAsideProps>(
 				<div className={cn('text-lg', 'font-medium', 'border-b', 'pb-2')}>
 					태그
 				</div>
+
 				{isLoaded && (
 					<ul className='mt-4'>
 						<li className='flex'>
@@ -46,7 +48,7 @@ const InfiniteAside = React.forwardRef<HTMLDivElement, Type.InfiniteAsideProps>(
 							>
 								<Link
 									href={{ pathname: '/' }}
-								>{`전체보기 (${tags.length})`}</Link>
+								>{`전체보기 (${postsCount})`}</Link>
 							</Button>
 						</li>
 						{tags.map(tag => (

@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
@@ -9,45 +10,64 @@ import { cn, formatDate, splitComma } from '@lib';
 import { TPostsWithNav, TPosts } from '@service/posts';
 import { Button, Markdown, PostNavigator } from '@components';
 
-const dynamic = 'error';
-const dynamicParams = true;
-const revalidate = 0;
-const apiUrl = process.env.NEXT_PUBLIC_API_HOST;
+const revalidate = 86400;
+const apiUrl = process.env.NEXT_PUBLIC_API_HOST || '';
+const headers = {
+	'Cache-Control': `max-age=${revalidate},stale-while-revalidate=604800`, // 7일
+};
 
 const generateStaticParams = async () => {
-	const res = await fetch(`${apiUrl}/api/posts`);
-	const { data: posts }: { data: TPosts[] } = await res.json();
-	const slugs = posts.map(post => post.post_id.toString());
-	return slugs.map(slug => ({ slug }));
+	const url = `${apiUrl}/api/posts`;
+
+	try {
+		const response = await axios.get(url, { headers });
+		const posts = response.data.data as TPosts[];
+		const slugs = posts.map(post => ({ slug: post.post_id.toString() }));
+		return slugs;
+	} catch (error) {
+		console.error('Error fetching posts for static params:', error);
+		return [];
+	}
+};
+
+const generateMetadata = async ({ params }: { params: { slug: string } }) => {
+	const { slug: id } = params;
+	const { title } = await getPostById(id);
+
+	return {
+		title,
+	};
+};
+
+const getPostById = async (id: string) => {
+	const url = `${apiUrl}/api/posts/${id}`;
+
+	try {
+		const response = await axios.get(url, { headers });
+		const post = response.data.data as TPostsWithNav;
+		return post;
+	} catch (error) {
+		console.error('Error fetching post:', error);
+		throw new Error(
+			'요청한 게시물을 찾을 수 없습니다. 나중에 다시 시도해주세요.'
+		);
+	}
 };
 
 const SlugPage = async ({ params }: { params: { slug: string } }) => {
 	const { slug: id } = params;
-
-	const res = await fetch(`${apiUrl}/api/posts/${id}`, {
-		next: { revalidate },
-	});
+	const res = await getPostById(id);
 
 	if (!res) {
 		return notFound();
 	}
 
-	const { data: post }: { data: TPostsWithNav } = await res.json();
-	const { title, content, createdAt, tags, imgSrc, prev, next } = post;
+	const { title, content, createdAt, tags, imgSrc, prev, next } = res;
 	const { year, month, day } = formatDate(createdAt);
-
-	const isValidURL = (url: string) => {
-		try {
-			new URL(url);
-			return true;
-		} catch (e) {
-			return false;
-		}
-	};
 
 	return (
 		<>
-			{imgSrc && isValidURL(imgSrc) && (
+			{imgSrc && (
 				<div className='mb-8'>
 					<AspectRatio.Root
 						ratio={21.3 / 9}
@@ -96,5 +116,5 @@ const SlugPage = async ({ params }: { params: { slug: string } }) => {
 	);
 };
 
-export { dynamic, dynamicParams, generateStaticParams };
+export { generateStaticParams, generateMetadata };
 export default SlugPage;

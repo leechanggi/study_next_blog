@@ -39,11 +39,11 @@ const AlertDialogContent = React.forwardRef<
 	Types.AlertDialogContentElement,
 	Types.AlertDialogContentProps
 >((props, ref) => {
-	const { className, ...rest } = props;
+	const { className, viewOverlay, ...rest } = props;
 
 	return (
 		<AlertDialogPortal>
-			<AlertDialogOverlay />
+			{viewOverlay && <AlertDialogOverlay />}
 			<AlertDialogPrimitive.Content
 				ref={ref}
 				className={cn(
@@ -81,6 +81,7 @@ const AlertDialog = (props: Types.AlertDialogProps) => {
 		title,
 		cancel,
 		action,
+		viewOverlay = true,
 		onCancelClick,
 		onActionClick,
 		...rest
@@ -89,7 +90,7 @@ const AlertDialog = (props: Types.AlertDialogProps) => {
 	return (
 		<AlertDialogRoot {...rest}>
 			<AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger>
-			<AlertDialogContent>
+			<AlertDialogContent viewOverlay={viewOverlay}>
 				{title && (
 					<AlertDialogTitle className='flex-grow pt-[0.375rem] text-lg font-bold ellipsis-2'>
 						{title}

@@ -8,7 +8,7 @@ const Footer = React.forwardRef<HTMLElement, Type.FooterProps>(
 		const { className, ...rest } = props;
 
 		return (
-			<footer className={cn(className)} {...rest}>
+			<footer className={cn(className)} ref={forwardRef} {...rest}>
 				<div
 					className={cn(
 						'flex',

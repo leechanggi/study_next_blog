@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import React from 'react';
 
 const Error = ({
 	error,
@@ -9,14 +9,13 @@ const Error = ({
 	error: Error & { digest?: string };
 	reset: () => void;
 }) => {
-	useEffect(() => {
+	React.useEffect(() => {
 		console.error(error);
 	}, [error]);
 
 	return (
 		<div>
 			<h2>요청한 게시물이 없습니다.</h2>
-			<button onClick={() => reset()}>Try again</button>
 		</div>
 	);
 };

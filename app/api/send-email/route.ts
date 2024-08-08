@@ -3,8 +3,8 @@ import { postSendEmail, TEmail } from '@service/sendEmail';
 
 const POST = async (req: NextRequest) => {
 	try {
-		const { user_name, user_email, message }: TEmail = await req.json();
-		await postSendEmail({ user_name, user_email, message });
+		const data: TEmail = await req.json();
+		await postSendEmail(data);
 		return NextResponse.json({ success: true });
 	} catch (error) {
 		console.error('Error sending email:', error);
