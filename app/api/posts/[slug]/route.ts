@@ -4,11 +4,13 @@ import { notFound } from 'next/navigation';
 import { getPostById } from '@service/posts';
 
 const GET = async (
-	_request: NextRequest,
+	request: NextRequest,
 	{ params }: { params: { slug: string } }
 ) => {
-	const slug = params.slug;
-	const data = await getPostById(Number(slug));
+	const { searchParams } = new URL(request.url);
+	const queryValue = searchParams.get('withNav') || true;
+
+	const data = await getPostById(Number(params.slug), Boolean(queryValue));
 
 	if (!data) {
 		notFound();

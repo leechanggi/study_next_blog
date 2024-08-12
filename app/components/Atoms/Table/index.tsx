@@ -143,4 +143,5 @@ const Table = {
 	Caption: TableCaption,
 };
 
+export type { Types as TableTypes };
 export default Table;

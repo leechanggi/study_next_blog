@@ -4,39 +4,39 @@ import { TPosts } from '@service/posts';
 const columnsPosts: ColumnDef<TPosts>[] = [
 	{
 		accessorKey: 'post_id',
-		header: 'post_id',
+		header: 'ID',
 	},
 	{
 		accessorKey: 'title',
-		header: 'title',
+		header: '제목',
 	},
-	{
-		accessorKey: 'description',
-		header: 'description',
-	},
-	{
-		accessorKey: 'content',
-		header: 'content',
-	},
+	// {
+	// 	accessorKey: 'description',
+	// 	header: 'description',
+	// },
+	// {
+	// 	accessorKey: 'content',
+	// 	header: 'content',
+	// },
 	{
 		accessorKey: 'createdAt',
-		header: 'createdAt',
+		header: '생성일시',
 	},
 	{
 		accessorKey: 'updatedAt',
-		header: 'updatedAt',
+		header: '수정일시',
 	},
 	{
 		accessorKey: 'tags',
-		header: 'tags',
+		header: '태그',
 	},
-	{
-		accessorKey: 'imgSrc',
-		header: 'imgSrc',
-	},
+	// {
+	// 	accessorKey: 'imgSrc',
+	// 	header: 'imgSrc',
+	// },
 	{
 		accessorKey: 'skip',
-		header: 'skip',
+		header: '숨김',
 	},
 ];
 

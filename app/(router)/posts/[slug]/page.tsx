@@ -21,8 +21,10 @@ const generateStaticParams = async () => {
 
 	try {
 		const response = await axios.get(url, { headers });
-		const posts = response.data.data as TPosts[];
-		const slugs = posts.map(post => ({ slug: post.post_id.toString() }));
+		const { data: posts } = response.data;
+		const slugs = posts.map((post: TPosts) => ({
+			slug: post.post_id.toString(),
+		}));
 		return slugs;
 	} catch (error) {
 		console.error('Error fetching posts for static params:', error);

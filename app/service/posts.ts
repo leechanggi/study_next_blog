@@ -30,14 +30,21 @@ const getPosts = async (): Promise<TPosts[]> => {
 };
 
 const getPostById = async (
-	postId: TPosts['post_id']
-): Promise<TPostsWithNav | null> => {
+	postId: TPosts['post_id'],
+	withNav?: Boolean
+): Promise<TPosts | TPostsWithNav | null> => {
 	const post = await prisma.post.findUnique({
 		where: { post_id: postId, skip: false },
 	});
 
 	if (!post) {
 		return null;
+	}
+
+	if (!withNav) {
+		return {
+			...post,
+		};
 	}
 
 	const previousPost = await prisma.post.findFirst({

@@ -9,26 +9,25 @@ datasource db {
 }
 
 model post {
-  post_id   Int       @id @default(autoincrement())
-  title     String
-  description String
-  content   String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
-  tags      String?
-  imgSrc    String?
-  skip      Boolean   @default(false)
+  post_id         Int       @id @default(autoincrement())
+  title           String
+  description     String
+  content         String
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime? @updatedAt
+  tags            String?
+  imgSrc          String?
+  skip            Boolean   @default(false)
 
-  views     view[]
+  views           view[]
 }
 
 model view {
-  view_id   Int      @id @default(autoincrement())
-  post      post     @relation(fields: [post_id], references: [post_id])
-  post_id   Int
-  viewDate  DateTime @default(now())
-  viewCount Int      @default(0)
-  viewDuration Int   @default(0)
+  view_id         Int       @id @default(autoincrement())
+  post            post      @relation(fields: [post_id], references: [post_id])
+  post_id         Int
+  createdAt       DateTime  @default(now())
+  duration        Int       @default(1)
 
-  @@unique([post_id, viewDate])
+  @@unique([post_id])
 }

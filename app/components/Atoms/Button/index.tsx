@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva } from 'class-variance-authority';
 
-import * as Type from './type';
+import * as Types from './type';
 import { cn } from '@lib';
 
 const styles = cva(
@@ -38,7 +38,7 @@ const styles = cva(
 	}
 );
 
-const Button = React.forwardRef<HTMLButtonElement, Type.ButtonProps>(
+const Button = React.forwardRef<HTMLButtonElement, Types.ButtonProps>(
 	(props, forwardRef) => {
 		const {
 			className,
@@ -60,5 +60,4 @@ const Button = React.forwardRef<HTMLButtonElement, Type.ButtonProps>(
 );
 Button.displayName = 'Button';
 
-export type { Type };
 export default Button;

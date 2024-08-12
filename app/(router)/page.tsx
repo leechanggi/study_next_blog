@@ -15,7 +15,7 @@ import {
 const revalidate = 86400;
 const apiUrl = process.env.NEXT_PUBLIC_API_HOST || '';
 
-const getUniqueTags = (posts: TPosts[]) => {
+const getTags = (posts: TPosts[]) => {
 	const tagSet = new Set<string>();
 	const tagCount: { [tag: string]: number } = {};
 
@@ -31,8 +31,8 @@ const getUniqueTags = (posts: TPosts[]) => {
 	});
 
 	return {
-		uniqueTags: Array.from(tagSet),
-		uniqueTagsCount: tagCount,
+		tags: Array.from(tagSet),
+		tagsCount: tagCount,
 	};
 };
 
@@ -61,17 +61,18 @@ const getFilteredPosts = (posts: TPosts[], tag?: string, q?: string) => {
 const getPosts = async (tag?: string, q?: string) => {
 	const url = `${apiUrl}/api/posts`;
 	const headers = {
-		'Cache-Control': `max-age=${revalidate}, stale-while-revalidate=604800`, // 7일
+		'Cache-Control': `max-age=${revalidate}, stale-while-revalidate=604800`,
 	};
 
 	try {
 		const response = await axios.get(url, { headers });
 		const posts: TPosts[] = response.data.data;
 
+		const postsCount = posts.length;
 		const filteredPosts = getFilteredPosts(posts, tag, q);
-		const uniqueTags = getUniqueTags(posts);
+		const tags = getTags(posts);
 
-		return { ...filteredPosts, ...uniqueTags };
+		return { postsCount, ...filteredPosts, ...tags };
 	} catch (error) {
 		console.error('Failed to fetch posts:', error);
 		throw new Error(
@@ -91,24 +92,24 @@ const Page = async ({
 		return notFound();
 	}
 
-	const { data, uniqueTags, uniqueTagsCount } = res;
+	const { postsCount, data, tags, tagsCount } = res;
 
 	return (
 		<>
 			<section className='desktop:hidden'>
 				<InfiniteTags
-					tags={uniqueTags}
-					tagsCount={uniqueTagsCount}
-					postsCount={data.length}
+					tags={tags}
+					tagsCount={tagsCount}
+					postsCount={postsCount}
 					currentTag={searchParams.tag}
 				/>
 			</section>
 
 			<InfiniteAside
 				className='hidden desktop:block'
-				tags={uniqueTags}
-				tagsCount={uniqueTagsCount}
-				postsCount={data.length}
+				tags={tags}
+				tagsCount={tagsCount}
+				postsCount={postsCount}
 				currentTag={searchParams.tag}
 			/>
 

@@ -1,9 +1,12 @@
+'use client';
+
 import React from 'react';
 
 import { Table } from '@components';
 import {
 	flexRender,
 	getCoreRowModel,
+	getPaginationRowModel,
 	useReactTable,
 } from '@tanstack/react-table';
 
@@ -12,16 +15,14 @@ import * as Types from './type';
 const DataTable = <TData, TValue>({
 	columns,
 	data,
+	isPagination = false,
 }: Types.DataTableProps<TData, TValue>) => {
 	const table = useReactTable({
 		data,
 		columns,
 		getCoreRowModel: getCoreRowModel(),
+		getPaginationRowModel: isPagination ? getPaginationRowModel() : undefined,
 	});
-
-	React.useEffect(() => {
-		console.log(table.getHeaderGroups());
-	}, [table]);
 
 	return (
 		<div className='rounded-md border'>

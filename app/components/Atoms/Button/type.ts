@@ -1,3 +1,4 @@
+type ButtonElement = HTMLButtonElement;
 type ButtonProps = {
 	asChild?: boolean;
 	variant?:
@@ -10,4 +11,4 @@ type ButtonProps = {
 	size?: 'default' | 'sm' | 'lg' | 'icon';
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-export type { ButtonProps };
+export type { ButtonElement, ButtonProps };
