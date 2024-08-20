@@ -4,7 +4,7 @@ import { useTheme } from 'next-themes';
 import { RxSun, RxMoon } from 'react-icons/rx';
 
 import * as Type from './type';
-import { Button } from '@components';
+import { Button } from '@/components';
 
 const DarkModeToggle = React.forwardRef<
 	HTMLButtonElement,

@@ -4,8 +4,8 @@ import React from 'react';
 import { RxCross2 } from 'react-icons/rx';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 
-import { cn } from '@lib';
-import { Button } from '@components';
+import { cn } from '@/lib';
+import { Button } from '@/components';
 import * as Types from './type';
 
 const DialogTrigger = DialogPrimitive.Trigger;

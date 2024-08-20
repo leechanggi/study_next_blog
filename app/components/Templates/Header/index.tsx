@@ -5,8 +5,13 @@ import Link from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/react';
 
 import * as Type from './type';
-import { cn } from '@lib';
-import { Button, DarkModeToggle, DialogContact, FormSearch } from '@components';
+import { cn } from '@/lib';
+import {
+	Button,
+	DarkModeToggle,
+	DialogContact,
+	FormSearch,
+} from '@/components';
 
 import { RxGithubLogo } from 'react-icons/rx';
 import { RxGear } from 'react-icons/rx';

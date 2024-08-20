@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { cn } from '@lib';
+import { cn } from '@/lib';
 import * as Types from './type';
 
 const TableRoot = React.forwardRef<

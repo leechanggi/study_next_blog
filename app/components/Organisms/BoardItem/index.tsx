@@ -1,7 +1,7 @@
 import React from 'react';
 
 import * as Type from './type';
-import { cn } from '@lib';
+import { cn } from '@/lib';
 
 const BoardItem = React.forwardRef<HTMLLIElement, Type.BoardItemProps>(
 	(props, forwardRef) => {

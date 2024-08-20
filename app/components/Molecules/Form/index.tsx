@@ -11,8 +11,8 @@ import {
 	FormProvider,
 } from 'react-hook-form';
 
-import { cn, useFormField, FormFieldContext, FormItemContext } from '@lib';
-import { Label } from '@components';
+import { cn, useFormField, FormFieldContext, FormItemContext } from '@/lib';
+import { Label } from '@/components';
 
 const FormRoot = FormProvider;
 

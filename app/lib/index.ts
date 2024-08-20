@@ -7,4 +7,5 @@ export { default as useLoaded } from './hooks/useLoaded';
 export { default as cn } from './utils/cn';
 export { default as formatDate } from './utils/formatDate';
 export { default as splitComma } from './utils/splitComma';
+export { default as supabaseClient } from './utils/supabaseClient';
 // @endindex

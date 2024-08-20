@@ -1,9 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 
-import { DataTable } from '@components';
-import { TPosts } from '@service/posts';
-import { TViews } from '@service/views';
+import { DataTable } from '@/components';
+import { TPosts } from '@/service/posts';
+import { TViews } from '@/service/views';
 import columnsPosts from './columns-posts';
 import columnsViews from './columns-views';
 

@@ -7,7 +7,7 @@ import { RxMagnifyingGlass } from 'react-icons/rx';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
-import { Button, Form, Input } from '@components';
+import { Button, Form, Input } from '@/components';
 import * as Type from './type';
 
 const FormSearch = () => {

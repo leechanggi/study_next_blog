@@ -14,8 +14,8 @@ import {
 	Form,
 	Input,
 	Textarea,
-} from '@components';
-import { TEmail } from '@service/sendEmail';
+} from '@/components';
+import { TEmail } from '@/service/sendEmail';
 
 const DialogContact = () => {
 	const { data: session } = useSession();

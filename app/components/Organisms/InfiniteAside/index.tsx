@@ -3,8 +3,8 @@
 import React from 'react';
 import Link from 'next/link';
 
-import { Button } from '@components';
-import { cn, useLoaded } from '@lib';
+import { Button } from '@/components';
+import { cn, useLoaded } from '@/lib';
 import * as Type from './type';
 
 const InfiniteAside = React.forwardRef<HTMLElement, Type.InfiniteAsideProps>(

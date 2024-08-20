@@ -1,8 +1,8 @@
 import React from 'react';
 import { RxArrowLeft, RxArrowRight } from 'react-icons/rx';
 
-import { cn } from '@lib';
-import { Button } from '@components';
+import { cn } from '@/lib';
+import { Button } from '@/components';
 import * as Type from './type';
 import Link from 'next/link';
 

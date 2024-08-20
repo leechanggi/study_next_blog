@@ -1,7 +1,7 @@
 import React from 'react';
 
 import * as Type from './type';
-import { cn } from '@lib';
+import { cn } from '@/lib';
 
 const Board = React.forwardRef<HTMLUListElement, Type.BoardProps>(
 	(props, forwardRef) => {

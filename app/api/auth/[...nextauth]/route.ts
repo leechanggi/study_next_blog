@@ -1,6 +1,6 @@
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
-import { splitComma } from '@/app/lib';
+import { splitComma } from '@/lib';
 
 const clientId = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID || '';
 const clientSecret = process.env.NEXT_PUBLIC_GITHUB_CLIENT_SECRET || '';

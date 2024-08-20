@@ -2,15 +2,15 @@ import React from 'react';
 import axios from 'axios';
 import { notFound } from 'next/navigation';
 
-import { splitComma } from '@lib';
-import { type TPosts } from '@service/posts';
+import { splitComma } from '@/lib';
+import { type TPosts } from '@/service/posts';
 import {
 	Board,
 	BoardItem,
 	Card,
 	InfiniteTags,
 	InfiniteAside,
-} from '@components';
+} from '@/components';
 
 const revalidate = 86400;
 const apiUrl = process.env.NEXT_PUBLIC_API_HOST || '';

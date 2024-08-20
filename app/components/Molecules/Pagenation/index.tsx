@@ -2,8 +2,8 @@ import React from 'react';
 import Link from 'next/link';
 import { RxCaretLeft, RxCaretRight, RxDotsHorizontal } from 'react-icons/rx';
 
-import { cn } from '@lib';
-import { Button } from '@components';
+import { cn } from '@/lib';
+import { Button } from '@/components';
 import * as Types from './type';
 
 const PaginationRoot = React.forwardRef<

@@ -1,5 +1,6 @@
 import { Session } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
+import { IMarkdownEditor } from '@uiw/react-markdown-editor';
 
 declare module 'next-auth' {
 	interface Session {

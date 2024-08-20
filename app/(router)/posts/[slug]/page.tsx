@@ -6,9 +6,9 @@ import { notFound } from 'next/navigation';
 import { RxCalendar } from 'react-icons/rx';
 import * as AspectRatio from '@radix-ui/react-aspect-ratio';
 
-import { cn, formatDate, splitComma } from '@lib';
-import { TPostsWithNav, TPosts } from '@service/posts';
-import { Button, Markdown, PostNavigator } from '@components';
+import { cn, formatDate, splitComma } from '@/lib';
+import { TPostsWithNav, TPosts } from '@/service/posts';
+import { Button, Markdown, PostNavigator } from '@/components';
 
 const revalidate = 86400;
 const apiUrl = process.env.NEXT_PUBLIC_API_HOST || '';

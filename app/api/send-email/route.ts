@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { postSendEmail, TEmail } from '@service/sendEmail';
+import { postSendEmail, TEmail } from '@/service/sendEmail';
 
 const POST = async (req: NextRequest) => {
 	try {

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import * as AspectRatio from '@radix-ui/react-aspect-ratio';
 
-import { cn, formatDate } from '@lib';
+import { cn, formatDate } from '@/lib';
 import * as Type from './type';
 
 const Card = React.forwardRef<HTMLAnchorElement, Type.CardProps>(

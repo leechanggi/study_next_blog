@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { cn } from '@lib';
+import { cn } from '@/lib';
 import * as Type from './type';
 
 const Input = React.forwardRef<HTMLInputElement, Type.InputProps>(
@@ -19,6 +19,10 @@ const Input = React.forwardRef<HTMLInputElement, Type.InputProps>(
 					'px-3',
 					'py-2',
 					'text-sm',
+					'file:border-0',
+					'file:bg-transparent',
+					'file:text-sm',
+					'file:font-medium',
 					'placeholder:text-zinc-400',
 					'disabled:cursor-not-allowed',
 					'disabled:opacity-60',

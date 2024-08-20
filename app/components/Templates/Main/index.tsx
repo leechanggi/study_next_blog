@@ -4,7 +4,7 @@ import React from 'react';
 import { usePathname } from 'next/navigation';
 
 import * as Type from './type';
-import { cn } from '@lib';
+import { cn } from '@/lib';
 
 const Main = React.forwardRef<HTMLElement, Type.MainProps>(
 	(props, forwardRef) => {

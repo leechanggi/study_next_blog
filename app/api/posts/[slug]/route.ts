@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { notFound } from 'next/navigation';
 
-import { getPostById } from '@service/posts';
+import { getPostById } from '@/service/posts';
 
 const GET = async (
 	request: NextRequest,

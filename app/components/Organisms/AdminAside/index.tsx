@@ -17,8 +17,8 @@ import {
 	RxMagnifyingGlass,
 } from 'react-icons/rx';
 
-import { cn } from '@lib';
-import { Accordion, Button } from '@components';
+import { cn } from '@/lib';
+import { Accordion, Button } from '@/components';
 
 import * as Types from './type';
 

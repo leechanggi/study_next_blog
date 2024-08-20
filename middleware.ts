@@ -19,10 +19,10 @@ const middleware = async (request: NextRequest) => {
 	const token = await getToken({ req: request, secret });
 
 	if (isMatch(request.nextUrl.pathname, matchersPageAdmin)) {
-		if (!token || token.role !== 'admin') {
-			return NextResponse.redirect(new URL('/', baseURL));
+		if (token && token.role === 'admin') {
+			return NextResponse.next();
 		}
-		return NextResponse.next();
+		return NextResponse.redirect(new URL('/', baseURL));
 	}
 
 	// API

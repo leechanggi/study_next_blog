@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { AdminAside } from '@components';
+import { AdminAside } from '@/components';
 
 const AdminLayout = ({
 	children,

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import * as Type from './type';
-import { cn } from '@lib';
+import { cn } from '@/lib';
 
 const Footer = React.forwardRef<HTMLElement, Type.FooterProps>(
 	(props, forwardRef) => {

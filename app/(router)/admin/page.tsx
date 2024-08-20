@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { AdminChart } from '@components';
+import { AdminChart } from '@/components';
 
 const Admin = () => {
 	return (

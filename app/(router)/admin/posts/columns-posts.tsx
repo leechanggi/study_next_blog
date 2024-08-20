@@ -1,5 +1,5 @@
 import { ColumnDef } from '@tanstack/react-table';
-import { TPosts } from '@service/posts';
+import { TPosts } from '@/service/posts';
 
 const columnsPosts: ColumnDef<TPosts>[] = [
 	{

@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { Table } from '@components';
+import { Table } from '@/components';
 import {
 	flexRender,
 	getCoreRowModel,

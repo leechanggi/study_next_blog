@@ -1,5 +1,5 @@
 import { ColumnDef } from '@tanstack/react-table';
-import { TViews } from '@service/views';
+import { TViews } from '@/service/views';
 
 const columnsViews: ColumnDef<TViews>[] = [
 	{

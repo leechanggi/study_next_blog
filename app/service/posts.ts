@@ -1,4 +1,4 @@
-import prisma from '@/prisma/client';
+import prisma from '../../prisma/client';
 
 type TPosts = {
 	post_id: number;
@@ -16,6 +16,8 @@ type TPostsWithNav = {
 	prev: TPosts | null;
 	next: TPosts | null;
 } & TPosts;
+
+type createPostProps = Omit<TPosts, 'post_id' | 'createdAt' | 'updatedAt'>;
 
 const getPosts = async (): Promise<TPosts[]> => {
 	const data = await prisma.post.findMany({
@@ -78,5 +80,15 @@ const getPostById = async (
 	};
 };
 
+const createPost = async (data: createPostProps): Promise<TPosts> => {
+	const newPost = await prisma.post.create({
+		data: {
+			...data,
+			createdAt: new Date(),
+		},
+	});
+	return newPost;
+};
+
 export type { TPosts, TPostsWithNav };
-export { getPosts, getPostById };
+export { getPosts, getPostById, createPost };

@@ -12,7 +12,7 @@ import {
 	oneLight,
 } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
-import { cn } from '@lib';
+import { cn } from '@/lib';
 import * as Type from './type';
 
 const Markdown = React.forwardRef<HTMLDivElement, Type.MarkdownProps>(
@@ -74,4 +74,5 @@ const Markdown = React.forwardRef<HTMLDivElement, Type.MarkdownProps>(
 );
 Markdown.displayName = 'Markdown';
 
+export type { Type as MarkdownType };
 export default Markdown;

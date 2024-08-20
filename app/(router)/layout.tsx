@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
-import { ProviderWrapper } from '@components';
-import { cn } from '@lib';
+import { ProviderWrapper } from '@/components';
+import { cn } from '@/lib';
 
 import './globals.css';
 

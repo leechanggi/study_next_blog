@@ -5,7 +5,7 @@ import { Slot } from '@radix-ui/react-slot';
 import { cva } from 'class-variance-authority';
 
 import * as Types from './type';
-import { cn } from '@lib';
+import { cn } from '@/lib';
 
 const styles = cva(
 	'inline-flex items-center justify-center font-medium whitespace-nowrap rounded-lg transition-colors',

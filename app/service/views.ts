@@ -1,4 +1,4 @@
-import prisma from '@/prisma/client';
+import prisma from '../../prisma/client';
 
 type TViews = {
 	view_id: number;

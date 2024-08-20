@@ -1,4 +1,4 @@
-import { TPostsWithNav } from '@service/posts';
+import { TPostsWithNav } from '@/service/posts';
 
 type PostNavigatorProps = {
 	prev?: TPostsWithNav['prev'];
