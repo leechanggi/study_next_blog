@@ -82,6 +82,11 @@ const AdminPostsCreatePage = () => {
 		const { imgSrc, ...rest } = data;
 
 		if (!fileSrc) {
+			form.setError('imgSrc', {
+				type: 'manual',
+				message: '대표 이미지는 필수 값입니다.',
+			});
+
 			console.error('No file selected for upload.');
 			return;
 		}

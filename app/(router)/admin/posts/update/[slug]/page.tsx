@@ -5,11 +5,11 @@ import Image from 'next/image';
 import * as z from 'zod';
 import { RxCross2 } from 'react-icons/rx';
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { cn } from '@/lib';
 import { TPosts } from '@/service/posts';
-import { supabaseClient, getPostById, updatePostById } from '@/lib';
+import { cn, supabaseClient, getPostById, updatePostById } from '@/lib';
 import {
 	Form,
 	MarkdownEditor,
@@ -23,6 +23,7 @@ import {
 import PostsSchema, { TPostSchema } from '@/(router)/admin/posts/posts-schema';
 
 const AdminPostsUpdatePage = ({ params }: { params: { slug: string } }) => {
+	const router = useRouter();
 	const { slug: postId } = params;
 	const [post, setPost] = React.useState<TPosts | null>(null);
 	const [tag, setTag] = React.useState<string>('');
@@ -143,23 +144,33 @@ const AdminPostsUpdatePage = ({ params }: { params: { slug: string } }) => {
 	const onSubmit = async (data: TPostSchema) => {
 		const { imgSrc, ...rest } = data;
 
-		if (!fileSrc) {
-			await updatePostById(parseInt(postId), { ...rest });
-			return;
-		}
+		try {
+			if (!fileSrc) {
+				await updatePostById(parseInt(postId), rest);
+			} else {
+				const publicUrl = await handleFileChange(fileSrc);
 
-		const publicUrl = await handleFileChange(fileSrc);
-		await updatePostById(parseInt(postId), { imgSrc: publicUrl, ...rest });
+				if (!publicUrl) {
+					console.error('Failed to upload the file.');
+					return;
+				}
 
-		if (!post?.imgSrc) {
-			return;
-		}
+				await updatePostById(parseInt(postId), { imgSrc: publicUrl, ...rest });
 
-		const deleteSuccess = await handleFileDelete(post?.imgSrc);
+				if (post?.imgSrc) {
+					const deleteSuccess = await handleFileDelete(post.imgSrc);
 
-		if (!deleteSuccess) {
-			console.error('Failed to delete previous image. Aborting update.');
-			return;
+					if (!deleteSuccess) {
+						console.error('Failed to delete previous image. Aborting update.');
+						return;
+					}
+				}
+			}
+
+			router.push('/admin/posts/update');
+		} catch (error) {
+			console.error('Error submitting the form:', error);
+			alert('일시적인 오류가 발생했습니다. 잠시 후에 다시 시도해주세요.');
 		}
 	};
 

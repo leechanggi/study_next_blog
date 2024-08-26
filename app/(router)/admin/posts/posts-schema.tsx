@@ -39,7 +39,7 @@ const PostsSchema = z.object({
 			message: '부적절한 단어가 포함되어 있습니다.',
 		}),
 	tags: z.string().min(1, { message: '태그는 필수 항목 입니다.' }),
-	imgSrc: z.string().min(1, { message: '대표 이미지는 필수 항목 입니다.' }),
+	imgSrc: z.string(),
 	skip: z.boolean({
 		required_error: '게시물 숨김은 필수 값입니다.',
 	}),
