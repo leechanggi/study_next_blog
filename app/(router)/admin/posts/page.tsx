@@ -1,65 +1,54 @@
+'use client';
+
 import React from 'react';
-import axios from 'axios';
+import { getPosts } from '@/lib';
 
 import { DataTable } from '@/components';
 import { TPosts } from '@/service/posts';
-import { TViews } from '@/service/views';
-import columnsPosts from './columns-posts';
-import columnsViews from './columns-views';
+// import { TViews } from '@/service/views';
+import { getColumnsPostsByAccessorKeys } from './columns-posts';
+// import columnsViews from './columns-views';
 
-const revalidate = 86400;
-const apiUrl = process.env.NEXT_PUBLIC_API_HOST || '';
+const AdminPosts = () => {
+	const [posts, setPosts] = React.useState<TPosts[]>([]);
+	// const [views, setViews] = React.useState<TViews[]>([]);
+	const [loading, setLoading] = React.useState(true);
+	const [error, setError] = React.useState<string | null>(null);
 
-const getPosts = async () => {
-	const url = `${apiUrl}/api/posts`;
-	const headers = {
-		'Cache-Control': `max-age=${revalidate}, stale-while-revalidate=604800`,
-	};
+	React.useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const fetchedPosts = await getPosts(true);
+				// const fetchedViews = await fetchViews();
+				setPosts(fetchedPosts);
+				// setViews(fetchedViews);
+			} catch (err) {
+				setError('일시적인 오류가 발생했습니다. 잠시 후에 다시 시도해주세요.');
+			} finally {
+				setLoading(false);
+			}
+		};
 
-	try {
-		const { data } = await axios.get(url, { headers });
-		return data;
-	} catch (error) {
-		console.error('Failed to fetch posts:', error);
-		throw new Error(
-			'일시적인 오류가 발생했습니다. 잠시 후에 다시 시도해주세요.'
-		);
-	}
-};
+		fetchData();
+	}, []);
 
-const getViews = async () => {
-	const url = `${apiUrl}/api/views`;
-	const headers = {
-		'Cache-Control': `max-age=${revalidate}, stale-while-revalidate=604800`,
-	};
+	if (loading) return <div>Loading...</div>;
+	if (error) return <div>{error}</div>;
 
-	try {
-		const { data } = await axios.get(url, { headers });
-		return data;
-	} catch (error) {
-		console.error('Failed to fetch views:', error);
-		throw new Error(
-			'일시적인 오류가 발생했습니다. 잠시 후에 다시 시도해주세요.'
-		);
-	}
-};
-
-const AdminPosts = async () => {
-	const { data: posts }: { data: TPosts[] } = await getPosts();
-	const { data: views }: { data: TViews[] } = await getViews();
+	const columnsPosts = getColumnsPostsByAccessorKeys([
+		'post_id',
+		'title',
+		'createdAt',
+		'updatedAt',
+		'tags',
+		'imgSrc',
+		'skip',
+	]);
 
 	return (
 		<>
-			<div>
-				<h2 className='text-xl font-medium mb-2'>게시물 목록</h2>
-				{posts && (
-					<DataTable columns={columnsPosts} data={posts} isPagination />
-				)}
-			</div>
-			<div className='mt-10'>
-				<h2 className='text-xl font-medium mb-2'>게시물 조회</h2>
-				{views && <DataTable columns={columnsViews} data={views} />}
-			</div>
+			<h2 className='text-xl font-medium mb-2'>게시물 조회</h2>
+			<DataTable columns={columnsPosts} data={posts} />
 		</>
 	);
 };

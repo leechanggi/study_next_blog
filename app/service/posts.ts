@@ -17,26 +17,30 @@ type TPostsWithNav = {
 	next: TPosts | null;
 } & TPosts;
 
-type createPostProps = Omit<TPosts, 'post_id' | 'createdAt' | 'updatedAt'>;
+type TControllablePosts = Omit<TPosts, 'post_id' | 'createdAt' | 'updatedAt'>;
 
-const getPosts = async (): Promise<TPosts[]> => {
+const getPosts = async (withSkip: boolean = false): Promise<TPosts[]> => {
 	const data = await prisma.post.findMany({
-		where: { skip: false },
+		where: withSkip ? {} : { skip: false },
 		orderBy: [
 			{
 				post_id: 'desc',
 			},
 		],
 	});
+
 	return data;
 };
 
 const getPostById = async (
 	postId: TPosts['post_id'],
-	withNav?: Boolean
+	withNav: boolean = false,
+	withSkip: boolean = false
 ): Promise<TPosts | TPostsWithNav | null> => {
+	const postFilter = { post_id: postId, ...(withSkip ? {} : { skip: false }) };
+
 	const post = await prisma.post.findUnique({
-		where: { post_id: postId, skip: false },
+		where: postFilter,
 	});
 
 	if (!post) {
@@ -44,34 +48,29 @@ const getPostById = async (
 	}
 
 	if (!withNav) {
-		return {
-			...post,
-		};
+		return post;
 	}
 
-	const previousPost = await prisma.post.findFirst({
-		where: {
-			post_id: {
-				lt: postId,
-			},
-			skip: false,
-		},
-		orderBy: {
-			post_id: 'desc',
-		},
-	});
+	const navigationFilter = {
+		...(withSkip ? {} : { skip: false }),
+	};
 
-	const nextPost = await prisma.post.findFirst({
-		where: {
-			post_id: {
-				gt: postId,
+	const [previousPost, nextPost] = await Promise.all([
+		prisma.post.findFirst({
+			where: {
+				post_id: { lt: postId },
+				...navigationFilter,
 			},
-			skip: false,
-		},
-		orderBy: {
-			post_id: 'asc',
-		},
-	});
+			orderBy: { post_id: 'desc' },
+		}),
+		prisma.post.findFirst({
+			where: {
+				post_id: { gt: postId },
+				...navigationFilter,
+			},
+			orderBy: { post_id: 'asc' },
+		}),
+	]);
 
 	return {
 		...post,
@@ -80,15 +79,41 @@ const getPostById = async (
 	};
 };
 
-const createPost = async (data: createPostProps): Promise<TPosts> => {
+const createPost = async (data: TControllablePosts): Promise<TPosts> => {
 	const newPost = await prisma.post.create({
 		data: {
 			...data,
 			createdAt: new Date(),
 		},
 	});
+
 	return newPost;
 };
 
-export type { TPosts, TPostsWithNav };
-export { getPosts, getPostById, createPost };
+const updatePostById = async (
+	postId: TPosts['post_id'],
+	data: Partial<TControllablePosts>
+): Promise<TPosts | null> => {
+	const updatedPost = await prisma.post.update({
+		where: { post_id: postId },
+		data: {
+			...data,
+			updatedAt: new Date(),
+		},
+	});
+
+	return updatedPost;
+};
+
+const deletePostById = async (
+	postId: TPosts['post_id']
+): Promise<TPosts | null> => {
+	const deletedPost = await prisma.post.delete({
+		where: { post_id: postId },
+	});
+
+	return deletedPost;
+};
+
+export type { TPosts, TPostsWithNav, TControllablePosts };
+export { getPosts, getPostById, createPost, updatePostById, deletePostById };

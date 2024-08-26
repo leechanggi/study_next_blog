@@ -1,13 +1,15 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import * as z from 'zod';
 import { RxCross2 } from 'react-icons/rx';
 import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { supabaseClient, createPost } from '@/lib';
+import { cn } from '@/lib';
+import { TPosts } from '@/service/posts';
+import { supabaseClient, getPostById, updatePostById } from '@/lib';
 import {
 	Form,
 	MarkdownEditor,
@@ -15,13 +17,19 @@ import {
 	Button,
 	Checkbox,
 	Label,
+	Dialog,
+	ScrollArea,
 } from '@/components';
 import PostsSchema, { TPostSchema } from '@/(router)/admin/posts/posts-schema';
 
-const AdminPostsCreatePage = () => {
-	const router = useRouter();
+const AdminPostsUpdatePage = ({ params }: { params: { slug: string } }) => {
+	const { slug: postId } = params;
+	const [post, setPost] = React.useState<TPosts | null>(null);
 	const [tag, setTag] = React.useState<string>('');
 	const [fileSrc, setFileSrc] = React.useState<File | null>(null);
+
+	const [loading, setLoading] = React.useState(true);
+	const [error, setError] = React.useState<string | null>(null);
 
 	const form = useForm<z.infer<typeof PostsSchema>>({
 		resolver: zodResolver(PostsSchema),
@@ -36,6 +44,48 @@ const AdminPostsCreatePage = () => {
 	});
 
 	const tags = form.watch('tags');
+
+	React.useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const fetchedPosts = await getPostById(parseInt(postId), false, true);
+				setPost(fetchedPosts);
+			} catch (error) {
+				console.error('Error fetching post:', error);
+				setError('일시적인 오류가 발생했습니다. 잠시 후에 다시 시도해주세요.');
+			} finally {
+				setLoading(false);
+			}
+		};
+		fetchData();
+	}, [postId]);
+
+	React.useEffect(() => {
+		if (!post) return;
+		form.reset({
+			title: post.title,
+			description: post.description,
+			content: post.content,
+			tags: post.tags || '',
+			imgSrc: '',
+			skip: post.skip,
+		});
+	}, [post, form]);
+
+	const handleClickOfCopyUrl = (
+		event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+	) => {
+		event.preventDefault();
+		if (!post?.imgSrc) return;
+		navigator.clipboard
+			.writeText(post?.imgSrc)
+			.then(() => {
+				alert('URL이 클립보드에 복사되었습니다.');
+			})
+			.catch(err => {
+				console.error('URL 복사에 실패했습니다:', err);
+			});
+	};
 
 	const handleUpdateTag = (tag: string) => {
 		if (tag.length < 1) return;
@@ -54,59 +104,71 @@ const AdminPostsCreatePage = () => {
 
 	const handleFileChange = async (file: File) => {
 		if (!file) return;
-
 		const fileExt = file.name.split('.').pop();
 		const fileName = `${Date.now()}.${fileExt}`;
 		const filePath = `${fileName}`;
-
-		let { error } = await supabaseClient.storage
+		const { error } = await supabaseClient.storage
 			.from('public-images')
 			.upload(filePath, file, {
 				cacheControl: '3600',
 				upsert: false,
 			});
-
 		if (error) {
 			console.error('Error uploading file:', error);
 			return;
 		}
-
 		const { data } = supabaseClient.storage
 			.from('public-images')
 			.getPublicUrl(filePath);
-
 		return data.publicUrl;
+	};
+
+	const handleFileDelete = async (filePath: string) => {
+		if (!filePath) return;
+		const extractFilePath = (filePath: string) => {
+			const startIndex =
+				filePath.indexOf('public-images/') + 'public-images/'.length;
+			return filePath.substring(startIndex);
+		};
+		const { error } = await supabaseClient.storage
+			.from('public-images')
+			.remove([extractFilePath(filePath)]);
+		if (error) {
+			console.error('Error removing file:', error.message);
+			return false;
+		}
+		return true;
 	};
 
 	const onSubmit = async (data: TPostSchema) => {
 		const { imgSrc, ...rest } = data;
 
 		if (!fileSrc) {
-			console.error('No file selected for upload.');
+			await updatePostById(parseInt(postId), { ...rest });
 			return;
 		}
 
-		try {
-			const publicUrl = await handleFileChange(fileSrc);
+		const publicUrl = await handleFileChange(fileSrc);
+		await updatePostById(parseInt(postId), { imgSrc: publicUrl, ...rest });
 
-			if (!publicUrl) {
-				console.error('Failed to upload the file.');
-				return;
-			}
+		if (!post?.imgSrc) {
+			return;
+		}
 
-			await createPost({ imgSrc: publicUrl, ...rest });
+		const deleteSuccess = await handleFileDelete(post?.imgSrc);
 
-			router.push('/admin/posts');
-		} catch (error) {
-			console.error('Error submitting the form:', error);
-
-			alert('일시적인 오류가 발생했습니다. 잠시 후에 다시 시도해주세요.');
+		if (!deleteSuccess) {
+			console.error('Failed to delete previous image. Aborting update.');
+			return;
 		}
 	};
 
+	if (loading) return <div>Loading...</div>;
+	if (error) return <div>{error}</div>;
+
 	return (
 		<>
-			<h2 className='text-xl font-medium mb-2'>게시물 생성</h2>
+			<h2 className='text-xl font-medium mb-2'>게시물 수정</h2>
 
 			<Form.Root {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)}>
@@ -156,7 +218,7 @@ const AdminPostsCreatePage = () => {
 									<Form.Control>
 										<MarkdownEditor
 											ref={ref}
-											value={value}
+											value={post?.content}
 											wrappedClassName='mt-1 h-80'
 											onChange={value => onChange(value)}
 											{...rest}
@@ -235,19 +297,71 @@ const AdminPostsCreatePage = () => {
 							return (
 								<Form.Item className='mt-4'>
 									<Form.Label>대표 이미지</Form.Label>
-									<Form.Control>
-										<Input
-											type='file'
-											className='mt-1'
-											accept='image/jpeg, image/png, image/gif, image/webp'
-											onChange={event => {
-												const selectedFile = event.target.files?.[0] || null;
-												setFileSrc(selectedFile);
-												onChange(event);
-											}}
-											{...rest}
-										/>
-									</Form.Control>
+									<div className='flex space-x-2 mt-1'>
+										<div className='grow'>
+											<Form.Control>
+												<Input
+													type='file'
+													accept='image/jpeg, image/png, image/gif, image/webp'
+													onChange={event => {
+														const selectedFile =
+															event.target.files?.[0] || null;
+														setFileSrc(selectedFile);
+														onChange(event);
+													}}
+													{...rest}
+												/>
+											</Form.Control>
+										</div>
+										<div className='shrink-0'>
+											{post?.imgSrc && (
+												<Dialog
+													trigger={
+														<Button variant='destructive'>
+															수정 전 이미지보기
+														</Button>
+													}
+													title='수정 전 이미지보기'
+													content={
+														<>
+															<ScrollArea className='h-[261px]'>
+																<Image
+																	src={post?.imgSrc}
+																	alt='수정 전 이미지보기'
+																	width={0}
+																	height={0}
+																	className={cn('w-full', 'h-auto')}
+																	priority
+																	unoptimized
+																/>
+															</ScrollArea>
+
+															<Label htmlFor='imgSrc' className='mt-4'>
+																대표 이미지 URL
+															</Label>
+															<div className='flex items-center justify-between mt-1 space-x-2'>
+																<Input
+																	type='text'
+																	id='imgSrc'
+																	value={post?.imgSrc}
+																	readOnly
+																	disabled
+																/>
+																<Button
+																	type='button'
+																	variant='secondary'
+																	className='shrink-0'
+																	onClick={handleClickOfCopyUrl}
+																>
+																	URL복사
+																</Button>
+															</div>
+														</>
+													}
+												/>
+											)}
+										</div>
+									</div>
 									<Form.Message />
 								</Form.Item>
 							);
@@ -280,7 +394,7 @@ const AdminPostsCreatePage = () => {
 					/>
 
 					<Button type='submit' size='lg' className='w-full mt-8'>
-						게시물 생성
+						게시물 수정
 					</Button>
 				</form>
 			</Form.Root>
@@ -288,4 +402,4 @@ const AdminPostsCreatePage = () => {
 	);
 };
 
-export default AdminPostsCreatePage;
+export default AdminPostsUpdatePage;

@@ -1,27 +1,19 @@
 import React from 'react';
-import axios from 'axios';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { RxCalendar } from 'react-icons/rx';
 import * as AspectRatio from '@radix-ui/react-aspect-ratio';
 
-import { cn, formatDate, splitComma } from '@/lib';
+import { cn, formatDate, splitComma, getPosts, getPostById } from '@/lib';
 import { TPostsWithNav, TPosts } from '@/service/posts';
 import { Button, Markdown, PostNavigator } from '@/components';
 
 const revalidate = 86400;
-const apiUrl = process.env.NEXT_PUBLIC_API_HOST || '';
-const headers = {
-	'Cache-Control': `max-age=${revalidate},stale-while-revalidate=604800`, // 7일
-};
 
 const generateStaticParams = async () => {
-	const url = `${apiUrl}/api/posts`;
-
 	try {
-		const response = await axios.get(url, { headers });
-		const { data: posts } = response.data;
+		const posts = await getPosts();
 		const slugs = posts.map((post: TPosts) => ({
 			slug: post.post_id.toString(),
 		}));
@@ -34,37 +26,23 @@ const generateStaticParams = async () => {
 
 const generateMetadata = async ({ params }: { params: { slug: string } }) => {
 	const { slug: id } = params;
-	const { title } = await getPostById(id);
+	const { title } = await getPostById(parseInt(id));
 
 	return {
 		title,
 	};
 };
 
-const getPostById = async (id: string) => {
-	const url = `${apiUrl}/api/posts/${id}`;
-
-	try {
-		const response = await axios.get(url, { headers });
-		const post = response.data.data as TPostsWithNav;
-		return post;
-	} catch (error) {
-		console.error('Error fetching post:', error);
-		throw new Error(
-			'요청한 게시물을 찾을 수 없습니다. 나중에 다시 시도해주세요.'
-		);
-	}
-};
-
-const SlugPage = async ({ params }: { params: { slug: string } }) => {
+const PostsSlugPage = async ({ params }: { params: { slug: string } }) => {
 	const { slug: id } = params;
-	const res = await getPostById(id);
+	const data = await getPostById(parseInt(id), true);
 
-	if (!res) {
+	if (!data) {
 		return notFound();
 	}
 
-	const { title, content, createdAt, tags, imgSrc, prev, next } = res;
+	const { title, content, createdAt, tags, imgSrc, prev, next } =
+		data as TPostsWithNav;
 	const { year, month, day } = formatDate(createdAt);
 
 	return (
@@ -118,5 +96,5 @@ const SlugPage = async ({ params }: { params: { slug: string } }) => {
 	);
 };
 
-export { generateStaticParams, generateMetadata };
-export default SlugPage;
+export { revalidate, generateStaticParams, generateMetadata };
+export default PostsSlugPage;

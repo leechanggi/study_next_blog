@@ -1,7 +1,11 @@
 // @index('./**/index.{ts,tsx}', f => `export { default as ${f.path.split('/').reverse()[1]} } from '${f.path.replace(/\/index$/, '')}';`)
 export { default as Button } from './Atoms/Button';
+export { default as Checkbox } from './Atoms/Checkbox';
 export { default as Input } from './Atoms/Input';
 export { default as Label } from './Atoms/Label';
+export { default as Popover } from './Atoms/Popover';
+export { default as RadioGroup } from './Atoms/RadioGroup';
+export { default as ScrollArea } from './Atoms/ScrollArea';
 export { default as Table } from './Atoms/Table';
 export { default as Textarea } from './Atoms/Textarea';
 export { default as Accordion } from './Molecules/Accordion';
@@ -12,6 +16,7 @@ export { default as DataTable } from './Molecules/DataTable';
 export { default as Dialog } from './Molecules/Dialog';
 export { default as Form } from './Molecules/Form';
 export { default as Pagenation } from './Molecules/Pagenation';
+export { default as Tabs } from './Molecules/Tabs';
 export { default as AdminAside } from './Organisms/AdminAside';
 export { default as AdminChart } from './Organisms/AdminChart';
 export { default as Board } from './Organisms/Board';

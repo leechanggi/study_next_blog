@@ -57,7 +57,7 @@ const TableFooter = React.forwardRef<
 			ref={ref}
 			className={cn(
 				'border-t',
-				'bg-muted/50',
+				'bg-zinc-200/50',
 				'font-medium',
 				'[&>tr]:last:border-b-0',
 				className
@@ -77,7 +77,7 @@ const TableRow = React.forwardRef<Types.TableRowElement, Types.TableRowProps>(
 				className={cn(
 					'border-b',
 					'transition-colors',
-					'hover:bg-muted/50',
+					'hover:bg-zinc-200/50',
 					className
 				)}
 				{...rest}
@@ -99,7 +99,6 @@ const TableHead = React.forwardRef<
 			'text-left',
 			'align-middle',
 			'font-medium',
-			'[&:has([role=checkbox])]:pr-0',
 			className
 		)}
 		{...props}
@@ -111,16 +110,7 @@ const TableCell = React.forwardRef<
 	Types.TableCellElement,
 	Types.TableCellProps
 >(({ className, ...props }, ref) => (
-	<td
-		ref={ref}
-		className={cn(
-			'p-4',
-			'align-middle',
-			'[&:has([role=checkbox])]:pr-0',
-			className
-		)}
-		{...props}
-	/>
+	<td ref={ref} className={cn('p-4', 'align-middle', className)} {...props} />
 ));
 TableCell.displayName = 'TableCell';
 

@@ -1,13 +1,15 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { notFound } from 'next/navigation';
 
 import { getPosts, createPost } from '@/service/posts';
 
-const GET = async () => {
-	const data = await getPosts();
+const GET = async (request: NextRequest) => {
+	const { searchParams } = new URL(request.url);
+	const withSkip = searchParams.get('withSkip') === 'true';
+	const data = await getPosts(withSkip);
 
 	if (!data) {
-		notFound();
+		return notFound();
 	}
 
 	return NextResponse.json({ data });
@@ -18,9 +20,12 @@ const POST = async (req: Request) => {
 		const body = await req.json();
 		const { title, description, content, tags, imgSrc, skip } = body;
 
-		if (!title || !description || !content) {
+		if (!title || !description || !content || !imgSrc) {
 			return NextResponse.json(
-				{ message: 'Title, description and content are required' },
+				{
+					message:
+						'게시물의 제목, 설명, 내용, 대표 이미지는 필수입력 항목 입니다.',
+				},
 				{ status: 400 }
 			);
 		}

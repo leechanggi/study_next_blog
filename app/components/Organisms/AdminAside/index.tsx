@@ -86,19 +86,25 @@ const AdminAside = React.forwardRef<HTMLElement, Types.AdminAsideProps>(
 							<Button variant='ghost' className='w-full justify-start' asChild>
 								<Link href='/admin/posts'>
 									<RxFileText size='1rem' />
-									<span className='pl-2'>게시물 관리 홈</span>
+									<span className='pl-2'>게시물 조회</span>
 								</Link>
 							</Button>
 							<Button variant='ghost' className='w-full justify-start' asChild>
 								<Link href='/admin/posts/create'>
 									<RxFilePlus size='1rem' />
-									<span className='pl-2'>게시물 생성 및 수정</span>
+									<span className='pl-2'>게시물 생성</span>
+								</Link>
+							</Button>
+							<Button variant='ghost' className='w-full justify-start' asChild>
+								<Link href='/admin/posts/update'>
+									<RxFilePlus size='1rem' />
+									<span className='pl-2'>게시물 수정</span>
 								</Link>
 							</Button>
 							<Button variant='ghost' className='w-full justify-start' asChild>
 								<Link href='/admin/posts/delete'>
 									<RxFileMinus size='1rem' />
-									<span className='pl-2'>게시물 숨기기 및 삭제</span>
+									<span className='pl-2'>게시물 삭제</span>
 								</Link>
 							</Button>
 						</Accordion.Content>

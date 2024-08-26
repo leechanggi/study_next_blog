@@ -1,28 +1,44 @@
 'use client';
 
 import React from 'react';
-
-import { Table } from '@/components';
 import {
+	useReactTable,
 	flexRender,
 	getCoreRowModel,
-	getPaginationRowModel,
-	useReactTable,
+	Cell,
 } from '@tanstack/react-table';
 
+import { cn } from '@/lib';
+import { Table } from '@/components';
 import * as Types from './type';
 
 const DataTable = <TData, TValue>({
 	columns,
 	data,
-	isPagination = false,
+	options,
 }: Types.DataTableProps<TData, TValue>) => {
 	const table = useReactTable({
-		data,
 		columns,
+		data,
 		getCoreRowModel: getCoreRowModel(),
-		getPaginationRowModel: isPagination ? getPaginationRowModel() : undefined,
+		...options,
 	});
+
+	const renderEllipsis = (cell: Cell<TData, unknown>) => {
+		const ellipsis = cell.column.columnDef.meta?.rows?.ellipsis;
+		const ellipsisClassName =
+			cell.column.columnDef.meta?.rows?.ellipsisClassName;
+
+		if (!ellipsis) {
+			return flexRender(cell.column.columnDef.cell, cell.getContext());
+		}
+
+		return (
+			<span className={cn(ellipsisClassName, `ellipsis-${ellipsis}`)}>
+				{flexRender(cell.column.columnDef.cell, cell.getContext())}
+			</span>
+		);
+	};
 
 	return (
 		<div className='rounded-md border'>
@@ -32,7 +48,12 @@ const DataTable = <TData, TValue>({
 						<Table.Row key={headerGroup.id}>
 							{headerGroup.headers.map(header => {
 								return (
-									<Table.Head key={header.id}>
+									<Table.Head
+										key={header.id}
+										className={cn(
+											header.column.columnDef.meta?.headerGroup?.className
+										)}
+									>
 										{header.isPlaceholder
 											? null
 											: flexRender(
@@ -51,8 +72,11 @@ const DataTable = <TData, TValue>({
 						table.getRowModel().rows.map(row => (
 							<Table.Row key={row.id}>
 								{row.getVisibleCells().map(cell => (
-									<Table.Cell key={cell.id}>
-										{flexRender(cell.column.columnDef.cell, cell.getContext())}
+									<Table.Cell
+										key={cell.id}
+										className={cn(cell.column.columnDef.meta?.rows?.className)}
+									>
+										{renderEllipsis(cell)}
 									</Table.Cell>
 								))}
 							</Table.Row>

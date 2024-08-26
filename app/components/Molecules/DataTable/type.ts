@@ -1,9 +1,11 @@
-import { ColumnDef } from '@tanstack/react-table';
+import { ColumnDef, TableOptions } from '@tanstack/react-table';
 
 type DataTableProps<TData, TValue> = {
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
-	isPagination?: boolean;
+	options?: Partial<
+		Omit<TableOptions<TData>, 'columns' | 'data' | 'getCoreRowModel'>
+	>;
 };
 
 export type { DataTableProps };
