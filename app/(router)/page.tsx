@@ -67,9 +67,9 @@ const Page = async ({
 				) : (
 					<Board>
 						{data.map((post: TPosts) => (
-							<BoardItem key={post.post_id}>
+							<BoardItem key={post.id}>
 								<Card
-									href={`/posts/${post.post_id}`}
+									href={`/posts/${post.id}`}
 									title={post.title}
 									content={post.content}
 									createdAt={post.createdAt}

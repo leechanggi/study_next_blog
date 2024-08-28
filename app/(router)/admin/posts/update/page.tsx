@@ -15,7 +15,7 @@ const AdminPostsUpdatePage = () => {
 	const [rowSelection, setRowSelection] = useState<{ [key: string]: boolean }>(
 		{}
 	);
-	const [postIdSelection, setPostIdSelection] = useState<number | null>(null);
+	const [idSelection, setIdSelection] = useState<number | null>(null);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -38,10 +38,10 @@ const AdminPostsUpdatePage = () => {
 		);
 
 		if (selectedRowKey !== undefined) {
-			const selectedPostId = posts[parseInt(selectedRowKey)].post_id;
-			setPostIdSelection(selectedPostId);
+			const selectedId = posts[parseInt(selectedRowKey)].id;
+			setIdSelection(selectedId);
 		} else {
-			setPostIdSelection(null);
+			setIdSelection(null);
 		}
 	}, [posts, rowSelection]);
 
@@ -50,7 +50,7 @@ const AdminPostsUpdatePage = () => {
 
 	const columnsPosts = getColumnsPostsByAccessorKeys([
 		'radioSelector',
-		'post_id',
+		'id',
 		'title',
 		'createdAt',
 		'updatedAt',
@@ -59,7 +59,7 @@ const AdminPostsUpdatePage = () => {
 		'skip',
 	]);
 
-	const isUpdateButtonDisabled = postIdSelection === null;
+	const isUpdateButtonDisabled = idSelection === null;
 
 	return (
 		<>
@@ -90,9 +90,7 @@ const AdminPostsUpdatePage = () => {
 			>
 				<Link
 					href={
-						isUpdateButtonDisabled
-							? ''
-							: `/admin/posts/update/${postIdSelection}`
+						isUpdateButtonDisabled ? '' : `/admin/posts/update/${idSelection}`
 					}
 					passHref={isUpdateButtonDisabled}
 				>

@@ -24,7 +24,7 @@ import PostsSchema, { TPostSchema } from '@/(router)/admin/posts/posts-schema';
 
 const AdminPostsUpdatePage = ({ params }: { params: { slug: string } }) => {
 	const router = useRouter();
-	const { slug: postId } = params;
+	const { slug: id } = params;
 	const [post, setPost] = React.useState<TPosts | null>(null);
 	const [tag, setTag] = React.useState<string>('');
 	const [fileSrc, setFileSrc] = React.useState<File | null>(null);
@@ -49,7 +49,7 @@ const AdminPostsUpdatePage = ({ params }: { params: { slug: string } }) => {
 	React.useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const fetchedPosts = await getPostById(parseInt(postId), false, true);
+				const fetchedPosts = await getPostById(parseInt(id), false, true);
 				setPost(fetchedPosts);
 			} catch (error) {
 				console.error('Error fetching post:', error);
@@ -59,7 +59,7 @@ const AdminPostsUpdatePage = ({ params }: { params: { slug: string } }) => {
 			}
 		};
 		fetchData();
-	}, [postId]);
+	}, [id]);
 
 	React.useEffect(() => {
 		if (!post) return;
@@ -146,7 +146,7 @@ const AdminPostsUpdatePage = ({ params }: { params: { slug: string } }) => {
 
 		try {
 			if (!fileSrc) {
-				await updatePostById(parseInt(postId), rest);
+				await updatePostById(parseInt(id), rest);
 			} else {
 				const publicUrl = await handleFileChange(fileSrc);
 
@@ -155,7 +155,7 @@ const AdminPostsUpdatePage = ({ params }: { params: { slug: string } }) => {
 					return;
 				}
 
-				await updatePostById(parseInt(postId), { imgSrc: publicUrl, ...rest });
+				await updatePostById(parseInt(id), { imgSrc: publicUrl, ...rest });
 
 				if (post?.imgSrc) {
 					const deleteSuccess = await handleFileDelete(post.imgSrc);

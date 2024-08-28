@@ -1,3 +1,0 @@
--- AlterTable
-ALTER TABLE "view" ADD COLUMN     "viewDuration" INTEGER NOT NULL DEFAULT 0,
-ALTER COLUMN "viewCount" SET DEFAULT 0;

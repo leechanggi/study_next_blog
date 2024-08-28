@@ -15,9 +15,7 @@ const AdminPostsDeletePage = () => {
 	const [rowSelection, setRowSelection] = React.useState<
 		Record<string, boolean>
 	>({});
-	const [postIdSelection, setPostIdSelection] = React.useState<number | null>(
-		null
-	);
+	const [idSelection, setIdSelection] = React.useState<number | null>(null);
 
 	React.useEffect(() => {
 		const fetchData = async () => {
@@ -40,18 +38,18 @@ const AdminPostsDeletePage = () => {
 		);
 
 		const selection =
-			selectedRowKey && posts[parseInt(selectedRowKey)]?.post_id
-				? posts[parseInt(selectedRowKey)].post_id
+			selectedRowKey && posts[parseInt(selectedRowKey)]?.id
+				? posts[parseInt(selectedRowKey)].id
 				: null;
 
-		setPostIdSelection(selection);
+		setIdSelection(selection);
 	}, [posts, rowSelection]);
 
 	const handleDelete = async () => {
-		if (!postIdSelection) return;
+		if (!idSelection) return;
 
 		try {
-			await deletePostById(postIdSelection);
+			await deletePostById(idSelection);
 			setReload(prev => !prev);
 		} catch (error) {
 			console.error('Error deleting post:', error);
@@ -71,7 +69,7 @@ const AdminPostsDeletePage = () => {
 
 	const columnsPosts = getColumnsPostsByAccessorKeys([
 		'radioSelector',
-		'post_id',
+		'id',
 		'title',
 		'createdAt',
 		'updatedAt',
@@ -80,7 +78,7 @@ const AdminPostsDeletePage = () => {
 		'skip',
 	]);
 
-	const isDeleteButtonDisabled = postIdSelection === null;
+	const isDeleteButtonDisabled = idSelection === null;
 
 	return (
 		<>

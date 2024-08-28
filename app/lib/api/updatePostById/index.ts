@@ -7,17 +7,17 @@ const headers = {
 };
 
 const updatePostById = async (
-	postId: TPosts['post_id'],
-	updateData: Partial<Omit<TPosts, 'post_id'>>
+	id: TPosts['id'],
+	updateData: Partial<Omit<TPosts, 'id'>>
 ): Promise<TPosts> => {
-	const url = `${apiUrl}/api/posts/${postId}`;
+	const url = `${apiUrl}/api/posts/${id}`;
 
 	try {
 		const response = await axios.put(url, updateData, { headers });
 		const { data } = response.data;
 		return data as TPosts;
 	} catch (error) {
-		console.error(`Error updating post(post_id: ${postId}):`, error);
+		console.error(`Error updating post(id: ${id}):`, error);
 		throw new Error(
 			'일시적인 오류가 발생했습니다. 잠시 후에 다시 시도해주세요.'
 		);

@@ -34,7 +34,7 @@ const PostNavigator = React.forwardRef<HTMLElement, Type.PostNavigatorProps>(
 							className={cn('relative', 'w-full', 'h-auto', 'py-4')}
 							asChild
 						>
-							<Link href={{ pathname: `/posts/${prev.post_id}` }}>
+							<Link href={{ pathname: `/posts/${prev.id}` }}>
 								<RxArrowLeft size='1.25em' className='absolute top-4 left-8' />
 								<span className='block w-full pl-6'>
 									<span className='block w-full font-normal text-sm'>
@@ -56,7 +56,7 @@ const PostNavigator = React.forwardRef<HTMLElement, Type.PostNavigatorProps>(
 							className={cn('relative', 'w-full', 'h-auto', 'py-4')}
 							asChild
 						>
-							<Link href={{ pathname: `/posts/${next.post_id}` }}>
+							<Link href={{ pathname: `/posts/${next.id}` }}>
 								<RxArrowRight
 									size='1.25em'
 									className='absolute top-4 right-8'

@@ -15,7 +15,7 @@ const GET = async (
 	const { searchParams } = new URL(request.url);
 	const withNav = searchParams.get('withNav') === 'true';
 	const withSkip = searchParams.get('withSkip') === 'true';
-	const data = await getPostById(Number(params.slug), withNav, withSkip);
+	const data = await getPostById(parseInt(params.slug), withNav, withSkip);
 
 	if (!data) {
 		notFound();
@@ -28,9 +28,9 @@ const PUT = async (
 	request: NextRequest,
 	{ params }: { params: { slug: string } }
 ) => {
-	const postId = Number(params.slug);
+	const id = parseInt(params.slug);
 	const body = await request.json();
-	const data = await updatePostById(postId, body as TControllablePosts);
+	const data = await updatePostById(id, body as TControllablePosts);
 
 	if (!data) {
 		notFound();
@@ -43,8 +43,8 @@ const DELETE = async (
 	_request: NextRequest,
 	{ params }: { params: { slug: string } }
 ) => {
-	const postId = Number(params.slug);
-	const data = await deletePostById(postId);
+	const id = parseInt(params.slug);
+	const data = await deletePostById(id);
 
 	if (!data) {
 		notFound();

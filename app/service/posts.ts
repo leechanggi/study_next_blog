@@ -1,7 +1,7 @@
 import prisma from '../../prisma/client';
 
 type TPosts = {
-	post_id: number;
+	id: number;
 	title: string;
 	description: string;
 	content: string;
@@ -17,14 +17,14 @@ type TPostsWithNav = {
 	next: TPosts | null;
 } & TPosts;
 
-type TControllablePosts = Omit<TPosts, 'post_id' | 'createdAt' | 'updatedAt'>;
+type TControllablePosts = Omit<TPosts, 'id' | 'createdAt' | 'updatedAt'>;
 
 const getPosts = async (withSkip: boolean = false): Promise<TPosts[]> => {
 	const data = await prisma.post.findMany({
 		where: withSkip ? {} : { skip: false },
 		orderBy: [
 			{
-				post_id: 'desc',
+				id: 'desc',
 			},
 		],
 	});
@@ -33,11 +33,11 @@ const getPosts = async (withSkip: boolean = false): Promise<TPosts[]> => {
 };
 
 const getPostById = async (
-	postId: TPosts['post_id'],
+	id: TPosts['id'],
 	withNav: boolean = false,
 	withSkip: boolean = false
 ): Promise<TPosts | TPostsWithNav | null> => {
-	const postFilter = { post_id: postId, ...(withSkip ? {} : { skip: false }) };
+	const postFilter = { id: id, ...(withSkip ? {} : { skip: false }) };
 
 	const post = await prisma.post.findUnique({
 		where: postFilter,
@@ -58,17 +58,17 @@ const getPostById = async (
 	const [previousPost, nextPost] = await Promise.all([
 		prisma.post.findFirst({
 			where: {
-				post_id: { lt: postId },
+				id: { lt: id },
 				...navigationFilter,
 			},
-			orderBy: { post_id: 'desc' },
+			orderBy: { id: 'desc' },
 		}),
 		prisma.post.findFirst({
 			where: {
-				post_id: { gt: postId },
+				id: { gt: id },
 				...navigationFilter,
 			},
-			orderBy: { post_id: 'asc' },
+			orderBy: { id: 'asc' },
 		}),
 	]);
 
@@ -91,11 +91,11 @@ const createPost = async (data: TControllablePosts): Promise<TPosts> => {
 };
 
 const updatePostById = async (
-	postId: TPosts['post_id'],
+	id: TPosts['id'],
 	data: Partial<TControllablePosts>
 ): Promise<TPosts | null> => {
 	const updatedPost = await prisma.post.update({
-		where: { post_id: postId },
+		where: { id: id },
 		data: {
 			...data,
 			updatedAt: new Date(),
@@ -105,11 +105,9 @@ const updatePostById = async (
 	return updatedPost;
 };
 
-const deletePostById = async (
-	postId: TPosts['post_id']
-): Promise<TPosts | null> => {
+const deletePostById = async (id: TPosts['id']): Promise<TPosts | null> => {
 	const deletedPost = await prisma.post.delete({
-		where: { post_id: postId },
+		where: { id: id },
 	});
 
 	return deletedPost;

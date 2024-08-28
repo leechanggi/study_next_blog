@@ -15,7 +15,7 @@ const generateStaticParams = async () => {
 	try {
 		const posts = await getPosts();
 		const slugs = posts.map((post: TPosts) => ({
-			slug: post.post_id.toString(),
+			slug: post.id.toString(),
 		}));
 		return slugs;
 	} catch (error) {

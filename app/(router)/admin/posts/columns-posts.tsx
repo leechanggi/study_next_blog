@@ -22,16 +22,16 @@ const columnsPosts: ColumnDef<TPosts>[] = [
 		accessorKey: 'radioSelector',
 		header: '선택',
 		cell: ({ row }) => {
-			const postId = row.original.post_id.toString();
+			const id = row.original.id.toString();
 
 			return (
 				<Checkbox
-					id={`radioSelector-${postId}`}
-					value={postId}
+					id={`radioSelector-${id}`}
+					value={id}
 					checked={row.getIsSelected()}
 					disabled={!row.getCanSelect()}
 					onClick={row.getToggleSelectedHandler()}
-					aria-label={`ID ${postId} 선택`}
+					aria-label={`ID ${id} 선택`}
 				/>
 			);
 		},
@@ -45,7 +45,7 @@ const columnsPosts: ColumnDef<TPosts>[] = [
 		},
 	},
 	{
-		accessorKey: 'post_id',
+		accessorKey: 'id',
 		header: 'ID',
 		meta: {
 			headerGroup: {

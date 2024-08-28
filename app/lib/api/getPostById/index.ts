@@ -7,13 +7,13 @@ const headers = {
 };
 
 const getPostById = async (
-	postId: TPosts['post_id'],
+	id: TPosts['id'],
 	withNav: boolean = true,
 	withSkip: boolean = false
 ): Promise<TPosts | TPostsWithNav> => {
 	const withNavString = withNav ? 'true' : 'false';
 	const withSkipString = withSkip ? 'true' : 'false';
-	const url = `${apiUrl}/api/posts/${postId}?withNav=${withNavString}&withSkip=${withSkipString}`;
+	const url = `${apiUrl}/api/posts/${id}?withNav=${withNavString}&withSkip=${withSkipString}`;
 
 	try {
 		const response = await axios.get<{ data: TPosts | TPostsWithNav }>(url, {

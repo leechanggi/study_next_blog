@@ -7,10 +7,8 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-		"migrate:dev": "dotenv -e .env.development -- npx prisma migrate dev",
-		"migrate:prod": "dotenv -e .env.production -- npx prisma migrate deploy",
-		"generate:dev": "dotenv -e .env.development -- npx prisma generate",
-		"generate:prod": "dotenv -e .env.production -- npx prisma generate"
+		"migrate": "npx prisma migrate dev",
+		"generate": "npx prisma generate"
 	},
 	"dependencies": {
 		"@emailjs/browser": "^4.4.1",
@@ -44,7 +42,6 @@
 		"@tailwindcss/typography": "^0.5.13",
 		"@tanstack/react-table": "^8.20.1",
 		"@types/node": "^20",
-		"@types/nodemailer": "^6.4.15",
 		"@types/react": "^18",
 		"@types/react-dom": "^18",
 		"@uiw/react-markdown-editor": "^6.1.2",
@@ -56,7 +53,6 @@
 		"next-auth": "^4.24.7",
 		"next-remove-imports": "^1.0.12",
 		"next-themes": "^0.3.0",
-		"nodemailer": "^6.9.14",
 		"path-to-regexp": "^7.1.0",
 		"postcss": "^8",
 		"prisma": "^5.18.0",
