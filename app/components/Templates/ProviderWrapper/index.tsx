@@ -9,7 +9,7 @@ import * as Types from './type';
 const ProviderWrapper = (props: Types.ProviderWrapperProps) => {
 	const { children } = props;
 	return (
-		<ThemeProvider attribute='class' defaultTheme='system' enableSystem>
+		<ThemeProvider attribute='class' defaultTheme='light' enableSystem={false}>
 			<Header />
 			<Main>{children}</Main>
 			<Footer />

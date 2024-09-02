@@ -2,35 +2,15 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { RxGithubLogo, RxGear } from 'react-icons/rx';
 
-import { supabaseClient, cn } from '@/lib';
+import { cn } from '@/lib';
 import { Button, DarkModeToggle, FormSearch } from '@/components';
 import * as Type from './type';
 
 const Header = React.forwardRef<HTMLElement, Type.HeaderProps>(
 	(props, forwardRef) => {
-		const router = useRouter();
 		const { className, ...rest } = props;
-
-		const handleGitHubLogin = async () => {
-			const { error } = await supabaseClient.auth.signInWithOAuth({
-				provider: 'github',
-				options: {
-					redirectTo: `${window.location.origin}/posts`,
-				},
-			});
-
-			if (error) {
-				console.error('GitHub login error:', error);
-			}
-		};
-
-		const handleGitHubLogOut = async () => {
-			await supabaseClient.auth.signOut();
-			router.push('/');
-		};
 
 		return (
 			<header
@@ -53,24 +33,6 @@ const Header = React.forwardRef<HTMLElement, Type.HeaderProps>(
 						</h1>
 						<nav className='flex items-center justify-start gap-x-2'>
 							<FormSearch />
-
-							<Button variant='ghost' onClick={handleGitHubLogOut}>
-								<RxGithubLogo size='1.25rem' title='깃허브' />
-								<span className='pl-1'>로그아웃</span>
-							</Button>
-
-							<Button variant='ghost' size='icon' asChild>
-								<Link href='/admin'>
-									<RxGear size='1.25rem' />
-									<span className='sr-only'>관리자</span>
-								</Link>
-							</Button>
-
-							<Button variant='ghost' onClick={handleGitHubLogin}>
-								<RxGithubLogo size='1.25rem' title='깃허브' />
-								<span className='pl-1'>로그인</span>
-							</Button>
-
 							<DarkModeToggle />
 						</nav>
 					</div>

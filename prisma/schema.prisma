@@ -10,7 +10,7 @@ datasource db {
 }
 
 model post {
-  id              Int    @id @default(autoincrement())
+  id              Int       @id @default(autoincrement())
   title           String
   description     String
   content         String
@@ -19,4 +19,18 @@ model post {
   tags            String?
   imgSrc          String?
   skip            Boolean   @default(false)
+  author          user      @relation(fields: [authorId], references: [id])
+  authorId        String
+}
+
+model user {
+  id              String   @id @default(uuid())
+  email           String   @unique
+  password        String
+  emailVerified   DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  role            String    @default("user")
+  permissions     Json
+  posts           post[]
 }

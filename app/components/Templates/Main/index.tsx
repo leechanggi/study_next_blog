@@ -1,10 +1,8 @@
 'use client';
 
 import React from 'react';
-import { usePathname } from 'next/navigation';
-
-import * as Type from './type';
 import { cn } from '@/lib';
+import * as Type from './type';
 
 const Main = React.forwardRef<HTMLElement, Type.MainProps>(
 	(props, forwardRef) => {
