@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { TPosts } from '@/service/posts';
+import { TPosts } from '@/service/post';
 import { cn, supabaseClient, getPostById, updatePostById } from '@/lib';
 import {
 	Form,

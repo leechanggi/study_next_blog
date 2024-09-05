@@ -1,4 +1,3 @@
-import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 import prisma from '@prismaClient';
 import { JsonValue } from '@prisma/client/runtime/library';
@@ -28,14 +27,19 @@ const hashPassword = async (password: string): Promise<string> => {
 	return bcrypt.hash(password, salt);
 };
 
+const checkIfUserExists = async (email: string): Promise<boolean> => {
+	const user = await prisma.user.findUnique({ where: { email } });
+	return !!user;
+};
+
 const signup = async (
 	email: string,
 	password: string
 ): Promise<TUser | null> => {
 	try {
-		const existingUser = await prisma.user.findUnique({ where: { email } });
+		const userExists = await checkIfUserExists(email);
 
-		if (existingUser) {
+		if (userExists) {
 			throw new Error('This email is already registered.');
 		}
 
@@ -110,4 +114,4 @@ const login = async (
 };
 
 export type { TUser, TVerificationToken };
-export { signup, login };
+export { hashPassword, checkIfUserExists, signup, login };

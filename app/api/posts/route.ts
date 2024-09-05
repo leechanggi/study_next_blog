@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { notFound } from 'next/navigation';
 
-import { getPosts, createPost } from '@/service/posts';
+import { getPosts, createPost } from '@/service/post';
 
 const GET = async (request: NextRequest) => {
 	const { searchParams } = new URL(request.url);

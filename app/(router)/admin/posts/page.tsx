@@ -4,7 +4,7 @@ import React from 'react';
 import { getPosts } from '@/lib';
 
 import { DataTable } from '@/components';
-import { TPosts } from '@/service/posts';
+import { TPosts } from '@/service/post';
 import { getColumnsPostsByAccessorKeys } from './columns-posts';
 
 const AdminPosts = () => {

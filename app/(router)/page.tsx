@@ -2,7 +2,7 @@ import React from 'react';
 import { notFound } from 'next/navigation';
 
 import { splitComma, getPosts, getTags, getFilteredPosts } from '@/lib';
-import { type TPosts } from '@/service/posts';
+import { type TPosts } from '@/service/post';
 import {
 	Board,
 	BoardItem,

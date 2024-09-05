@@ -1,4 +1,4 @@
-import { TPosts } from '@/service/posts';
+import { TPosts } from '@/service/post';
 import splitComma from '@/lib/utils/splitComma';
 
 const getFilteredPosts = (posts: TPosts[], tag?: string, q?: string) => {

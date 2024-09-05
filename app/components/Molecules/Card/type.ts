@@ -1,5 +1,5 @@
 import type { LinkProps } from 'next/link';
-import type { TPosts } from '@/service/posts';
+import type { TPosts } from '@/service/post';
 
 type CardProps = {
 	title: TPosts['title'];

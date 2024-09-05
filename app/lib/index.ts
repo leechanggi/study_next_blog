@@ -1,10 +1,13 @@
 // @index('./**/index.{ts,tsx}', f => `export { default as ${f.path.split('/').reverse()[1]} } from '${f.path.replace(/\/index$/, '')}';`)
-export { default as createPost } from './api/createPost';
-export { default as deletePostById } from './api/deletePostById';
-export { default as getPostById } from './api/getPostById';
-export { default as getPosts } from './api/getPosts';
-export { default as sendVerificationEmail } from './api/sendVerificationEmail';
-export { default as updatePostById } from './api/updatePostById';
+export { default as confirmEmail } from './api/email/confirmEmail';
+export { default as requestEmail } from './api/email/requestEmail';
+export { default as createPost } from './api/posts/createPost';
+export { default as deletePostById } from './api/posts/deletePostById';
+export { default as getPostById } from './api/posts/getPostById';
+export { default as getPosts } from './api/posts/getPosts';
+export { default as updatePostById } from './api/posts/updatePostById';
+export { default as checkIfUserExists } from './api/user/checkIfUserExists';
+export { default as signup } from './api/user/signup';
 export { default as FormFieldContext } from './components/FormFieldContext';
 export { default as FormItemContext } from './components/FormItemContext';
 export { default as SessionContext } from './components/SessionContext';

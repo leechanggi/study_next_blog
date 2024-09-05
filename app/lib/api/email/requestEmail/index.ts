@@ -1,15 +1,13 @@
 import axios from 'axios';
-import { SendVerifyEmailParams } from '@/service/verifyEmail';
+import { RequestEmailParams } from '@/service/verificationToken';
 
 const apiUrl = process.env.NEXT_PUBLIC_API_HOST || '';
 const headers = {
 	'Content-Type': 'application/json',
 };
 
-const sendVerificationEmail = async (
-	params: SendVerifyEmailParams
-): Promise<void> => {
-	const url = `${apiUrl}/api/verify-email`;
+const requestEmail = async (params: RequestEmailParams): Promise<void> => {
+	const url = `${apiUrl}/api/email/request`;
 
 	try {
 		const response = await axios.post(url, params, { headers });
@@ -22,4 +20,4 @@ const sendVerificationEmail = async (
 	}
 };
 
-export default sendVerificationEmail;
+export default requestEmail;

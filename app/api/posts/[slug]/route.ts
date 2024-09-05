@@ -6,7 +6,7 @@ import {
 	getPostById,
 	updatePostById,
 	deletePostById,
-} from '@/service/posts';
+} from '@/service/post';
 
 const GET = async (
 	request: NextRequest,

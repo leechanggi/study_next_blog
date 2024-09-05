@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { TPosts, TControllablePosts } from '@/service/posts';
+import { TPosts, TControllablePosts } from '@/service/post';
 
 const apiUrl = process.env.NEXT_PUBLIC_API_HOST || '';
 const headers = {

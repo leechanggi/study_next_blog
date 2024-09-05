@@ -15,7 +15,7 @@ import {
 	Label,
 	Checkbox,
 } from '@/components';
-import { TPosts } from '@/service/posts';
+import { TPosts } from '@/service/post';
 
 const columnsPosts: ColumnDef<TPosts>[] = [
 	{

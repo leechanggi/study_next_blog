@@ -7,10 +7,10 @@ const options: NextAuthOptions = {
 		CredentialsProvider({
 			name: 'Credentials',
 			credentials: {
-				email: { label: 'email', type: 'text' },
-				password: { label: 'password', type: 'password' },
+				email: { label: '이메일', type: 'text' },
+				password: { label: '비밀번호', type: 'password' },
 			},
-			async authorize(credentials, _req) {
+			async authorize(credentials) {
 				if (!credentials) {
 					return null;
 				}
@@ -31,7 +31,10 @@ const options: NextAuthOptions = {
 						return null;
 					}
 				} catch (error) {
-					console.error('Error during login:', error);
+					console.error(
+						'로그인 중 오류 발생:',
+						error instanceof Error ? error.message : error
+					);
 					return null;
 				}
 			},
@@ -52,10 +55,12 @@ const options: NextAuthOptions = {
 		},
 		async session({ session, token }) {
 			if (token) {
-				session.user.id = token.id;
-				session.user.email = token.email;
-				session.user.role = token.role;
-				session.user.permissions = token.permissions;
+				session.user = {
+					id: token.id as string,
+					email: token.email as string,
+					role: token.role as string,
+					permissions: token.permissions as any,
+				};
 			}
 			return session;
 		},

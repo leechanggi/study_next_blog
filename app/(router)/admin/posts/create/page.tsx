@@ -99,7 +99,7 @@ const AdminPostsCreatePage = () => {
 				return;
 			}
 
-			await createPost({ imgSrc: publicUrl, ...rest });
+			await createPost({ imgSrc: publicUrl, authorId: '', ...rest });
 
 			router.push('/admin/posts');
 		} catch (error) {

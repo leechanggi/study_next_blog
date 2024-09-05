@@ -6,7 +6,7 @@ import { RxCalendar } from 'react-icons/rx';
 import * as AspectRatio from '@radix-ui/react-aspect-ratio';
 
 import { cn, formatDate, splitComma, getPosts, getPostById } from '@/lib';
-import { TPostsWithNav, TPosts } from '@/service/posts';
+import { TPostsWithNav, TPosts } from '@/service/post';
 import { Button, Markdown, PostNavigator } from '@/components';
 
 const revalidate = 86400;

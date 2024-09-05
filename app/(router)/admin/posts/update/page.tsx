@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import { cn, getPosts } from '@/lib';
-import { TPosts } from '@/service/posts';
+import { TPosts } from '@/service/post';
 import { DataTable, Button } from '@/components';
 import { getColumnsPostsByAccessorKeys } from '@/(router)/admin/posts/columns-posts';
 

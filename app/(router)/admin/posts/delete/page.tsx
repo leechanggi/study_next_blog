@@ -3,7 +3,7 @@
 import React from 'react';
 
 import { cn, getPosts, deletePostById } from '@/lib';
-import { TPosts } from '@/service/posts';
+import { TPosts } from '@/service/post';
 import { DataTable, Button } from '@/components';
 import { getColumnsPostsByAccessorKeys } from '@/(router)/admin/posts/columns-posts';
 

@@ -5,11 +5,16 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { sendVerificationEmail } from '@/lib';
+import { requestEmail, confirmEmail, checkIfUserExists, signup } from '@/lib';
 import { Form, Input, Button, Dialog, InputOTP } from '@/components';
 import SignupSchema, { TSignupSchema } from '@router/auth/signup/signup-schema';
 
 const AuthSignupPage = () => {
+	const [isOTPDialogOpen, setIsOTPDialogOpen] = React.useState<boolean>(false);
+	const [OTPValue, setOTPValue] = React.useState<string>('');
+	const [verifiedEmail, setVerifiedEmail] = React.useState<string>('');
+	const [isEmailVerified, setIsEmailVerified] = React.useState<boolean>(false);
+
 	const form = useForm<z.infer<typeof SignupSchema>>({
 		resolver: zodResolver(SignupSchema),
 		defaultValues: {
@@ -22,17 +27,75 @@ const AuthSignupPage = () => {
 	const emailValue = form.watch('email');
 	const emailError = form.formState.errors.email;
 
-	const handleVerificationEmail = async (email: string) => {
+	React.useEffect(() => {
+		if (OTPValue.length === 8) {
+			const confirmEmailAsync = async () => {
+				try {
+					await confirmEmail({ email: emailValue, token: OTPValue });
+					console.log('이메일 인증이 완료되었습니다.');
+					setVerifiedEmail(emailValue);
+					setIsEmailVerified(true);
+					setIsOTPDialogOpen(false);
+					setOTPValue('');
+				} catch (error) {
+					console.error('이메일 인증 실패:', error);
+					setOTPValue('');
+				}
+			};
+
+			confirmEmailAsync();
+		}
+	}, [OTPValue, emailValue]);
+
+	const handleRequestEmail = async (email: string) => {
 		try {
-			await sendVerificationEmail({ email });
+			const userExists = await checkIfUserExists(email);
+
+			if (userExists) {
+				console.log('이메일이 이미 등록되어 있습니다.');
+				throw new Error('이메일이 이미 등록되어 있습니다.');
+			}
+
+			await requestEmail({ email });
 			console.log('이메일 인증이 요청되었습니다.');
-		} catch (error) {
-			console.error('error', error);
+		} catch (error: unknown) {
+			if (error instanceof Error) {
+				console.error('Error:', error.message);
+				throw new Error(error.message || '이메일 인증 요청에 실패했습니다.');
+			} else {
+				console.error('Unknown error occurred');
+				throw new Error(
+					'일시적인 오류가 발생했습니다. 잠시 후에 다시 시도해주세요.'
+				);
+			}
 		}
 	};
 
 	const onSubmit = async (data: TSignupSchema) => {
-		// console.log(data);
+		if (!isEmailVerified) {
+			console.log('이메일 인증을 완료해야 합니다.');
+			form.setError(
+				'email',
+				{
+					type: 'custom',
+					message: '이메일 인증을 완료해야 합니다.',
+				},
+				{ shouldFocus: true }
+			);
+			return;
+		}
+
+		const authData = {
+			email: verifiedEmail,
+			password: data.password,
+		};
+
+		try {
+			const newUser = await signup(authData.email, authData.password);
+			console.log('User signed up successfully:', newUser);
+		} catch (error) {
+			console.error('Signup error:', error);
+		}
 	};
 
 	return (
@@ -70,32 +133,27 @@ const AuthSignupPage = () => {
 													onBlur();
 													form.trigger('email');
 												}}
+												readOnly={isEmailVerified}
 												{...rest}
 											/>
 										</Form.Control>
 
-										{/* <Button
-											type='button'
-											variant='secondary'
-											className='shrink-0'
-											onClick={_event => handleVerificationEmail(emailValue)}
-											disabled={!!emailError}
-										>
-											인증
-										</Button> */}
-
 										<Dialog
+											open={isOTPDialogOpen}
+											onOpenChange={setIsOTPDialogOpen}
 											trigger={
 												<Button
 													type='button'
 													variant='secondary'
 													className='shrink-0'
-													onClick={_event =>
-														handleVerificationEmail(emailValue)
+													onClick={_event => {
+														emailValue && handleRequestEmail(emailValue);
+													}}
+													disabled={
+														!emailValue || !!emailError || isEmailVerified
 													}
-													disabled={!!emailError}
 												>
-													인증
+													{isEmailVerified ? '인증완료' : '인증'}
 												</Button>
 											}
 											title='인증번호 입력'
@@ -105,7 +163,11 @@ const AuthSignupPage = () => {
 														이메일 주소로 전송된 인증번호 8자리를 입력하세요.
 													</p>
 													<div className='flex justify-center items-center mt-8'>
-														<InputOTP.Root maxLength={8}>
+														<InputOTP.Root
+															maxLength={8}
+															value={OTPValue}
+															onChange={setOTPValue}
+														>
 															<InputOTP.Group>
 																<InputOTP.Slot index={0} />
 																<InputOTP.Slot index={1} />
