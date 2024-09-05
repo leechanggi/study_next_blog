@@ -9,28 +9,36 @@ datasource db {
   directUrl = env("NEXT_PUBLIC_SUPABASE_DIRECT_URL")
 }
 
-model post {
-  id              Int       @id @default(autoincrement())
-  title           String
-  description     String
-  content         String
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime? @updatedAt
-  tags            String?
-  imgSrc          String?
-  skip            Boolean   @default(false)
-  author          user      @relation(fields: [authorId], references: [id])
-  authorId        String
+model Post {
+  id           Int       @id @default(autoincrement())
+  title        String
+  description  String
+  content      String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime? @updatedAt
+  tags         String?
+  imgSrc       String?
+  skip         Boolean   @default(false)
+  author       User      @relation(fields: [authorId], references: [id])
+  authorId     String
 }
 
-model user {
-  id              String   @id @default(uuid())
-  email           String   @unique
-  password        String
-  emailVerified   DateTime?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  role            String    @default("user")
-  permissions     Json
-  posts           post[]
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  password     String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  role         String    @default("user")
+  permissions  Json
+  posts        Post[]
+}
+
+model VerificationToken {
+  id          String    @id @default(uuid())
+  email       String    @db.Char(255)
+  token       String    @db.Char(255)
+  isVerified  Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  expiresAt   DateTime
 }

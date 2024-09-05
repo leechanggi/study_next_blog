@@ -19,7 +19,9 @@
 			}
 		],
 		"paths": {
-			"@/*": ["./app/*"]
+			"@/*": ["./app/*"],
+			"@prismaClient": ["./prisma/client.ts"],
+			"@router/*": ["./app/(router)/*"]
 		}
 	},
 	"include": [

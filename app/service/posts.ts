@@ -1,4 +1,4 @@
-import prisma from '../../prisma/client';
+import prisma from '@prismaClient';
 
 type TPosts = {
 	id: number;
@@ -10,6 +10,7 @@ type TPosts = {
 	tags: string | null;
 	imgSrc: string | null;
 	skip: boolean;
+	authorId: string;
 };
 
 type TPostsWithNav = {

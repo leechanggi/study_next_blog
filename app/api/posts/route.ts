@@ -15,9 +15,9 @@ const GET = async (request: NextRequest) => {
 	return NextResponse.json({ data });
 };
 
-const POST = async (req: Request) => {
+const POST = async (request: NextRequest) => {
 	try {
-		const body = await req.json();
+		const body = await request.json();
 		const { title, description, content, tags, imgSrc, skip } = body;
 
 		if (!title || !description || !content || !imgSrc) {
@@ -37,6 +37,7 @@ const POST = async (req: Request) => {
 			tags,
 			imgSrc,
 			skip,
+			authorId: '',
 		});
 
 		return NextResponse.json({ data }, { status: 201 });

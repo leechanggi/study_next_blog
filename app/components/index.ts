@@ -15,6 +15,7 @@ export { default as DarkModeToggle } from './Molecules/DarkModeToggle';
 export { default as DataTable } from './Molecules/DataTable';
 export { default as Dialog } from './Molecules/Dialog';
 export { default as Form } from './Molecules/Form';
+export { default as InputOTP } from './Molecules/InputOTP';
 export { default as Pagenation } from './Molecules/Pagenation';
 export { default as Tabs } from './Molecules/Tabs';
 export { default as AdminAside } from './Organisms/AdminAside';

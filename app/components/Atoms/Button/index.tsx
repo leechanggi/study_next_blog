@@ -44,7 +44,6 @@ const Button = React.forwardRef<HTMLButtonElement, Types.ButtonProps>(
 			className,
 			variant = 'default',
 			size = 'default',
-			disabled,
 			asChild = false,
 			...rest
 		} = props;

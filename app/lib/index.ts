@@ -3,6 +3,7 @@ export { default as createPost } from './api/createPost';
 export { default as deletePostById } from './api/deletePostById';
 export { default as getPostById } from './api/getPostById';
 export { default as getPosts } from './api/getPosts';
+export { default as sendVerificationEmail } from './api/sendVerificationEmail';
 export { default as updatePostById } from './api/updatePostById';
 export { default as FormFieldContext } from './components/FormFieldContext';
 export { default as FormItemContext } from './components/FormItemContext';
