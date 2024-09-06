@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { requestEmail, confirmEmail, checkIfUserExists, signup } from '@/lib';
+import { requestEmail, confirmEmail, signup, emailExists } from '@/lib';
 import { Form, Input, Button, Dialog, InputOTP } from '@/components';
 import SignupSchema, { TSignupSchema } from '@router/auth/signup/signup-schema';
 
@@ -49,7 +49,7 @@ const AuthSignupPage = () => {
 
 	const handleRequestEmail = async (email: string) => {
 		try {
-			const userExists = await checkIfUserExists(email);
+			const userExists = await emailExists(email);
 
 			if (userExists) {
 				console.log('이메일이 이미 등록되어 있습니다.');

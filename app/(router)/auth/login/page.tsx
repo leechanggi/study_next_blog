@@ -58,23 +58,14 @@ const AuthLoginPage = () => {
 						render={({ field }) => (
 							<Form.Item className='mt-4'>
 								<Form.Label>이메일 주소</Form.Label>
-								<div className='flex mt-1 space-x-2'>
-									<Form.Control>
-										<Input
-											type='text'
-											className='grow'
-											autoComplete='email'
-											{...field}
-										/>
-									</Form.Control>
-									<Button
-										type='button'
-										variant='secondary'
-										className='shrink-0'
-									>
-										인증
-									</Button>
-								</div>
+								<Form.Control>
+									<Input
+										type='text'
+										className='mt-1'
+										autoComplete='email'
+										{...field}
+									/>
+								</Form.Control>
 								<Form.Message />
 							</Form.Item>
 						)}

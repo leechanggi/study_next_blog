@@ -1,7 +1,6 @@
-import { NextResponse } from 'next/server';
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth/next';
 import { match } from 'path-to-regexp';
-import { supabaseClient } from '@/lib';
 
 const baseURL = process.env.NEXT_PUBLIC_API_HOST || '';
 
@@ -13,10 +12,11 @@ const isMatch = (pathname: string, urls: string[]) => {
 	return urls.some(url => !!match(url)(pathname));
 };
 
-const middleware = async (request: NextRequest) => {
-	// const {
-	// 	data: { session },
-	// } = await supabaseClient.auth.getSession();
+const middleware = async (request: NextRequest, response: NextResponse) => {
+	// const session = await getServerSession(authOptions);
+
+	// const session = await getServerSession(authOptions);
+	// console.log(session);
 
 	// if (isMatch(request.nextUrl.pathname, matchersPageAdmin)) {
 	// 	if (session && session.user.role === 'admin') {
@@ -26,9 +26,9 @@ const middleware = async (request: NextRequest) => {
 	// }
 
 	// API
-	if (!isMatch(request.nextUrl.pathname, matchersApi)) {
-		return NextResponse.next();
-	}
+	// if (!isMatch(request.nextUrl.pathname, matchersApi)) {
+	// 	return NextResponse.next();
+	// }
 
 	// if (!isMatch(request.nextUrl.pathname, matchersApiAuth)) {
 	// 	if (!session && request.method === 'POST') {

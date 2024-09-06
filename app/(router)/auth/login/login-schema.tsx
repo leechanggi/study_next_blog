@@ -5,13 +5,6 @@ type TLoginSchema = {
 	password: string;
 };
 
-const blockedWordsString = process.env.NEXT_PUBLIC_BLOCKED_WORDS || '';
-
-const blockedWords = blockedWordsString
-	.replace(/'/g, '')
-	.split(',')
-	.map(word => word.trim());
-
 const LoginSchema = z.object({
 	email: z
 		.string()

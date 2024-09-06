@@ -5,8 +5,8 @@ const headers = {
 	'Content-Type': 'application/json',
 };
 
-const checkIfUserExists = async (email: string): Promise<boolean> => {
-	const url = `${apiUrl}/api/user/check`;
+const emailExists = async (email: string): Promise<boolean> => {
+	const url = `${apiUrl}/api/user/email-exists`;
 
 	try {
 		const response = await axios.post(url, { email }, { headers });
@@ -17,4 +17,4 @@ const checkIfUserExists = async (email: string): Promise<boolean> => {
 	}
 };
 
-export default checkIfUserExists;
+export default emailExists;

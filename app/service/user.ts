@@ -27,7 +27,7 @@ const hashPassword = async (password: string): Promise<string> => {
 	return bcrypt.hash(password, salt);
 };
 
-const checkIfUserExists = async (email: string): Promise<boolean> => {
+const emailExists = async (email: string): Promise<boolean> => {
 	const user = await prisma.user.findUnique({ where: { email } });
 	return !!user;
 };
@@ -37,7 +37,7 @@ const signup = async (
 	password: string
 ): Promise<TUser | null> => {
 	try {
-		const userExists = await checkIfUserExists(email);
+		const userExists = await emailExists(email);
 
 		if (userExists) {
 			throw new Error('This email is already registered.');
@@ -114,4 +114,4 @@ const login = async (
 };
 
 export type { TUser, TVerificationToken };
-export { hashPassword, checkIfUserExists, signup, login };
+export { hashPassword, emailExists, signup, login };
