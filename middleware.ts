@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth/next';
 import { match } from 'path-to-regexp';
 
 const baseURL = process.env.NEXT_PUBLIC_API_HOST || '';
@@ -13,7 +12,7 @@ const isMatch = (pathname: string, urls: string[]) => {
 };
 
 const middleware = async (request: NextRequest, response: NextResponse) => {
-	// const session = await getServerSession(authOptions);
+	// const session = await getServerSession();
 
 	// const session = await getServerSession(authOptions);
 	// console.log(session);

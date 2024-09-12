@@ -1,6 +1,11 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import prisma from '@prismaClient';
 import { JsonValue } from '@prisma/client/runtime/library';
+
+type TPermissions = {
+	role: 'user' | 'admin';
+	permissions: JsonValue;
+};
 
 type TUser = {
 	id: string;
@@ -8,9 +13,7 @@ type TUser = {
 	password: string;
 	createdAt: Date;
 	updatedAt: Date;
-	role: 'user' | 'admin';
-	permissions: JsonValue;
-};
+} & TPermissions;
 
 type TVerificationToken = {
 	id: string;
@@ -20,7 +23,7 @@ type TVerificationToken = {
 	expiresAt: Date;
 };
 
-const saltRounds = parseInt(process.env.NEXT_PUBLIC_BCRYPT_ROUNDS || '10', 10);
+const saltRounds = parseInt(process.env.NEXT_PUBLIC_BCRYPT_ROUNDS || '16', 10);
 
 const hashPassword = async (password: string): Promise<string> => {
 	const salt = await bcrypt.genSalt(saltRounds);
@@ -30,6 +33,27 @@ const hashPassword = async (password: string): Promise<string> => {
 const emailExists = async (email: string): Promise<boolean> => {
 	const user = await prisma.user.findUnique({ where: { email } });
 	return !!user;
+};
+
+const permissions = async (email: string): Promise<TPermissions> => {
+	const data = await prisma.user.findUnique({
+		where: { email },
+		select: {
+			role: true,
+			permissions: true,
+		},
+	});
+
+	if (!data) {
+		throw new Error('Cannot find a user with the specified email.');
+	}
+
+	const { role, permissions } = data;
+
+	return {
+		role,
+		permissions,
+	};
 };
 
 const signup = async (
@@ -114,4 +138,4 @@ const login = async (
 };
 
 export type { TUser, TVerificationToken };
-export { hashPassword, emailExists, signup, login };
+export { hashPassword, emailExists, permissions, signup, login };

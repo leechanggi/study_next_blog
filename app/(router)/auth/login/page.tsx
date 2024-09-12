@@ -1,18 +1,22 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { signIn } from 'next-auth/react';
+import { useSession, signIn } from 'next-auth/react';
+import { useDispatch } from 'react-redux';
 
 import { Form, Input, Button } from '@/components';
+import { setSession, clearSession } from '@store/sessionSlice';
 import LoginSchema, { TLoginSchema } from '@router/auth/login/login-schema';
-import Link from 'next/link';
 
 const AuthLoginPage = () => {
 	const router = useRouter();
+	const dispatch = useDispatch();
+	const { data: session } = useSession();
 
 	const form = useForm<z.infer<typeof LoginSchema>>({
 		resolver: zodResolver(LoginSchema),
@@ -21,6 +25,25 @@ const AuthLoginPage = () => {
 			password: '',
 		},
 	});
+
+	React.useEffect(() => {
+		if (session) {
+			const { user, expires } = session;
+			dispatch(
+				setSession({
+					user: {
+						id: user.id || null,
+						email: user.email || null,
+						role: user.role || null,
+						permissions: user.permissions || null,
+					},
+					expires: expires || null,
+				})
+			);
+		} else {
+			dispatch(clearSession());
+		}
+	}, [session, dispatch]);
 
 	const onSubmit = async (data: TLoginSchema) => {
 		try {
@@ -32,6 +55,7 @@ const AuthLoginPage = () => {
 
 			if (result?.error) {
 				console.error('Login failed:', result.error);
+				dispatch(clearSession());
 			} else if (result?.ok) {
 				router.push('/admin');
 			}

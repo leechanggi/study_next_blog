@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import prisma from '@prismaClient';
+import { emailExists } from '@/service/user';
 
-export const POST = async (req: NextRequest) => {
+const POST = async (req: NextRequest) => {
 	try {
 		const { email } = await req.json();
 
@@ -12,8 +12,7 @@ export const POST = async (req: NextRequest) => {
 			);
 		}
 
-		const user = await prisma.user.findUnique({ where: { email } });
-		const userExists = !!user;
+		const userExists = await emailExists(email);
 
 		return NextResponse.json({ exists: userExists }, { status: 200 });
 	} catch (error) {
@@ -24,3 +23,5 @@ export const POST = async (req: NextRequest) => {
 		);
 	}
 };
+
+export { POST };

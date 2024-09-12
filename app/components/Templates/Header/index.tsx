@@ -2,26 +2,28 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
+import { useDispatch } from 'react-redux';
 
 import { cn } from '@/lib';
+import { clearSession } from '@store/sessionSlice';
 import { Button, DarkModeToggle, FormSearch } from '@/components';
+
 import * as Type from './type';
 
 const Header = React.forwardRef<HTMLElement, Type.HeaderProps>(
 	(props, forwardRef) => {
 		const { className, ...rest } = props;
-		const { data: session, status } = useSession();
+		const router = useRouter();
+		const dispatch = useDispatch();
+		const { status } = useSession();
 
-		React.useEffect(() => {
-			if (status === 'authenticated') {
-				console.log('Session updated:', session);
-				// 세션이 변경되었을 때 실행할 로직
-			} else if (status === 'unauthenticated') {
-				console.log('User is not logged in');
-				// 로그아웃 처리 등
-			}
-		}, [session, status]);
+		const handleSignOut = () => {
+			signOut();
+			dispatch(clearSession());
+			router.push('/');
+		};
 
 		return (
 			<header
@@ -44,10 +46,13 @@ const Header = React.forwardRef<HTMLElement, Type.HeaderProps>(
 						</h1>
 						<nav className='flex items-center justify-start gap-x-2'>
 							<FormSearch />
-							<Button asChild>
-								<Link href='/auth/login'>로그인</Link>
-							</Button>
-							<Button onClick={() => signOut()}>로그아웃</Button>
+							{status === 'authenticated' ? (
+								<Button onClick={handleSignOut}>로그아웃</Button>
+							) : (
+								<Button asChild>
+									<Link href='/auth/login'>로그인</Link>
+								</Button>
+							)}
 							<DarkModeToggle />
 						</nav>
 					</div>
