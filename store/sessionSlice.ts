@@ -22,12 +22,10 @@ export const sessionSlice = createSlice({
 		setSession: (state, action: PayloadAction<SessionState>) => {
 			state.user = action.payload.user;
 			state.expires = action.payload.expires;
-			console.log('setSession 상태:', state.user, state.expires);
 		},
 		clearSession: state => {
 			state.user = null;
 			state.expires = null;
-			console.log('setSession 상태:', state.user, state.expires);
 		},
 	},
 });

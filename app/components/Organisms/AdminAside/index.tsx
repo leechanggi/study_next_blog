@@ -57,14 +57,14 @@ const AdminAside = React.forwardRef<HTMLElement, Types.AdminAsideProps>(
 						<Accordion.Trigger>
 							<span className='flex items-center'>
 								<RiShieldStarLine size='1.25rem' />
-								<span className='pl-2'>관리자 권한</span>
+								<span className='pl-2'>사용자 관리</span>
 							</span>
 						</Accordion.Trigger>
 						<Accordion.Content className='pb-2'>
 							<Button variant='ghost' className='w-full justify-start' asChild>
 								<Link href='/admin/auths'>
 									<RxGear size='1rem' />
-									<span className='pl-2'>관리자 권한 설정</span>
+									<span className='pl-2'>사용자 권한 설정</span>
 								</Link>
 							</Button>
 						</Accordion.Content>

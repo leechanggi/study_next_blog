@@ -1,6 +1,5 @@
 import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-
 import { login } from '@/service/user';
 
 const authOptions: NextAuthOptions = {
@@ -70,7 +69,6 @@ const authOptions: NextAuthOptions = {
 	},
 	pages: {
 		signIn: '/auth/login',
-		error: '/auth/error',
 	},
 };
 
