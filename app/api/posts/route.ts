@@ -18,7 +18,7 @@ const GET = async (request: NextRequest) => {
 const POST = async (request: NextRequest) => {
 	try {
 		const body = await request.json();
-		const { title, description, content, tags, imgSrc, skip } = body;
+		const { title, description, content, tags, imgSrc, skip, authorId } = body;
 
 		if (!title || !description || !content || !imgSrc) {
 			return NextResponse.json(
@@ -37,7 +37,7 @@ const POST = async (request: NextRequest) => {
 			tags,
 			imgSrc,
 			skip,
-			authorId: '',
+			authorId,
 		});
 
 		return NextResponse.json({ data }, { status: 201 });

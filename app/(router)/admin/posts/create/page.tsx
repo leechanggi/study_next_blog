@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { RxCross2 } from 'react-icons/rx';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -20,6 +21,7 @@ import PostsSchema, { TPostSchema } from '@/(router)/admin/posts/posts-schema';
 
 const AdminPostsCreatePage = () => {
 	const router = useRouter();
+	const { data: session } = useSession();
 	const [tag, setTag] = React.useState<string>('');
 	const [fileSrc, setFileSrc] = React.useState<File | null>(null);
 
@@ -93,13 +95,14 @@ const AdminPostsCreatePage = () => {
 
 		try {
 			const publicUrl = await handleFileChange(fileSrc);
+			const authorId = await session?.user.id;
 
-			if (!publicUrl) {
+			if (!publicUrl || !authorId) {
 				console.error('Failed to upload the file.');
 				return;
 			}
 
-			await createPost({ imgSrc: publicUrl, authorId: '', ...rest });
+			await createPost({ imgSrc: publicUrl, authorId, ...rest });
 
 			router.push('/admin/posts');
 		} catch (error) {

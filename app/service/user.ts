@@ -1,10 +1,22 @@
 import bcrypt from 'bcryptjs';
 import prisma from '@prismaClient';
-import { JsonValue } from '@prisma/client/runtime/library';
 
 type TPermissions = {
 	role: 'user' | 'admin';
-	permissions: JsonValue;
+	permissions: {
+		managePost: {
+			read: boolean,
+			create: boolean,
+			delete: boolean,
+			update: boolean
+		},
+		manageUser: {
+			read: boolean,
+			create: boolean,
+			delete: boolean,
+			update: boolean
+		}
+	};
 };
 
 type TUser = {
@@ -48,7 +60,7 @@ const permissions = async (email: string): Promise<TPermissions> => {
 		throw new Error('Cannot find a user with the specified email.');
 	}
 
-	const { role, permissions } = data;
+	const { role, permissions } = data as TPermissions;
 
 	return {
 		role,
@@ -97,8 +109,8 @@ const signup = async (
 			password: newUser.password,
 			createdAt: newUser.createdAt,
 			updatedAt: newUser.updatedAt,
-			role: newUser.role as 'user' | 'admin',
-			permissions: newUser.permissions,
+			role: newUser.role as TPermissions['role'],
+			permissions: newUser.permissions as TPermissions['permissions'],
 		};
 	} catch (error) {
 		console.error('Error during signup:', error);
@@ -128,8 +140,8 @@ const login = async (
 			password: user.password,
 			createdAt: user.createdAt,
 			updatedAt: user.updatedAt,
-			role: user.role as 'user' | 'admin',
-			permissions: user.permissions,
+			role: user.role as TPermissions['role'],
+			permissions: user.permissions as TPermissions['permissions'],
 		};
 	} catch (error) {
 		console.error('Error during login:', error);
@@ -137,5 +149,17 @@ const login = async (
 	}
 };
 
+const getUsers = async (): Promise<TUser[] | null> => {
+	const data = await prisma.user.findMany({
+		orderBy: [
+			{
+				id: 'desc',
+			},
+		],
+	});
+
+	return data as TUser[];
+}
+
 export type { TUser, TVerificationToken };
-export { hashPassword, emailExists, permissions, signup, login };
+export { hashPassword, emailExists, permissions, signup, login, getUsers };
