@@ -10,62 +10,47 @@ import { formatDate } from "@/lib";
 
 const columnsAuths: ColumnDef<TUserTable>[] = [
 	{
-		accessorKey: "email",
-		header: "사용자 이메일",
+		accessorKey: "id",
+		header: "사용자 고유 ID",
+		cell: ({ getValue }) => {
+			const id = getValue() as TUserTable["id"];
+
+			const handleCopy = () => {
+				navigator.clipboard
+					.writeText(id)
+					.then(() => {
+						alert("ID가 클립보드에 복사되었습니다.");
+					})
+					.catch(err => {
+						console.error("클립보드 복사 실패:", err);
+					});
+			};
+
+			return (
+				<Tooltip.Provider>
+					<Tooltip.Root>
+						<Tooltip.Trigger asChild>
+							<Button
+								type='button'
+								size='icon'
+								variant='ghost'
+								onClick={handleCopy}
+							>
+								<RxCopy size='1.25rem' />
+								<span className='sr-only'>복사</span>
+							</Button>
+						</Tooltip.Trigger>
+						<Tooltip.Content>{id}</Tooltip.Content>
+					</Tooltip.Root>
+				</Tooltip.Provider>
+			);
+		},
 		meta: {
 			headerGroup: {
-				className: "text-center min-w-64",
+				className: "text-center min-w-32",
 			},
 			rows: {
 				className: "text-center",
-			},
-		},
-	},
-	{
-		accessorKey: "createdAt",
-		header: "계정 생성일시",
-		cell: ({ getValue }) => {
-			const dateValue = getValue() as Date;
-			const { year, month, day, hour, minute, second } = formatDate(dateValue);
-			return (
-				<>
-					{`${year}/${month}/${day}`}
-					<br />
-					{`${hour}시 ${minute}분 ${second}초`}
-				</>
-			);
-		},
-		meta: {
-			headerGroup: {
-				className: "text-center w-[6.5rem]",
-			},
-			rows: {
-				ellipsis: 2,
-				ellipsisClassName: "text-center w-24 break-keep",
-			},
-		},
-	},
-	{
-		accessorKey: "updatedAt",
-		header: "계정 수정일시",
-		cell: ({ getValue }) => {
-			const dateValue = getValue() as Date;
-			const { year, month, day, hour, minute, second } = formatDate(dateValue);
-			return (
-				<>
-					{`${year}/${month}/${day}`}
-					<br />
-					{`${hour}시 ${minute}분 ${second}초`}
-				</>
-			);
-		},
-		meta: {
-			headerGroup: {
-				className: "text-center w-[6.5rem]",
-			},
-			rows: {
-				ellipsis: 2,
-				ellipsisClassName: "text-center w-24 break-keep",
 			},
 		},
 	},
@@ -79,6 +64,18 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 		meta: {
 			headerGroup: {
 				className: "text-center min-w-32",
+			},
+			rows: {
+				className: "text-center",
+			},
+		},
+	},
+	{
+		accessorKey: "email",
+		header: "사용자 이메일",
+		meta: {
+			headerGroup: {
+				className: "text-center min-w-64",
 			},
 			rows: {
 				className: "text-center",
@@ -206,47 +203,50 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 		},
 	},
 	{
-		accessorKey: "id",
-		header: "사용자 고유 ID",
+		accessorKey: "createdAt",
+		header: "계정 생성일시",
 		cell: ({ getValue }) => {
-			const id = getValue() as TUserTable["id"];
-
-			const handleCopy = () => {
-				navigator.clipboard
-					.writeText(id)
-					.then(() => {
-						alert("ID가 클립보드에 복사되었습니다.");
-					})
-					.catch(err => {
-						console.error("클립보드 복사 실패:", err);
-					});
-			};
-
+			const dateValue = getValue() as Date;
+			const { year, month, day, hour, minute, second } = formatDate(dateValue);
 			return (
-				<Tooltip.Provider>
-					<Tooltip.Root>
-						<Tooltip.Trigger asChild>
-							<Button
-								type='button'
-								size='icon'
-								variant='ghost'
-								onClick={handleCopy}
-							>
-								<RxCopy size='1.25rem' />
-								<span className='sr-only'>복사</span>
-							</Button>
-						</Tooltip.Trigger>
-						<Tooltip.Content>{id}</Tooltip.Content>
-					</Tooltip.Root>
-				</Tooltip.Provider>
+				<>
+					{`${year}/${month}/${day}`}
+					<br />
+					{`${hour}시 ${minute}분 ${second}초`}
+				</>
 			);
 		},
 		meta: {
 			headerGroup: {
-				className: "text-center min-w-32",
+				className: "text-center w-[6.5rem]",
 			},
 			rows: {
-				className: "text-center",
+				ellipsis: 2,
+				ellipsisClassName: "text-center w-24 break-keep",
+			},
+		},
+	},
+	{
+		accessorKey: "updatedAt",
+		header: "계정 수정일시",
+		cell: ({ getValue }) => {
+			const dateValue = getValue() as Date;
+			const { year, month, day, hour, minute, second } = formatDate(dateValue);
+			return (
+				<>
+					{`${year}/${month}/${day}`}
+					<br />
+					{`${hour}시 ${minute}분 ${second}초`}
+				</>
+			);
+		},
+		meta: {
+			headerGroup: {
+				className: "text-center w-[6.5rem]",
+			},
+			rows: {
+				ellipsis: 2,
+				ellipsisClassName: "text-center w-24 break-keep",
 			},
 		},
 	},
