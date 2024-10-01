@@ -66,7 +66,6 @@ const DataTable = <TData, TValue>({
 						</Table.Row>
 					))}
 				</Table.Header>
-
 				<Table.Body>
 					{table.getRowModel().rows?.length ? (
 						table.getRowModel().rows.map(row => (

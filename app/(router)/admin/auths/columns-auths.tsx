@@ -1,28 +1,32 @@
-"use client";
+'use client';
 
-import React from "react";
-import { RxCopy } from "react-icons/rx";
-import { ColumnDef } from "@tanstack/react-table";
+import React from 'react';
+import { RxCopy } from 'react-icons/rx';
+import { ColumnDef } from '@tanstack/react-table';
 
-import { Label, Checkbox, Button, Tooltip } from "@/components";
-import { TUserTable } from "@/service/user";
-import { formatDate } from "@/lib";
+import { Label, Checkbox, Button, Tooltip, Select } from '@/components';
+import { TUserTable } from '@/service/user';
+import { formatDate } from '@/lib';
+
+type CustomTableMeta = {
+	updateData: (rowIndex: number, columnId: string, newValue: string) => void;
+};
 
 const columnsAuths: ColumnDef<TUserTable>[] = [
 	{
-		accessorKey: "id",
-		header: "사용자 고유 ID",
+		accessorKey: 'id',
+		header: '사용자 고유 ID',
 		cell: ({ getValue }) => {
-			const id = getValue() as TUserTable["id"];
+			const id = getValue() as TUserTable['id'];
 
 			const handleCopy = () => {
 				navigator.clipboard
 					.writeText(id)
 					.then(() => {
-						alert("ID가 클립보드에 복사되었습니다.");
+						alert('ID가 클립보드에 복사되었습니다.');
 					})
 					.catch(err => {
-						console.error("클립보드 복사 실패:", err);
+						console.error('클립보드 복사 실패:', err);
 					});
 			};
 
@@ -47,46 +51,73 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 		},
 		meta: {
 			headerGroup: {
-				className: "text-center min-w-32",
+				className: 'text-center min-w-32',
 			},
 			rows: {
-				className: "text-center",
+				className: 'text-center',
 			},
 		},
 	},
 	{
-		accessorKey: "role",
-		header: "사용자 분류",
-		cell: ({ getValue }) => {
-			const roleValue = getValue() as TUserTable["role"];
-			return roleValue === "admin" ? "관리자" : "사용자";
+		accessorKey: 'role',
+		header: '사용자 분류',
+		cell: ({ getValue, row, column, table }) => {
+			const roleValue = getValue() as TUserTable['role'];
+			const arrayRole = [
+				{ value: 'admin', children: '관리자' },
+				{ value: 'user', children: '사용자' },
+			];
+
+			return (
+				<Select.Root
+					defaultValue={roleValue}
+					onValueChange={newValue => {
+						const meta = table.options.meta as CustomTableMeta;
+						meta.updateData(row.index, column.id, newValue);
+					}}
+				>
+					<Select.Trigger className='w-full'>
+						<Select.Value placeholder='사용자 분류' />
+					</Select.Trigger>
+					<Select.Content>
+						{arrayRole.map(item => {
+							const key = crypto.randomUUID();
+							return (
+								<Select.Item key={key} value={item.value}>
+									{item.children}
+								</Select.Item>
+							);
+						})}
+					</Select.Content>
+				</Select.Root>
+			);
 		},
 		meta: {
 			headerGroup: {
-				className: "text-center min-w-32",
+				className: 'text-center min-w-32',
 			},
 			rows: {
-				className: "text-center",
+				className: 'text-center',
 			},
 		},
 	},
 	{
-		accessorKey: "email",
-		header: "사용자 이메일",
+		accessorKey: 'email',
+		header: '사용자 이메일',
 		meta: {
 			headerGroup: {
-				className: "text-center min-w-64",
+				className: 'text-center min-w-64',
 			},
 			rows: {
-				className: "text-center",
+				className: 'text-center',
 			},
 		},
 	},
 	{
-		accessorKey: "userPermissions",
-		header: "관리자 권한",
+		accessorKey: 'userPermissions',
+		header: '관리자 권한',
 		cell: ({ getValue }) => {
-			const user = getValue() as TUserTable["userPermissions"];
+			const user = getValue() as TUserTable['userPermissions'];
 
 			return (
 				<span className='flex justify-center items-center space-x-2'>
@@ -135,18 +166,18 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 		},
 		meta: {
 			headerGroup: {
-				className: "text-center min-w-56",
+				className: 'text-center min-w-56',
 			},
 			rows: {
-				className: "text-center",
+				className: 'text-center',
 			},
 		},
 	},
 	{
-		accessorKey: "postPermissions",
-		header: "게시물 권한",
+		accessorKey: 'postPermissions',
+		header: '게시물 권한',
 		cell: ({ getValue }) => {
-			const post = getValue() as TUserTable["postPermissions"];
+			const post = getValue() as TUserTable['postPermissions'];
 
 			return (
 				<span className='flex justify-center items-center space-x-2'>
@@ -195,16 +226,16 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 		},
 		meta: {
 			headerGroup: {
-				className: "text-center min-w-56",
+				className: 'text-center min-w-56',
 			},
 			rows: {
-				className: "text-center",
+				className: 'text-center',
 			},
 		},
 	},
 	{
-		accessorKey: "createdAt",
-		header: "계정 생성일시",
+		accessorKey: 'createdAt',
+		header: '계정 생성일시',
 		cell: ({ getValue }) => {
 			const dateValue = getValue() as Date;
 			const { year, month, day, hour, minute, second } = formatDate(dateValue);
@@ -218,17 +249,17 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 		},
 		meta: {
 			headerGroup: {
-				className: "text-center w-[6.5rem]",
+				className: 'text-center w-[6.5rem]',
 			},
 			rows: {
 				ellipsis: 2,
-				ellipsisClassName: "text-center w-24 break-keep",
+				ellipsisClassName: 'text-center w-24 break-keep',
 			},
 		},
 	},
 	{
-		accessorKey: "updatedAt",
-		header: "계정 수정일시",
+		accessorKey: 'updatedAt',
+		header: '계정 수정일시',
 		cell: ({ getValue }) => {
 			const dateValue = getValue() as Date;
 			const { year, month, day, hour, minute, second } = formatDate(dateValue);
@@ -242,11 +273,11 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 		},
 		meta: {
 			headerGroup: {
-				className: "text-center w-[6.5rem]",
+				className: 'text-center w-[6.5rem]',
 			},
 			rows: {
 				ellipsis: 2,
-				ellipsisClassName: "text-center w-24 break-keep",
+				ellipsisClassName: 'text-center w-24 break-keep',
 			},
 		},
 	},
