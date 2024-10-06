@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useSession } from 'next-auth/react';
-import { getPaginationRowModel, TableMeta } from '@tanstack/react-table';
+import { getPaginationRowModel } from '@tanstack/react-table';
 
 import { getUsers } from '@/lib';
 import { Button, DataTable } from '@/components';
@@ -52,7 +52,7 @@ const AdminPosts = () => {
 		console.log(users);
 	}, [users]);
 
-	const updateData = (rowIndex: number, columnId: string, newValue: string) => {
+	const updateData = (rowIndex: number, columnId: string, newValue: any) => {
 		setUsers(oldUsers =>
 			oldUsers.map((row, index) => {
 				if (index === rowIndex) {
@@ -76,7 +76,7 @@ const AdminPosts = () => {
 				columns={columnsAuths}
 				data={users}
 				options={{
-					meta: { updateData },
+					meta: { data: users, updateData },
 					getPaginationRowModel: getPaginationRowModel(),
 					state: { pagination },
 					onPaginationChange: setPagination,

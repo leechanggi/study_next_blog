@@ -1,20 +1,20 @@
-import bcrypt from "bcryptjs";
-import prisma from "@prismaClient";
+import bcrypt from 'bcryptjs';
+import prisma from '@prismaClient';
 
 type TPermissions = {
-	role: "user" | "admin";
+	role: 'user' | 'admin';
 	permissions: {
-		managePost: {
-			read: boolean;
-			create: boolean;
-			delete: boolean;
-			update: boolean;
-		};
 		manageUser: {
-			read: boolean;
 			create: boolean;
-			delete: boolean;
+			read: boolean;
 			update: boolean;
+			delete: boolean;
+		};
+		managePost: {
+			create: boolean;
+			read: boolean;
+			update: boolean;
+			delete: boolean;
 		};
 	};
 };
@@ -28,9 +28,9 @@ type TUser = {
 } & TPermissions;
 
 type TUserTable = {
-	postPermissions: TUser["permissions"]["managePost"];
-	userPermissions: TUser["permissions"]["manageUser"];
-} & Omit<TUser, "permissions">;
+	userPermissions: TUser['permissions']['manageUser'];
+	postPermissions: TUser['permissions']['managePost'];
+} & Omit<TUser, 'permissions'>;
 
 type TVerificationToken = {
 	id: string;
@@ -40,7 +40,7 @@ type TVerificationToken = {
 	expiresAt: Date;
 };
 
-const saltRounds = parseInt(process.env.NEXT_PUBLIC_BCRYPT_ROUNDS || "16", 10);
+const saltRounds = parseInt(process.env.NEXT_PUBLIC_BCRYPT_ROUNDS || '16', 10);
 
 const hashPassword = async (password: string): Promise<string> => {
 	const salt = await bcrypt.genSalt(saltRounds);
@@ -62,7 +62,7 @@ const permissions = async (email: string): Promise<TPermissions> => {
 	});
 
 	if (!data) {
-		throw new Error("Cannot find a user with the specified email.");
+		throw new Error('Cannot find a user with the specified email.');
 	}
 
 	const { role, permissions } = data as TPermissions;
@@ -81,7 +81,7 @@ const signup = async (
 		const userExists = await emailExists(email);
 
 		if (userExists) {
-			throw new Error("This email is already registered.");
+			throw new Error('This email is already registered.');
 		}
 
 		const hashedPassword = await hashPassword(password);
@@ -90,7 +90,7 @@ const signup = async (
 			data: {
 				email,
 				password: hashedPassword,
-				role: "user",
+				role: 'user',
 				permissions: {
 					manageUser: {
 						create: false,
@@ -114,12 +114,12 @@ const signup = async (
 			password: newUser.password,
 			createdAt: newUser.createdAt,
 			updatedAt: newUser.updatedAt,
-			role: newUser.role as TPermissions["role"],
-			permissions: newUser.permissions as TPermissions["permissions"],
+			role: newUser.role as TPermissions['role'],
+			permissions: newUser.permissions as TPermissions['permissions'],
 		};
 	} catch (error) {
-		console.error("Error during signup:", error);
-		throw new Error("Signup failed");
+		console.error('Error during signup:', error);
+		throw new Error('Signup failed');
 	}
 };
 
@@ -131,12 +131,12 @@ const login = async (
 		const user = await prisma.user.findUnique({ where: { email } });
 
 		if (!user) {
-			throw new Error("User not found");
+			throw new Error('User not found');
 		}
 
 		const isPasswordValid = await bcrypt.compare(password, user.password);
 		if (!isPasswordValid) {
-			throw new Error("Invalid password");
+			throw new Error('Invalid password');
 		}
 
 		return {
@@ -145,12 +145,12 @@ const login = async (
 			password: user.password,
 			createdAt: user.createdAt,
 			updatedAt: user.updatedAt,
-			role: user.role as TPermissions["role"],
-			permissions: user.permissions as TPermissions["permissions"],
+			role: user.role as TPermissions['role'],
+			permissions: user.permissions as TPermissions['permissions'],
 		};
 	} catch (error) {
-		console.error("Error during login:", error);
-		throw new Error("Login failed");
+		console.error('Error during login:', error);
+		throw new Error('Login failed');
 	}
 };
 
@@ -158,7 +158,7 @@ const getUsers = async (): Promise<TUser[] | null> => {
 	const data = await prisma.user.findMany({
 		orderBy: [
 			{
-				id: "desc",
+				id: 'desc',
 			},
 		],
 	});

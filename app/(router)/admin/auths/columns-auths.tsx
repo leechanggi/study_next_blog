@@ -9,7 +9,7 @@ import { TUserTable } from '@/service/user';
 import { formatDate } from '@/lib';
 
 type CustomTableMeta = {
-	updateData: (rowIndex: number, columnId: string, newValue: string) => void;
+	updateData: (rowIndex: number, columnId: string, newValue: any) => void;
 };
 
 const columnsAuths: ColumnDef<TUserTable>[] = [
@@ -116,8 +116,16 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 	{
 		accessorKey: 'userPermissions',
 		header: '관리자 권한',
-		cell: ({ getValue }) => {
+		cell: ({ getValue, row, column, table }) => {
 			const user = getValue() as TUserTable['userPermissions'];
+			const handleCheckedChange = (key: string, newValue: boolean) => {
+				const meta = table.options.meta as CustomTableMeta;
+				const userPermissions = {
+					...row.original.userPermissions,
+					[key]: newValue,
+				};
+				meta.updateData(row.index, column.id, { ...userPermissions });
+			};
 
 			return (
 				<span className='flex justify-center items-center space-x-2'>
@@ -128,7 +136,9 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 							className='ml-1'
 							size='sm'
 							checked={user.create}
-							disabled
+							onCheckedChange={(checked: boolean) =>
+								handleCheckedChange('create', checked)
+							}
 						/>
 					</span>
 					<span className='flex justify-start items-center'>
@@ -138,7 +148,9 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 							className='ml-1'
 							size='sm'
 							checked={user.read}
-							disabled
+							onCheckedChange={(checked: boolean) =>
+								handleCheckedChange('read', checked)
+							}
 						/>
 					</span>
 					<span className='flex justify-start items-center'>
@@ -148,7 +160,9 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 							className='ml-1'
 							size='sm'
 							checked={user.update}
-							disabled
+							onCheckedChange={(checked: boolean) =>
+								handleCheckedChange('update', checked)
+							}
 						/>
 					</span>
 					<span className='flex justify-start items-center'>
@@ -158,7 +172,9 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 							className='ml-1'
 							size='sm'
 							checked={user.delete}
-							disabled
+							onCheckedChange={(checked: boolean) =>
+								handleCheckedChange('delete', checked)
+							}
 						/>
 					</span>
 				</span>
@@ -176,8 +192,16 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 	{
 		accessorKey: 'postPermissions',
 		header: '게시물 권한',
-		cell: ({ getValue }) => {
+		cell: ({ getValue, row, column, table }) => {
 			const post = getValue() as TUserTable['postPermissions'];
+			const handleCheckedChange = (key: string, newValue: boolean) => {
+				const meta = table.options.meta as CustomTableMeta;
+				const postPermissions = {
+					...row.original.postPermissions,
+					[key]: newValue,
+				};
+				meta.updateData(row.index, column.id, { ...postPermissions });
+			};
 
 			return (
 				<span className='flex justify-center items-center space-x-2'>
@@ -188,7 +212,9 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 							className='ml-1'
 							size='sm'
 							checked={post.create}
-							disabled
+							onCheckedChange={(checked: boolean) =>
+								handleCheckedChange('create', checked)
+							}
 						/>
 					</span>
 					<span className='flex justify-start items-center'>
@@ -198,7 +224,9 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 							className='ml-1'
 							size='sm'
 							checked={post.read}
-							disabled
+							onCheckedChange={(checked: boolean) =>
+								handleCheckedChange('read', checked)
+							}
 						/>
 					</span>
 					<span className='flex justify-start items-center'>
@@ -208,7 +236,9 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 							className='ml-1'
 							size='sm'
 							checked={post.update}
-							disabled
+							onCheckedChange={(checked: boolean) =>
+								handleCheckedChange('update', checked)
+							}
 						/>
 					</span>
 					<span className='flex justify-start items-center'>
@@ -218,7 +248,9 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 							className='ml-1'
 							size='sm'
 							checked={post.delete}
-							disabled
+							onCheckedChange={(checked: boolean) =>
+								handleCheckedChange('delete', checked)
+							}
 						/>
 					</span>
 				</span>
