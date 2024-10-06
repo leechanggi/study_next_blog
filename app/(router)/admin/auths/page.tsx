@@ -76,7 +76,7 @@ const AdminPosts = () => {
 				columns={columnsAuths}
 				data={users}
 				options={{
-					meta: { data: users, updateData },
+					meta: { updateData },
 					getPaginationRowModel: getPaginationRowModel(),
 					state: { pagination },
 					onPaginationChange: setPagination,
