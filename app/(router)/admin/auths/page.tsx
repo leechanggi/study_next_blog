@@ -1,11 +1,10 @@
 'use client';
 
 import React from 'react';
-import { useSession } from 'next-auth/react';
 import { getPaginationRowModel } from '@tanstack/react-table';
 
 import { getUsers } from '@/lib';
-import { Button, DataTable } from '@/components';
+import { DataTable } from '@/components';
 import { TUser, TUserTable } from '@/service/user';
 
 import columnsAuths from './columns-auths';
@@ -19,8 +18,6 @@ const AdminPosts = () => {
 		pageIndex: 0,
 		pageSize: 10,
 	});
-
-	const { data: session, status } = useSession();
 
 	React.useEffect(() => {
 		const fetchData = async () => {
@@ -48,46 +45,21 @@ const AdminPosts = () => {
 		fetchData();
 	}, []);
 
-	React.useEffect(() => {
-		console.log(users);
-	}, [users]);
-
-	const updateData = (rowIndex: number, columnId: string, newValue: any) => {
-		setUsers(oldUsers =>
-			oldUsers.map((row, index) => {
-				if (index === rowIndex) {
-					return {
-						...row,
-						[columnId]: newValue,
-					};
-				}
-				return row;
-			})
-		);
-	};
-
 	if (loading) return <div>Loading...</div>;
 	if (error) return <div>{error}</div>;
 
 	return (
 		<>
-			<h2 className='text-xl font-medium mb-2'>사용자 권한 설정</h2>
+			<h2 className='text-xl font-medium mb-2'>사용자 권한 조회</h2>
 			<DataTable
 				columns={columnsAuths}
 				data={users}
 				options={{
-					meta: { updateData },
 					getPaginationRowModel: getPaginationRowModel(),
 					state: { pagination },
 					onPaginationChange: setPagination,
 				}}
 			/>
-
-			{status === 'authenticated' && session.user.role === 'admin' && (
-				<Button size='lg' className='w-full mt-8'>
-					권한 수정
-				</Button>
-			)}
 		</>
 	);
 };

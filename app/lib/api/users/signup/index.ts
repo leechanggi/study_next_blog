@@ -6,7 +6,7 @@ const headers = {
 };
 
 const signup = async (email: string, password: string) => {
-	const url = `${apiUrl}/api/user/signup`;
+	const url = `${apiUrl}/api/users/signup`;
 
 	try {
 		const response = await axios.post(url, { email, password }, { headers });

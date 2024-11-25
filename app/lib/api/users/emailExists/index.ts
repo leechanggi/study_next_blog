@@ -6,7 +6,7 @@ const headers = {
 };
 
 const emailExists = async (email: string): Promise<boolean> => {
-	const url = `${apiUrl}/api/user/email-exists`;
+	const url = `${apiUrl}/api/users/email-exists`;
 
 	try {
 		const response = await axios.post(url, { email }, { headers });

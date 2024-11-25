@@ -61,36 +61,9 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 	{
 		accessorKey: 'role',
 		header: '사용자 분류',
-		cell: ({ getValue, row, column, table }) => {
-			const roleValue = getValue() as TUserTable['role'];
-			const arrayRole = [
-				{ value: 'admin', children: '관리자' },
-				{ value: 'user', children: '사용자' },
-			];
-
-			return (
-				<Select.Root
-					defaultValue={roleValue}
-					onValueChange={newValue => {
-						const meta = table.options.meta as CustomTableMeta;
-						meta.updateData(row.index, column.id, newValue);
-					}}
-				>
-					<Select.Trigger className='w-full'>
-						<Select.Value placeholder='사용자 분류' />
-					</Select.Trigger>
-					<Select.Content>
-						{arrayRole.map(item => {
-							const key = crypto.randomUUID();
-							return (
-								<Select.Item key={key} value={item.value}>
-									{item.children}
-								</Select.Item>
-							);
-						})}
-					</Select.Content>
-				</Select.Root>
-			);
+		cell: ({ getValue }) => {
+			const user = getValue() as TUserTable['role'];
+			return user === 'admin' ? '관리자' : '사용자';
 		},
 		meta: {
 			headerGroup: {
@@ -116,17 +89,8 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 	{
 		accessorKey: 'userPermissions',
 		header: '관리자 권한',
-		cell: ({ getValue, row, column, table }) => {
+		cell: ({ getValue }) => {
 			const user = getValue() as TUserTable['userPermissions'];
-			const handleCheckedChange = (key: string, newValue: boolean) => {
-				const meta = table.options.meta as CustomTableMeta;
-				const userPermissions = {
-					...row.original.userPermissions,
-					[key]: newValue,
-				};
-				meta.updateData(row.index, column.id, { ...userPermissions });
-			};
-
 			return (
 				<span className='flex justify-center items-center space-x-2'>
 					<span className='flex justify-start items-center'>
@@ -136,9 +100,6 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 							className='ml-1'
 							size='sm'
 							checked={user.create}
-							onCheckedChange={(checked: boolean) =>
-								handleCheckedChange('create', checked)
-							}
 						/>
 					</span>
 					<span className='flex justify-start items-center'>
@@ -148,9 +109,6 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 							className='ml-1'
 							size='sm'
 							checked={user.read}
-							onCheckedChange={(checked: boolean) =>
-								handleCheckedChange('read', checked)
-							}
 						/>
 					</span>
 					<span className='flex justify-start items-center'>
@@ -160,9 +118,6 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 							className='ml-1'
 							size='sm'
 							checked={user.update}
-							onCheckedChange={(checked: boolean) =>
-								handleCheckedChange('update', checked)
-							}
 						/>
 					</span>
 					<span className='flex justify-start items-center'>
@@ -172,9 +127,6 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 							className='ml-1'
 							size='sm'
 							checked={user.delete}
-							onCheckedChange={(checked: boolean) =>
-								handleCheckedChange('delete', checked)
-							}
 						/>
 					</span>
 				</span>
@@ -192,17 +144,8 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 	{
 		accessorKey: 'postPermissions',
 		header: '게시물 권한',
-		cell: ({ getValue, row, column, table }) => {
+		cell: ({ getValue }) => {
 			const post = getValue() as TUserTable['postPermissions'];
-			const handleCheckedChange = (key: string, newValue: boolean) => {
-				const meta = table.options.meta as CustomTableMeta;
-				const postPermissions = {
-					...row.original.postPermissions,
-					[key]: newValue,
-				};
-				meta.updateData(row.index, column.id, { ...postPermissions });
-			};
-
 			return (
 				<span className='flex justify-center items-center space-x-2'>
 					<span className='flex justify-start items-center'>
@@ -212,9 +155,6 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 							className='ml-1'
 							size='sm'
 							checked={post.create}
-							onCheckedChange={(checked: boolean) =>
-								handleCheckedChange('create', checked)
-							}
 						/>
 					</span>
 					<span className='flex justify-start items-center'>
@@ -224,9 +164,6 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 							className='ml-1'
 							size='sm'
 							checked={post.read}
-							onCheckedChange={(checked: boolean) =>
-								handleCheckedChange('read', checked)
-							}
 						/>
 					</span>
 					<span className='flex justify-start items-center'>
@@ -236,9 +173,6 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 							className='ml-1'
 							size='sm'
 							checked={post.update}
-							onCheckedChange={(checked: boolean) =>
-								handleCheckedChange('update', checked)
-							}
 						/>
 					</span>
 					<span className='flex justify-start items-center'>
@@ -248,9 +182,6 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 							className='ml-1'
 							size='sm'
 							checked={post.delete}
-							onCheckedChange={(checked: boolean) =>
-								handleCheckedChange('delete', checked)
-							}
 						/>
 					</span>
 				</span>

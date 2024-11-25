@@ -8,7 +8,7 @@ const headers = {
 const getUserPermissions = async (
 	email: string
 ): Promise<{ role: string; permissions: any }> => {
-	const url = `${apiUrl}/api/user/permissions?email=${encodeURIComponent(
+	const url = `${apiUrl}/api/users/permissions?email=${encodeURIComponent(
 		email
 	)}`;
 
