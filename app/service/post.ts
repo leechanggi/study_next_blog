@@ -33,11 +33,7 @@ const getPosts = async (withSkip: boolean = false): Promise<TPosts[]> => {
 	return data;
 };
 
-const getPostById = async (
-	id: TPosts['id'],
-	withNav: boolean = false,
-	withSkip: boolean = false
-): Promise<TPosts | TPostsWithNav | null> => {
+const getPostById = async (id: TPosts['id'], withNav: boolean = false, withSkip: boolean = false): Promise<TPosts | TPostsWithNav | null> => {
 	const postFilter = { id: id, ...(withSkip ? {} : { skip: false }) };
 
 	const post = await prisma.post.findUnique({
@@ -91,12 +87,9 @@ const createPost = async (data: TControllablePosts): Promise<TPosts> => {
 	return newPost;
 };
 
-const updatePostById = async (
-	id: TPosts['id'],
-	data: Partial<TControllablePosts>
-): Promise<TPosts | null> => {
+const updatePostById = async (id: TPosts['id'], data: Partial<TControllablePosts>): Promise<TPosts | null> => {
 	const updatedPost = await prisma.post.update({
-		where: { id: id },
+		where: { id },
 		data: {
 			...data,
 			updatedAt: new Date(),
@@ -108,7 +101,7 @@ const updatePostById = async (
 
 const deletePostById = async (id: TPosts['id']): Promise<TPosts | null> => {
 	const deletedPost = await prisma.post.delete({
-		where: { id: id },
+		where: { id },
 	});
 
 	return deletedPost;

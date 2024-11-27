@@ -14,6 +14,32 @@ type CustomTableMeta = {
 
 const columnsAuths: ColumnDef<TUserTable>[] = [
 	{
+		accessorKey: 'radioSelector',
+		header: '선택',
+		cell: ({ row }) => {
+			const id = row.original.id.toString();
+
+			return (
+				<Checkbox
+					id={`radioSelector-${id}`}
+					value={id}
+					checked={row.getIsSelected()}
+					disabled={!row.getCanSelect()}
+					onClick={row.getToggleSelectedHandler()}
+					aria-label={`ID ${id} 선택`}
+				/>
+			);
+		},
+		meta: {
+			headerGroup: {
+				className: 'text-center min-w-20',
+			},
+			rows: {
+				className: 'text-center',
+			},
+		},
+	},
+	{
 		accessorKey: 'id',
 		header: '사용자 고유 ID',
 		cell: ({ getValue }) => {
@@ -34,12 +60,7 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 				<Tooltip.Provider>
 					<Tooltip.Root>
 						<Tooltip.Trigger asChild>
-							<Button
-								type='button'
-								size='icon'
-								variant='ghost'
-								onClick={handleCopy}
-							>
+							<Button type='button' size='icon' variant='ghost' onClick={handleCopy}>
 								<RxCopy size='1.25rem' />
 								<span className='sr-only'>복사</span>
 							</Button>
@@ -95,39 +116,19 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 				<span className='flex justify-center items-center space-x-2'>
 					<span className='flex justify-start items-center'>
 						<Label htmlFor='userCreate'>C:</Label>
-						<Checkbox
-							id='userCreate'
-							className='ml-1'
-							size='sm'
-							checked={user.create}
-						/>
+						<Checkbox id='userCreate' className='ml-1' size='sm' checked={user.create} disabled />
 					</span>
 					<span className='flex justify-start items-center'>
 						<Label htmlFor='userRead'>R:</Label>
-						<Checkbox
-							id='userRead'
-							className='ml-1'
-							size='sm'
-							checked={user.read}
-						/>
+						<Checkbox id='userRead' className='ml-1' size='sm' checked={user.read} disabled />
 					</span>
 					<span className='flex justify-start items-center'>
 						<Label htmlFor='userUpdate'>U:</Label>
-						<Checkbox
-							id='userUpdate'
-							className='ml-1'
-							size='sm'
-							checked={user.update}
-						/>
+						<Checkbox id='userUpdate' className='ml-1' size='sm' checked={user.update} disabled />
 					</span>
 					<span className='flex justify-start items-center'>
 						<Label htmlFor='userDelete'>D:</Label>
-						<Checkbox
-							id='userDelete'
-							className='ml-1'
-							size='sm'
-							checked={user.delete}
-						/>
+						<Checkbox id='userDelete' className='ml-1' size='sm' checked={user.delete} disabled />
 					</span>
 				</span>
 			);
@@ -150,39 +151,19 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 				<span className='flex justify-center items-center space-x-2'>
 					<span className='flex justify-start items-center'>
 						<Label htmlFor='postCreate'>C:</Label>
-						<Checkbox
-							id='postCreate'
-							className='ml-1'
-							size='sm'
-							checked={post.create}
-						/>
+						<Checkbox id='postCreate' className='ml-1' size='sm' checked={post.create} disabled />
 					</span>
 					<span className='flex justify-start items-center'>
 						<Label htmlFor='postRead'>R:</Label>
-						<Checkbox
-							id='postRead'
-							className='ml-1'
-							size='sm'
-							checked={post.read}
-						/>
+						<Checkbox id='postRead' className='ml-1' size='sm' checked={post.read} disabled />
 					</span>
 					<span className='flex justify-start items-center'>
 						<Label htmlFor='postUpdate'>U:</Label>
-						<Checkbox
-							id='postUpdate'
-							className='ml-1'
-							size='sm'
-							checked={post.update}
-						/>
+						<Checkbox id='postUpdate' className='ml-1' size='sm' checked={post.update} disabled />
 					</span>
 					<span className='flex justify-start items-center'>
 						<Label htmlFor='postDelete'>D:</Label>
-						<Checkbox
-							id='postDelete'
-							className='ml-1'
-							size='sm'
-							checked={post.delete}
-						/>
+						<Checkbox id='postDelete' className='ml-1' size='sm' checked={post.delete} disabled />
 					</span>
 				</span>
 			);

@@ -10,16 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { TPosts } from '@/service/post';
 import { cn, supabaseClient, getPostById, updatePostById } from '@/lib';
-import {
-	Form,
-	MarkdownEditor,
-	Input,
-	Button,
-	Checkbox,
-	Label,
-	Dialog,
-	ScrollArea,
-} from '@/components';
+import { Form, MarkdownEditor, Input, Button, Checkbox, Label, Dialog, ScrollArea } from '@/components';
 import PostsSchema, { TPostSchema } from '@/(router)/admin/posts/posts-schema';
 
 const AdminPostsUpdatePage = ({ params }: { params: { slug: string } }) => {
@@ -73,9 +64,7 @@ const AdminPostsUpdatePage = ({ params }: { params: { slug: string } }) => {
 		});
 	}, [post, form]);
 
-	const handleClickOfCopyUrl = (
-		event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-	) => {
+	const handleClickOfCopyUrl = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		event.preventDefault();
 		if (!post?.imgSrc) return;
 		navigator.clipboard
@@ -108,32 +97,25 @@ const AdminPostsUpdatePage = ({ params }: { params: { slug: string } }) => {
 		const fileExt = file.name.split('.').pop();
 		const fileName = `${Date.now()}.${fileExt}`;
 		const filePath = `${fileName}`;
-		const { error } = await supabaseClient.storage
-			.from('public-images')
-			.upload(filePath, file, {
-				cacheControl: '3600',
-				upsert: false,
-			});
+		const { error } = await supabaseClient.storage.from('public-images').upload(filePath, file, {
+			cacheControl: '3600',
+			upsert: false,
+		});
 		if (error) {
 			console.error('Error uploading file:', error);
 			return;
 		}
-		const { data } = supabaseClient.storage
-			.from('public-images')
-			.getPublicUrl(filePath);
+		const { data } = supabaseClient.storage.from('public-images').getPublicUrl(filePath);
 		return data.publicUrl;
 	};
 
 	const handleFileDelete = async (filePath: string) => {
 		if (!filePath) return;
 		const extractFilePath = (filePath: string) => {
-			const startIndex =
-				filePath.indexOf('public-images/') + 'public-images/'.length;
+			const startIndex = filePath.indexOf('public-images/') + 'public-images/'.length;
 			return filePath.substring(startIndex);
 		};
-		const { error } = await supabaseClient.storage
-			.from('public-images')
-			.remove([extractFilePath(filePath)]);
+		const { error } = await supabaseClient.storage.from('public-images').remove([extractFilePath(filePath)]);
 		if (error) {
 			console.error('Error removing file:', error.message);
 			return false;
@@ -180,7 +162,6 @@ const AdminPostsUpdatePage = ({ params }: { params: { slug: string } }) => {
 	return (
 		<>
 			<h2 className='text-xl font-medium mb-2'>게시물 수정</h2>
-
 			<Form.Root {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)}>
 					<Form.Field
@@ -189,12 +170,7 @@ const AdminPostsUpdatePage = ({ params }: { params: { slug: string } }) => {
 							<Form.Item className='mt-4'>
 								<Form.Label>제목</Form.Label>
 								<Form.Control>
-									<Input
-										type='text'
-										className='mt-1'
-										placeholder='게시물의 제목을 입력하세요. (2~16자)'
-										{...field}
-									/>
+									<Input type='text' className='mt-1' placeholder='게시물의 제목을 입력하세요. (2~16자)' {...field} />
 								</Form.Control>
 								<Form.Message />
 							</Form.Item>
@@ -207,12 +183,7 @@ const AdminPostsUpdatePage = ({ params }: { params: { slug: string } }) => {
 							<Form.Item className='mt-4'>
 								<Form.Label>설명</Form.Label>
 								<Form.Control>
-									<Input
-										type='text'
-										className='mt-1'
-										placeholder='게시물의 설명을 입력하세요. (2~16자)'
-										{...field}
-									/>
+									<Input type='text' className='mt-1' placeholder='게시물의 설명을 입력하세요. (2~16자)' {...field} />
 								</Form.Control>
 								<Form.Message />
 							</Form.Item>
@@ -227,13 +198,7 @@ const AdminPostsUpdatePage = ({ params }: { params: { slug: string } }) => {
 								<Form.Item className='mt-4'>
 									<Form.Label>내용</Form.Label>
 									<Form.Control>
-										<MarkdownEditor
-											ref={ref}
-											value={post?.content}
-											wrappedClassName='mt-1 h-80'
-											onChange={value => onChange(value)}
-											{...rest}
-										/>
+										<MarkdownEditor ref={ref} value={post?.content} wrappedClassName='mt-1 h-80' onChange={value => onChange(value)} {...rest} />
 									</Form.Control>
 									<Form.Message />
 								</Form.Item>
@@ -253,13 +218,7 @@ const AdminPostsUpdatePage = ({ params }: { params: { slug: string } }) => {
 									</Form.Control>
 
 									<div className='flex items-center justify-between mt-1 space-x-2'>
-										<Input
-											type='text'
-											id='tag'
-											value={tag}
-											onChange={event => setTag(event.target.value)}
-											placeholder='추가할 태그를 입력하세요.'
-										/>
+										<Input type='text' id='tag' value={tag} onChange={event => setTag(event.target.value)} placeholder='추가할 태그를 입력하세요.' />
 										<Button
 											type='button'
 											variant='secondary'
@@ -280,14 +239,7 @@ const AdminPostsUpdatePage = ({ params }: { params: { slug: string } }) => {
 												.filter(Boolean)
 												.map((tag, index) => {
 													return (
-														<Button
-															key={index}
-															type='button'
-															variant='outline'
-															size='sm'
-															className='rounded-full mt-2 ml-2'
-															onClick={() => handleDeleteTag(tag)}
-														>
+														<Button key={index} type='button' variant='outline' size='sm' className='rounded-full mt-2 ml-2' onClick={() => handleDeleteTag(tag)}>
 															<span>{tag}</span>
 															<RxCross2 size='1rem' className='pl-1' />
 														</Button>
@@ -315,8 +267,7 @@ const AdminPostsUpdatePage = ({ params }: { params: { slug: string } }) => {
 													type='file'
 													accept='image/jpeg, image/png, image/gif, image/webp'
 													onChange={event => {
-														const selectedFile =
-															event.target.files?.[0] || null;
+														const selectedFile = event.target.files?.[0] || null;
 														setFileSrc(selectedFile);
 														onChange(event);
 													}}
@@ -327,43 +278,20 @@ const AdminPostsUpdatePage = ({ params }: { params: { slug: string } }) => {
 										<div className='shrink-0'>
 											{post?.imgSrc && (
 												<Dialog
-													trigger={
-														<Button variant='destructive'>
-															수정 전 이미지보기
-														</Button>
-													}
+													trigger={<Button variant='destructive'>수정 전 이미지보기</Button>}
 													title='수정 전 이미지보기'
 													content={
 														<>
 															<ScrollArea className='h-[261px]'>
-																<Image
-																	src={post?.imgSrc}
-																	alt='수정 전 이미지보기'
-																	width={0}
-																	height={0}
-																	className={cn('w-full', 'h-auto')}
-																	priority
-																	unoptimized
-																/>
+																<Image src={post?.imgSrc} alt='수정 전 이미지보기' width={0} height={0} className={cn('w-full', 'h-auto')} priority unoptimized />
 															</ScrollArea>
 
 															<Label htmlFor='imgSrc' className='mt-4'>
 																대표 이미지 URL
 															</Label>
 															<div className='flex items-center justify-between mt-1 space-x-2'>
-																<Input
-																	type='text'
-																	id='imgSrc'
-																	value={post?.imgSrc}
-																	readOnly
-																	disabled
-																/>
-																<Button
-																	type='button'
-																	variant='secondary'
-																	className='shrink-0'
-																	onClick={handleClickOfCopyUrl}
-																>
+																<Input type='text' id='imgSrc' value={post?.imgSrc} readOnly disabled />
+																<Button type='button' variant='secondary' className='shrink-0' onClick={handleClickOfCopyUrl}>
 																	URL복사
 																</Button>
 															</div>
@@ -387,12 +315,7 @@ const AdminPostsUpdatePage = ({ params }: { params: { slug: string } }) => {
 								<Form.Item className='mt-4'>
 									<div className='flex items-center'>
 										<Form.Control>
-											<Checkbox
-												id='skip'
-												checked={value}
-												onCheckedChange={onChange}
-												{...rest}
-											/>
+											<Checkbox id='skip' checked={value} onCheckedChange={onChange} {...rest} />
 										</Form.Control>
 										<Label htmlFor='skip' className='grow pl-2'>
 											게시물 숨김

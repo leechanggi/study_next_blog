@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 
 import { cn, getPosts } from '@/lib';
@@ -9,15 +9,13 @@ import { DataTable, Button } from '@/components';
 import { getColumnsPostsByAccessorKeys } from '@/(router)/admin/posts/columns-posts';
 
 const AdminPostsUpdatePage = () => {
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState<string | null>(null);
-	const [posts, setPosts] = useState<TPosts[]>([]);
-	const [rowSelection, setRowSelection] = useState<{ [key: string]: boolean }>(
-		{}
-	);
-	const [idSelection, setIdSelection] = useState<number | null>(null);
+	const [loading, setLoading] = React.useState(true);
+	const [error, setError] = React.useState<string | null>(null);
+	const [posts, setPosts] = React.useState<TPosts[]>([]);
+	const [rowSelection, setRowSelection] = React.useState<{ [key: string]: boolean }>({});
+	const [idSelection, setIdSelection] = React.useState<number | null>(null);
 
-	useEffect(() => {
+	React.useEffect(() => {
 		const fetchData = async () => {
 			try {
 				const fetchedPosts = await getPosts(true);
@@ -32,10 +30,8 @@ const AdminPostsUpdatePage = () => {
 		fetchData();
 	}, []);
 
-	useEffect(() => {
-		const selectedRowKey = Object.keys(rowSelection).find(
-			key => rowSelection[key]
-		);
+	React.useEffect(() => {
+		const selectedRowKey = Object.keys(rowSelection).find(key => rowSelection[key]);
 
 		if (selectedRowKey !== undefined) {
 			const selectedId = posts[parseInt(selectedRowKey)].id;
@@ -48,16 +44,7 @@ const AdminPostsUpdatePage = () => {
 	if (loading) return <div>Loading...</div>;
 	if (error) return <div>{error}</div>;
 
-	const columnsPosts = getColumnsPostsByAccessorKeys([
-		'radioSelector',
-		'id',
-		'title',
-		'createdAt',
-		'updatedAt',
-		'tags',
-		'imgSrc',
-		'skip',
-	]);
+	const columnsPosts = getColumnsPostsByAccessorKeys(['radioSelector', 'id', 'title', 'createdAt', 'updatedAt', 'tags', 'imgSrc', 'skip']);
 
 	const isUpdateButtonDisabled = idSelection === null;
 
@@ -79,21 +66,12 @@ const AdminPostsUpdatePage = () => {
 
 			<Button
 				size='lg'
-				className={cn(
-					'w-full',
-					'mt-8',
-					isUpdateButtonDisabled && 'cursor-not-allowed opacity-60'
-				)}
+				className={cn('w-full', 'mt-8', isUpdateButtonDisabled && 'cursor-not-allowed opacity-60')}
 				aria-disabled={isUpdateButtonDisabled}
 				tabIndex={isUpdateButtonDisabled ? -1 : undefined}
 				asChild
 			>
-				<Link
-					href={
-						isUpdateButtonDisabled ? '' : `/admin/posts/update/${idSelection}`
-					}
-					passHref={isUpdateButtonDisabled}
-				>
+				<Link href={isUpdateButtonDisabled ? '' : `/admin/posts/update/${idSelection}`} passHref={isUpdateButtonDisabled}>
 					게시물 수정
 				</Link>
 			</Button>

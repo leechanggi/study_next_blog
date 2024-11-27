@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import prisma from '@prismaClient';
+import { InputJsonValue, JsonValue } from '@prisma/client/runtime/library';
 
 type TPermissions = {
 	role: 'user' | 'admin';
@@ -32,6 +33,8 @@ type TUserTable = {
 	postPermissions: TUser['permissions']['managePost'];
 } & Omit<TUser, 'permissions'>;
 
+type TControllableUser = Omit<TUser, 'password' | 'createdAt' | 'updatedAt'>;
+
 type TVerificationToken = {
 	id: string;
 	email: string;
@@ -42,17 +45,17 @@ type TVerificationToken = {
 
 const saltRounds = parseInt(process.env.NEXT_PUBLIC_BCRYPT_ROUNDS || '16', 10);
 
-const hashPassword = async (password: string): Promise<string> => {
+const hashPassword = async (password: TUser['password']): Promise<string> => {
 	const salt = await bcrypt.genSalt(saltRounds);
 	return bcrypt.hash(password, salt);
 };
 
-const emailExists = async (email: string): Promise<boolean> => {
+const emailExists = async (email: TUser['email']): Promise<boolean> => {
 	const user = await prisma.user.findUnique({ where: { email } });
 	return !!user;
 };
 
-const permissions = async (email: string): Promise<TPermissions> => {
+const permissions = async (email: TUser['email']): Promise<TPermissions> => {
 	const data = await prisma.user.findUnique({
 		where: { email },
 		select: {
@@ -60,7 +63,6 @@ const permissions = async (email: string): Promise<TPermissions> => {
 			permissions: true,
 		},
 	});
-
 	if (!data) {
 		throw new Error('Cannot find a user with the specified email.');
 	}
@@ -73,19 +75,14 @@ const permissions = async (email: string): Promise<TPermissions> => {
 	};
 };
 
-const signup = async (
-	email: string,
-	password: string
-): Promise<TUser | null> => {
+const signup = async (email: string, password: string): Promise<TUser | null> => {
 	try {
 		const userExists = await emailExists(email);
-
 		if (userExists) {
 			throw new Error('This email is already registered.');
 		}
 
 		const hashedPassword = await hashPassword(password);
-
 		const newUser = await prisma.user.create({
 			data: {
 				email,
@@ -123,13 +120,9 @@ const signup = async (
 	}
 };
 
-const login = async (
-	email: string,
-	password: string
-): Promise<TUser | null> => {
+const login = async (email: string, password: string): Promise<TUser | null> => {
 	try {
 		const user = await prisma.user.findUnique({ where: { email } });
-
 		if (!user) {
 			throw new Error('User not found');
 		}
@@ -166,5 +159,32 @@ const getUsers = async (): Promise<TUser[] | null> => {
 	return data as TUser[];
 };
 
-export type { TPermissions, TUser, TUserTable, TVerificationToken };
-export { hashPassword, emailExists, permissions, signup, login, getUsers };
+const getUserById = async (id: TUser['id']): Promise<TUser | null> => {
+	const userFilter = { id };
+	const data = await prisma.user.findUnique({
+		where: userFilter,
+	});
+
+	return data as TUser;
+};
+
+const updateUserById = async (id: TUser['id'], data: Partial<TControllableUser>): Promise<TUser | null> => {
+	const permissions = data.permissions ? (data.permissions as InputJsonValue) : undefined;
+
+	const updatedUser = await prisma.user.update({
+		where: { id },
+		data: {
+			...data,
+			permissions,
+			updatedAt: new Date(),
+		},
+	});
+
+	return {
+		...updatedUser,
+		permissions: updatedUser.permissions as TPermissions['permissions'],
+	};
+};
+
+export type { TPermissions, TUser, TUserTable, TVerificationToken, TControllableUser };
+export { hashPassword, emailExists, permissions, signup, login, getUsers, getUserById, updateUserById };
