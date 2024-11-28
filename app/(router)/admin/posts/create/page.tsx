@@ -13,6 +13,7 @@ import { Form, MarkdownEditor, Input, Button, Checkbox, Label } from '@/componen
 import PostsSchema, { TPostSchema } from '@/(router)/admin/posts/posts-schema';
 
 const AdminPostsCreatePage = () => {
+	const [isClient, setIsClient] = React.useState(false);
 	const router = useRouter();
 	const { data: session } = useSession();
 	const [tag, setTag] = React.useState<string>('');
@@ -89,6 +90,14 @@ const AdminPostsCreatePage = () => {
 			alert('일시적인 오류가 발생했습니다. 잠시 후에 다시 시도해주세요.');
 		}
 	};
+
+	React.useEffect(() => {
+		setIsClient(true);
+	}, []);
+
+	if (!isClient) {
+		return null;
+	}
 
 	return (
 		<>

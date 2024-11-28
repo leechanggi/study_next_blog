@@ -5,29 +5,13 @@ import { notFound } from 'next/navigation';
 import { RxCalendar } from 'react-icons/rx';
 import * as AspectRatio from '@radix-ui/react-aspect-ratio';
 
-import { cn, formatDate, splitComma, getPosts, getPostById } from '@/lib';
-import { TPostsWithNav, TPosts } from '@/service/post';
+import { cn, formatDate, splitComma, getPostById } from '@/lib';
+import { TPostsWithNav } from '@/service/post';
 import { Button, Markdown, PostNavigator } from '@/components';
-
-const revalidate = 86400;
-
-const generateStaticParams = async () => {
-	try {
-		const posts = await getPosts();
-		const slugs = posts.map((post: TPosts) => ({
-			slug: post.id.toString(),
-		}));
-		return slugs;
-	} catch (error) {
-		console.error('Error fetching posts for static params:', error);
-		return [];
-	}
-};
 
 const generateMetadata = async ({ params }: { params: { slug: string } }) => {
 	const { slug: id } = params;
 	const { title } = await getPostById(parseInt(id));
-
 	return {
 		title,
 	};
@@ -80,5 +64,5 @@ const PostsSlugPage = async ({ params }: { params: { slug: string } }) => {
 	);
 };
 
-export { revalidate, generateStaticParams, generateMetadata };
+export { generateMetadata };
 export default PostsSlugPage;
