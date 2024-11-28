@@ -4,13 +4,9 @@ import React from 'react';
 import { RxCopy } from 'react-icons/rx';
 import { ColumnDef } from '@tanstack/react-table';
 
-import { Label, Checkbox, Button, Tooltip, Select } from '@/components';
+import { Label, Checkbox, Button, Tooltip } from '@/components';
 import { TUserTable } from '@/service/user';
 import { formatDate } from '@/lib';
-
-type CustomTableMeta = {
-	updateData: (rowIndex: number, columnId: string, newValue: any) => void;
-};
 
 const columnsAuths: ColumnDef<TUserTable>[] = [
 	{
@@ -227,4 +223,9 @@ const columnsAuths: ColumnDef<TUserTable>[] = [
 	},
 ];
 
+const getColumnsAuthsByAccessorKeys = (accessorKeys: string[]) => {
+	return columnsAuths.filter(column => accessorKeys.includes((column as { accessorKey?: string }).accessorKey || ''));
+};
+
+export { getColumnsAuthsByAccessorKeys };
 export default columnsAuths;

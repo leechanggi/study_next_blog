@@ -41,26 +41,15 @@ const PostsSlugPage = async ({ params }: { params: { slug: string } }) => {
 		return notFound();
 	}
 
-	const { title, content, createdAt, tags, imgSrc, prev, next } =
-		data as TPostsWithNav;
+	const { title, content, createdAt, tags, imgSrc, prev, next } = data as TPostsWithNav;
 	const { year, month, day } = formatDate(createdAt);
 
 	return (
 		<>
 			{imgSrc && (
 				<div className='mb-8'>
-					<AspectRatio.Root
-						ratio={21.3 / 9}
-						className='overflow-hidden rounded-lg'
-					>
-						<Image
-							src={imgSrc}
-							alt={title}
-							width={736}
-							height={311}
-							className={cn('w-full')}
-							priority
-						/>
+					<AspectRatio.Root ratio={21.3 / 9} className='overflow-hidden rounded-lg'>
+						<Image src={imgSrc} alt={title} width={736} height={311} className={cn('w-full')} priority />
 					</AspectRatio.Root>
 				</div>
 			)}
@@ -76,12 +65,7 @@ const PostsSlugPage = async ({ params }: { params: { slug: string } }) => {
 				{splitComma(tags) && (
 					<div className='flex flex-wrap gap-4 mt-8'>
 						{splitComma(tags).map(tag => (
-							<Button
-								key={tag}
-								variant='secondary'
-								className='rounded-full'
-								asChild
-							>
+							<Button key={tag} variant='secondary' className='rounded-full' asChild>
 								<Link href={{ pathname: '/', query: { tag } }}>#{tag}</Link>
 							</Button>
 						))}

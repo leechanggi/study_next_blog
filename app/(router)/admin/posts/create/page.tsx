@@ -9,14 +9,7 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { supabaseClient, createPost } from '@/lib';
-import {
-	Form,
-	MarkdownEditor,
-	Input,
-	Button,
-	Checkbox,
-	Label,
-} from '@/components';
+import { Form, MarkdownEditor, Input, Button, Checkbox, Label } from '@/components';
 import PostsSchema, { TPostSchema } from '@/(router)/admin/posts/posts-schema';
 
 const AdminPostsCreatePage = () => {
@@ -56,39 +49,28 @@ const AdminPostsCreatePage = () => {
 
 	const handleFileChange = async (file: File) => {
 		if (!file) return;
-
 		const fileExt = file.name.split('.').pop();
 		const fileName = `${Date.now()}.${fileExt}`;
 		const filePath = `${fileName}`;
-
-		let { error } = await supabaseClient.storage
-			.from('public-images')
-			.upload(filePath, file, {
-				cacheControl: '3600',
-				upsert: false,
-			});
-
+		let { error } = await supabaseClient.storage.from('public-images').upload(filePath, file, {
+			cacheControl: '3600',
+			upsert: false,
+		});
 		if (error) {
 			console.error('Error uploading file:', error);
 			return;
 		}
-
-		const { data } = supabaseClient.storage
-			.from('public-images')
-			.getPublicUrl(filePath);
-
+		const { data } = supabaseClient.storage.from('public-images').getPublicUrl(filePath);
 		return data.publicUrl;
 	};
 
 	const onSubmit = async (data: TPostSchema) => {
 		const { imgSrc, ...rest } = data;
-
 		if (!fileSrc) {
 			form.setError('imgSrc', {
 				type: 'manual',
 				message: '대표 이미지는 필수 값입니다.',
 			});
-
 			console.error('No file selected for upload.');
 			return;
 		}
@@ -96,18 +78,14 @@ const AdminPostsCreatePage = () => {
 		try {
 			const publicUrl = await handleFileChange(fileSrc);
 			const authorId = await session?.user.id;
-
 			if (!publicUrl || !authorId) {
 				console.error('Failed to upload the file.');
 				return;
 			}
-
 			await createPost({ imgSrc: publicUrl, authorId, ...rest });
-
 			router.push('/admin/posts');
 		} catch (error) {
 			console.error('Error submitting the form:', error);
-
 			alert('일시적인 오류가 발생했습니다. 잠시 후에 다시 시도해주세요.');
 		}
 	};
@@ -115,7 +93,6 @@ const AdminPostsCreatePage = () => {
 	return (
 		<>
 			<h2 className='text-xl font-medium mb-2'>게시물 생성</h2>
-
 			<Form.Root {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)}>
 					<Form.Field
@@ -124,12 +101,7 @@ const AdminPostsCreatePage = () => {
 							<Form.Item className='mt-4'>
 								<Form.Label>제목</Form.Label>
 								<Form.Control>
-									<Input
-										type='text'
-										className='mt-1'
-										placeholder='게시물의 제목을 입력하세요. (2~16자)'
-										{...field}
-									/>
+									<Input type='text' className='mt-1' placeholder='게시물의 제목을 입력하세요. (2~16자)' {...field} />
 								</Form.Control>
 								<Form.Message />
 							</Form.Item>
@@ -142,12 +114,7 @@ const AdminPostsCreatePage = () => {
 							<Form.Item className='mt-4'>
 								<Form.Label>설명</Form.Label>
 								<Form.Control>
-									<Input
-										type='text'
-										className='mt-1'
-										placeholder='게시물의 설명을 입력하세요. (2~16자)'
-										{...field}
-									/>
+									<Input type='text' className='mt-1' placeholder='게시물의 설명을 입력하세요. (2~16자)' {...field} />
 								</Form.Control>
 								<Form.Message />
 							</Form.Item>
@@ -162,13 +129,7 @@ const AdminPostsCreatePage = () => {
 								<Form.Item className='mt-4'>
 									<Form.Label>내용</Form.Label>
 									<Form.Control>
-										<MarkdownEditor
-											ref={ref}
-											value={value}
-											wrappedClassName='mt-1 h-80'
-											onChange={value => onChange(value)}
-											{...rest}
-										/>
+										<MarkdownEditor ref={ref} value={value} wrappedClassName='mt-1 h-80' onChange={value => onChange(value)} {...rest} />
 									</Form.Control>
 									<Form.Message />
 								</Form.Item>
@@ -186,15 +147,8 @@ const AdminPostsCreatePage = () => {
 									<Form.Control>
 										<Input type='hidden' value={tags} {...rest} />
 									</Form.Control>
-
 									<div className='flex items-center justify-between mt-1 space-x-2'>
-										<Input
-											type='text'
-											id='tag'
-											value={tag}
-											onChange={event => setTag(event.target.value)}
-											placeholder='추가할 태그를 입력하세요.'
-										/>
+										<Input type='text' id='tag' value={tag} onChange={event => setTag(event.target.value)} placeholder='추가할 태그를 입력하세요.' />
 										<Button
 											type='button'
 											variant='secondary'
@@ -207,7 +161,6 @@ const AdminPostsCreatePage = () => {
 											등록
 										</Button>
 									</div>
-
 									{tags && (
 										<div className='flex flex-wrap items-center justify-start -ml-2'>
 											{tags
@@ -215,14 +168,7 @@ const AdminPostsCreatePage = () => {
 												.filter(Boolean)
 												.map((tag, index) => {
 													return (
-														<Button
-															key={index}
-															type='button'
-															variant='outline'
-															size='sm'
-															className='rounded-full mt-2 ml-2'
-															onClick={() => handleDeleteTag(tag)}
-														>
+														<Button key={index} type='button' variant='outline' size='sm' className='rounded-full mt-2 ml-2' onClick={() => handleDeleteTag(tag)}>
 															<span>{tag}</span>
 															<RxCross2 size='1rem' className='pl-1' />
 														</Button>
@@ -270,12 +216,7 @@ const AdminPostsCreatePage = () => {
 								<Form.Item className='mt-4'>
 									<div className='flex items-center'>
 										<Form.Control>
-											<Checkbox
-												id='skip'
-												checked={value}
-												onCheckedChange={onChange}
-												{...rest}
-											/>
+											<Checkbox id='skip' checked={value} onCheckedChange={onChange} {...rest} />
 										</Form.Control>
 										<Label htmlFor='skip' className='grow pl-2'>
 											게시물 숨김

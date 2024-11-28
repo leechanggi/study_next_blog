@@ -7,7 +7,7 @@ import { getUsers } from '@/lib';
 import { DataTable } from '@/components';
 import { TUser, TUserTable } from '@/service/user';
 
-import columnsAuths from './columns-auths';
+import { getColumnsAuthsByAccessorKeys } from './columns-auths';
 
 const AdminPosts = () => {
 	const [users, setUsers] = React.useState<TUserTable[]>([]);
@@ -47,6 +47,8 @@ const AdminPosts = () => {
 
 	if (loading) return <div>Loading...</div>;
 	if (error) return <div>{error}</div>;
+
+	const columnsAuths = getColumnsAuthsByAccessorKeys(['id', 'role', 'email', 'userPermissions', 'postPermissions', 'createdAt', 'updatedAt']);
 
 	return (
 		<>

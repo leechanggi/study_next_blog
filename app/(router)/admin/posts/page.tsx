@@ -30,15 +30,7 @@ const AdminPosts = () => {
 	if (loading) return <div>Loading...</div>;
 	if (error) return <div>{error}</div>;
 
-	const columnsPosts = getColumnsPostsByAccessorKeys([
-		'id',
-		'title',
-		'createdAt',
-		'updatedAt',
-		'tags',
-		'imgSrc',
-		'skip',
-	]);
+	const columnsPosts = getColumnsPostsByAccessorKeys(['id', 'title', 'createdAt', 'updatedAt', 'tags', 'imgSrc', 'skip']);
 
 	return (
 		<>

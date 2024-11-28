@@ -2,8 +2,8 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { RiShieldStarLine } from 'react-icons/ri';
-import { RxDashboard, RxGlobe, RxGear, RxFile, RxFileText, RxFilePlus, RxFileMinus } from 'react-icons/rx';
+import { RiShieldStarLine, RiShieldCrossLine } from 'react-icons/ri';
+import { RxDashboard, RxGlobe, RxFile, RxFileText, RxFilePlus, RxFileMinus } from 'react-icons/rx';
 
 import { cn } from '@/lib';
 import { Accordion, Button } from '@/components';
@@ -42,13 +42,13 @@ const AdminAside = React.forwardRef<HTMLElement, Types.AdminAsideProps>((props, 
 					<Accordion.Content className='pb-2'>
 						<Button variant='ghost' className='w-full justify-start' asChild>
 							<Link href='/admin/auths'>
-								<RxGear size='1rem' />
+								<RiShieldStarLine size='1rem' />
 								<span className='pl-2'>사용자 권한 조회</span>
 							</Link>
 						</Button>
 						<Button variant='ghost' className='w-full justify-start' asChild>
 							<Link href='/admin/auths/update'>
-								<RxGear size='1rem' />
+								<RiShieldCrossLine size='1rem' />
 								<span className='pl-2'>사용자 권한 수정</span>
 							</Link>
 						</Button>
