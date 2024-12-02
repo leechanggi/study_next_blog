@@ -22,15 +22,10 @@
 			"@/*": ["./app/*"],
 			"@router/*": ["./app/(router)/*"],
 			"@prismaClient": ["./prisma/client.ts"],
+			"@supabaseClient": ["./supabase/client.ts"],
 			"@store/*": ["./store/*"]
 		}
 	},
-	"include": [
-		"next-env.d.ts",
-		"**/*.ts",
-		"**/*.tsx",
-		".next/types/**/*.ts",
-		"app/lib/components/ThemeProvider"
-	],
+	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/lib/components/ThemeProvider"],
 	"exclude": ["node_modules"]
 }

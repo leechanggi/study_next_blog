@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import prisma from '@prismaClient';
-import { InputJsonValue, JsonValue } from '@prisma/client/runtime/library';
+import { InputJsonValue } from '@prisma/client/runtime/library';
 
 type TPermissions = {
 	role: 'user' | 'admin';

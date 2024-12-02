@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { RiShieldStarLine, RiShieldCrossLine } from 'react-icons/ri';
+import { RiShieldStarLine, RiShieldCrossLine, RiDatabase2Line, RiDatabase2Fill, RiCoinFill, RiCoinLine } from 'react-icons/ri';
 import { RxDashboard, RxGlobe, RxFile, RxFileText, RxFilePlus, RxFileMinus } from 'react-icons/rx';
 
 import { cn } from '@/lib';
@@ -64,7 +64,7 @@ const AdminAside = React.forwardRef<HTMLElement, Types.AdminAsideProps>((props, 
 					<Accordion.Content className='pb-2'>
 						<Button variant='ghost' className='w-full justify-start' asChild>
 							<Link href='/admin/posts'>
-								<RxFile size='1.25rem' />
+								<RxFile size='1rem' />
 								<span className='pl-2'>게시물 조회</span>
 							</Link>
 						</Button>
@@ -84,6 +84,40 @@ const AdminAside = React.forwardRef<HTMLElement, Types.AdminAsideProps>((props, 
 							<Link href='/admin/posts/delete'>
 								<RxFileMinus size='1rem' />
 								<span className='pl-2'>게시물 삭제</span>
+							</Link>
+						</Button>
+					</Accordion.Content>
+				</Accordion.Item>
+				<Accordion.Item value='item-4'>
+					<Accordion.Trigger>
+						<span className='flex items-center'>
+							<RiDatabase2Line size='1.25rem' />
+							<span className='pl-2'>이미지 관리</span>
+						</span>
+					</Accordion.Trigger>
+					<Accordion.Content className='pb-2'>
+						<Button variant='ghost' className='w-full justify-start' asChild>
+							<Link href='/admin/images'>
+								<RiDatabase2Line size='1rem' />
+								<span className='pl-2'>이미지 조회</span>
+							</Link>
+						</Button>
+						<Button variant='ghost' className='w-full justify-start' asChild>
+							<Link href='/admin/images/create'>
+								<RiDatabase2Fill size='1rem' />
+								<span className='pl-2'>이미지 생성</span>
+							</Link>
+						</Button>
+						<Button variant='ghost' className='w-full justify-start' asChild>
+							<Link href='/admin/images/update'>
+								<RiCoinFill size='1rem' />
+								<span className='pl-2'>이미지 수정</span>
+							</Link>
+						</Button>
+						<Button variant='ghost' className='w-full justify-start' asChild>
+							<Link href='/admin/images/delete'>
+								<RiCoinLine size='1rem' />
+								<span className='pl-2'>이미지 삭제</span>
 							</Link>
 						</Button>
 					</Accordion.Content>
