@@ -1,16 +1,17 @@
 'use client';
 
 import React from 'react';
+import * as z from 'zod';
+import { useForm } from 'react-hook-form';
+import { RxCross2 } from 'react-icons/rx';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { RxCross2 } from 'react-icons/rx';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { supabaseClient, createPost } from '@/lib';
-import { Form, MarkdownEditor, Input, Button, Checkbox, Label } from '@/components';
+import { createPost } from '@/lib';
+import supabase from '@supabaseClient';
 import PostsSchema, { TPostSchema } from '@/(router)/admin/posts/posts-schema';
+import { Form, MarkdownEditor, Input, Button, Checkbox, Label } from '@/components';
 
 const AdminPostsCreatePage = () => {
 	const [isClient, setIsClient] = React.useState(false);
@@ -53,7 +54,7 @@ const AdminPostsCreatePage = () => {
 		const fileExt = file.name.split('.').pop();
 		const fileName = `${Date.now()}.${fileExt}`;
 		const filePath = `${fileName}`;
-		let { error } = await supabaseClient.storage.from('public-images').upload(filePath, file, {
+		let { error } = await supabase.storage.from('public-images').upload(filePath, file, {
 			cacheControl: '3600',
 			upsert: false,
 		});
@@ -61,7 +62,7 @@ const AdminPostsCreatePage = () => {
 			console.error('Error uploading file:', error);
 			return;
 		}
-		const { data } = supabaseClient.storage.from('public-images').getPublicUrl(filePath);
+		const { data } = supabase.storage.from('public-images').getPublicUrl(filePath);
 		return data.publicUrl;
 	};
 

@@ -1,6 +1,7 @@
 // @index('./**/index.{ts,tsx}', f => `export { default as ${f.path.split('/').reverse()[1]} } from '${f.path.replace(/\/index$/, '')}';`)
 export { default as confirmEmail } from './api/email/confirmEmail';
 export { default as requestEmail } from './api/email/requestEmail';
+export { default as getImages } from './api/image/getImages';
 export { default as createPost } from './api/posts/createPost';
 export { default as deletePostById } from './api/posts/deletePostById';
 export { default as getPostById } from './api/posts/getPostById';
@@ -23,5 +24,4 @@ export { default as formatDate } from './utils/formatDate';
 export { default as getFilteredPosts } from './utils/getFilteredPosts';
 export { default as getTags } from './utils/getTags';
 export { default as splitComma } from './utils/splitComma';
-export { default as supabaseClient } from './utils/supabaseClient';
 // @endindex

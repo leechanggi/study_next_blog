@@ -105,7 +105,7 @@ const AdminAside = React.forwardRef<HTMLElement, Types.AdminAsideProps>((props, 
 						<Button variant='ghost' className='w-full justify-start' asChild>
 							<Link href='/admin/images/create'>
 								<RiDatabase2Fill size='1rem' />
-								<span className='pl-2'>이미지 생성</span>
+								<span className='pl-2'>이미지 업로드</span>
 							</Link>
 						</Button>
 						<Button variant='ghost' className='w-full justify-start' asChild>

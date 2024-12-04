@@ -8,10 +8,11 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+import supabase from '@supabaseClient';
 import { TPosts } from '@/service/post';
-import { cn, supabaseClient, getPostById, updatePostById } from '@/lib';
-import { Form, MarkdownEditor, Input, Button, Checkbox, Label, Dialog, ScrollArea } from '@/components';
+import { cn, getPostById, updatePostById } from '@/lib';
 import PostsSchema, { TPostSchema } from '@/(router)/admin/posts/posts-schema';
+import { Form, MarkdownEditor, Input, Button, Checkbox, Label, Dialog, ScrollArea } from '@/components';
 
 const AdminPostsUpdatePage = ({ params }: { params: { slug: string } }) => {
 	const router = useRouter();
@@ -97,7 +98,7 @@ const AdminPostsUpdatePage = ({ params }: { params: { slug: string } }) => {
 		const fileExt = file.name.split('.').pop();
 		const fileName = `${Date.now()}.${fileExt}`;
 		const filePath = `${fileName}`;
-		const { error } = await supabaseClient.storage.from('public-images').upload(filePath, file, {
+		const { error } = await supabase.storage.from('public-images').upload(filePath, file, {
 			cacheControl: '3600',
 			upsert: false,
 		});
@@ -105,7 +106,7 @@ const AdminPostsUpdatePage = ({ params }: { params: { slug: string } }) => {
 			console.error('Error uploading file:', error);
 			return;
 		}
-		const { data } = supabaseClient.storage.from('public-images').getPublicUrl(filePath);
+		const { data } = supabase.storage.from('public-images').getPublicUrl(filePath);
 		return data.publicUrl;
 	};
 
@@ -115,7 +116,7 @@ const AdminPostsUpdatePage = ({ params }: { params: { slug: string } }) => {
 			const startIndex = filePath.indexOf('public-images/') + 'public-images/'.length;
 			return filePath.substring(startIndex);
 		};
-		const { error } = await supabaseClient.storage.from('public-images').remove([extractFilePath(filePath)]);
+		const { error } = await supabase.storage.from('public-images').remove([extractFilePath(filePath)]);
 		if (error) {
 			console.error('Error removing file:', error.message);
 			return false;

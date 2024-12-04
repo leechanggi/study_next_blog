@@ -1,12 +1,9 @@
 'use client';
 
 import React from 'react';
-// import { getPosts } from '@/lib';
-
-// import { DataTable } from '@/components';
-// import { TPosts } from '@/service/post';
 import { TImage } from '@/service/image';
-// import { getColumnsPostsByAccessorKeys } from './columns-posts';
+import { ImageCard, ImageCardItem } from '@/components';
+import { getImages } from '@/lib';
 
 const AdminPosts = () => {
 	const [images, setImages] = React.useState<TImage[]>([]);
@@ -16,8 +13,8 @@ const AdminPosts = () => {
 	React.useEffect(() => {
 		const fetchData = async () => {
 			try {
-				// const fetchedPosts = await getPosts(true);
-				// setPosts(fetchedPosts);
+				const fetchedPosts = await getImages();
+				setImages(fetchedPosts);
 			} catch (err) {
 				setError('일시적인 오류가 발생했습니다. 잠시 후에 다시 시도해주세요.');
 			} finally {
@@ -28,15 +25,26 @@ const AdminPosts = () => {
 		fetchData();
 	}, []);
 
+	React.useEffect(() => {
+		console.log(images);
+	}, [images]);
+
 	if (loading) return <div>Loading...</div>;
 	if (error) return <div>{error}</div>;
-
-	// const columnsPosts = getColumnsPostsByAccessorKeys(['id', 'title', 'createdAt', 'updatedAt', 'tags', 'imgSrc', 'skip']);
 
 	return (
 		<>
 			<h2 className='text-xl font-medium mb-2'>이미지 조회</h2>
-			{/* <DataTable columns={columnsPosts} data={posts} /> */}
+			<ImageCard>
+				<ImageCardItem src='https://syxpcuxevstvmzigssch.supabase.co/storage/v1/object/public/public-images/1733303715731.png' alt='' />
+			</ImageCard>
+			{/* {images.length > 0 ? (
+				<ImageCard>
+					<ImageCardItem src='https://syxpcuxevstvmzigssch.supabase.co/storage/v1/object/public/public-images/1733303715731.png' alt='' />
+				</ImageCard>
+			) : (
+				<p>조회된 이미지가 없습니다.</p>
+			)} */}
 		</>
 	);
 };

@@ -24,6 +24,8 @@ export { default as AdminAside } from './Organisms/AdminAside';
 export { default as Board } from './Organisms/Board';
 export { default as BoardItem } from './Organisms/BoardItem';
 export { default as FormSearch } from './Organisms/FormSearch';
+export { default as ImageCard } from './Organisms/ImageCard';
+export { default as ImageCardItem } from './Organisms/ImageCardItem';
 export { default as InfiniteAside } from './Organisms/InfiniteAside';
 export { default as InfiniteTags } from './Organisms/InfiniteTags';
 export { default as Markdown } from './Organisms/Markdown';

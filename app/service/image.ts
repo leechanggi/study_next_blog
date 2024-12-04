@@ -1,5 +1,3 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-
 import prisma from '@prismaClient';
 import supabase from '@supabaseClient';
 
@@ -49,11 +47,9 @@ const createImage = async ({ bucket = 'public-images', path, file, userId }: TCr
 
 const getImages = async (bucket: string = 'public-images'): Promise<TImage[]> => {
 	const { data: files, error } = await supabase.storage.from(bucket).list();
-
 	if (error) {
 		throw new Error(`Failed to fetch images from bucket: ${error.message}`);
 	}
-
 	if (!files) return [];
 
 	const images = await prisma.image.findMany({
