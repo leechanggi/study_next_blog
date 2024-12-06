@@ -39,21 +39,21 @@ const AdminImagesCreatePage = () => {
 							const { value, ...rest } = field;
 							return (
 								<Form.Item className='mt-4'>
-									<Form.Label>대표 이미지</Form.Label>
+									{/* <Form.Label>대표 이미지</Form.Label> */}
 									<Form.Control>
 										<Input type='hidden' value={'@TEMP'} {...rest} />
 									</Form.Control>
-									<Input
+									{/* <Input
 										type='file'
 										className='mt-1'
 										accept='image/jpeg, image/png, image/gif, image/webp'
 										onChange={event => {
-											// const selectedFile = event.target.files?.[0] || null;
-											// setFileSrc(selectedFile);
-											// onChange(event);
+											const selectedFile = event.target.files?.[0] || null;
+											setFileSrc(selectedFile);
+											onChange(event);
 										}}
-										// {...rest}
-									/>
+										{...rest}
+									/> */}
 									<Form.Message />
 								</Form.Item>
 							);
