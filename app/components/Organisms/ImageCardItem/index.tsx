@@ -49,7 +49,7 @@ const ImageCardItem = React.forwardRef<Type.ImageCardItemElement, Type.ImageCard
 	};
 
 	return (
-		<li ref={forwardRef} className={cn('relative', 'rounded-lg', 'border', 'border-zinc-200', 'bg-transparent', 'text-zinc-800', 'dark:border-zinc-700', className)} {...rest}>
+		<li ref={forwardRef} className={cn('relative', 'rounded-lg', 'border', 'border-zinc-200', 'bg-transparent', 'dark:border-zinc-700', className)} {...rest}>
 			<AspectRatio.Root ratio={16 / 9} className='overflow-hidden'>
 				<Image
 					src={src}
