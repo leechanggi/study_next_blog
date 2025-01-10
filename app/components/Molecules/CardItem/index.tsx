@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { Slot } from '@radix-ui/react-slot';
 
 import * as Types from './type';
 import { cn } from '@/lib';

@@ -1,6 +1,9 @@
 // @index('./**/index.{ts,tsx}', f => `export { default as ${f.path.split('/').reverse()[1]} } from '${f.path.replace(/\/index$/, '')}';`)
 export { default as confirmEmail } from './api/email/confirmEmail';
 export { default as requestEmail } from './api/email/requestEmail';
+export { default as createImage } from './api/image/createImage';
+export { default as deleteImageById } from './api/image/deleteImageById';
+export { default as getImageById } from './api/image/getImageById';
 export { default as getImages } from './api/image/getImages';
 export { default as createPost } from './api/posts/createPost';
 export { default as deletePostById } from './api/posts/deletePostById';

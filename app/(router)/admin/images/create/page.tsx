@@ -4,10 +4,8 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-// import { BsFiletypeJpg } from 'react-icons/bs';
-// import { BsFiletypePng } from 'react-icons/bs';
-// import { BsFiletypeGif } from 'react-icons/bs';
-// import { BsFiletypeSvg } from 'react-icons/bs';
+import { BsFiletypeJpg, BsFiletypePng, BsFiletypeGif, BsFiletypeSvg } from 'react-icons/bs';
+import { RxCrossCircled } from 'react-icons/rx';
 
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -67,9 +65,50 @@ const AdminImagesCreatePage = () => {
                   </Form.Control>
 
                   <CardList className='mt-8 space-y-2'>
-                    <CardItem>1</CardItem>
-                    <CardItem>1</CardItem>
-                    <CardItem>1</CardItem>
+                    <CardItem className='relative pl-5 flex items-center justify-start space-x-3'>
+                      <BsFiletypeJpg size='2.5rem' />
+                      <div className='flex flex-col items-start justify-start space-y-2'>
+                        <span className='underline underline-offset-4'>my-cv.jpg</span>
+                        <span className='text-sm text-zinc-600 dark:text-zinc-300'>120 KB</span>
+                      </div>
+                      <Button className='absolute !m-0 p-2 top-3 right-4' customStyleOnly>
+                        <RxCrossCircled size='1.25rem' />
+                        <span className='sr-only'>삭제</span>
+                      </Button>
+                    </CardItem>
+                    <CardItem className='relative pl-5 flex items-center justify-start space-x-3'>
+                      <BsFiletypePng size='2.5rem' />
+                      <div className='flex flex-col items-start justify-start space-y-2'>
+                        <span className='underline underline-offset-4'>my-cv.png</span>
+                        <span className='text-sm text-zinc-600 dark:text-zinc-300'>120 KB</span>
+                      </div>
+                      <Button className='absolute !m-0 p-2 top-3 right-4' customStyleOnly>
+                        <RxCrossCircled size='1.25rem' />
+                        <span className='sr-only'>삭제</span>
+                      </Button>
+                    </CardItem>
+                    <CardItem className='relative pl-5 flex items-center justify-start space-x-3'>
+                      <BsFiletypeGif size='2.5rem' />
+                      <div className='flex flex-col items-start justify-start space-y-2'>
+                        <span className='underline underline-offset-4'>my-cv.png</span>
+                        <span className='text-sm text-zinc-600 dark:text-zinc-300'>120 KB</span>
+                      </div>
+                      <Button className='absolute !m-0 p-2 top-3 right-4' customStyleOnly>
+                        <RxCrossCircled size='1.25rem' />
+                        <span className='sr-only'>삭제</span>
+                      </Button>
+                    </CardItem>
+                    <CardItem className='relative pl-5 flex items-center justify-start space-x-3'>
+                      <BsFiletypeSvg size='2.5rem' />
+                      <div className='flex flex-col items-start justify-start space-y-2'>
+                        <span className='underline underline-offset-4'>my-cv.png</span>
+                        <span className='text-sm text-zinc-600 dark:text-zinc-300'>120 KB</span>
+                      </div>
+                      <Button className='absolute !m-0 p-2 top-3 right-4' customStyleOnly>
+                        <RxCrossCircled size='1.25rem' />
+                        <span className='sr-only'>삭제</span>
+                      </Button>
+                    </CardItem>
                   </CardList>
                   <Form.Message />
                 </Form.Item>
